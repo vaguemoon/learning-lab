@@ -10,7 +10,515 @@
 body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Noto Sans TC",sans-serif}
 .app{max-width:720px;margin:0 auto;padding:16px 16px 96px}
 header{display:flex;justify-content:space-between;align-items:center;padding:10px 0}
+.h1{font-weight:800;font-size:20px}<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>部件快反練習 · MVP</title>
+<style>
+:root{ --bg:#0b0f14; --fg:#e6e6e6; --muted:#9aa4ad; --panel:#121821; --accent:#30d158; --warn:#ff453a; }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Noto Sans TC",sans-serif}
+.app{max-width:720px;margin:0 auto;padding:16px 16px 96px}
+header{display:flex;justify-content:space-between;align-items:center;padding:10px 0;gap:8px}
 .h1{font-weight:800;font-size:20px}
+.toolbar{display:flex;gap:8px;align-items:center;justify-content:center}
+.toolbar.bottom{position:fixed;bottom:0;left:0;width:100%;background:#0b0f14;padding:16px 12px;border-top:2px solid #2a323c;z-index:10}
+.btn{background:var(--accent);color:#002b11;border:0;border-radius:14px;padding:12px 16px;font-weight:800;cursor:pointer;white-space:nowrap}
+.btn.ghost{background:transparent;border:2px solid var(--fg);color:var(--fg)}
+.btn.sm{padding:4px 10px;font-size:12px;border-radius:999px}
+.btn.tab-active{background:var(--fg);color:#0b0f14}
+#mic.on{border-color:var(--accent);color:var(--accent);animation:blink 1s infinite ease-in-out}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.45}}
+.panel{background:var(--panel);border-radius:16px;padding:18px;box-shadow:0 8px 24px rgba(0,0,0,.35);margin-top:8px}
+#prompt{font-size:clamp(64px,16vw,120px);font-weight:900;text-align:center;letter-spacing:2px;margin:8px 0 12px}
+.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.choice{background:#fff;color:#0b0f14;border:2px solid #3a424d;border-radius:14px;padding:20px;font-size:28px;cursor:pointer}
+.choice.glyph{font-size:96px;font-weight:900}
+.choice:focus{outline:3px solid var(--accent)}
+.hint{margin-top:12px;background:#f7d774;color:#000;padding:10px 12px;border-radius:8px;font-weight:bold;display:block;min-height:42px}
+.mic-icon{display:inline-block;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)} }
+.stats{margin-top:8px;color:var(--muted);font-size:14px}
+hr{border:none;border-top:1px solid #2a323c;margin:12px 0}
+
+/* 大按鈕模式（預設啟用） */
+body.big .btn{padding:16px 22px;font-size:20px}
+body.big .choice{padding:24px;font-size:32px}
+body.big .choice.glyph{font-size:110px}
+
+/* 練習畫面：看→說 / 聽→找 */
+.mode-see .app{max-width:min(1200px,92vw);padding:24px 24px 120px}
+.mode-see #prompt{font-size:clamp(120px,22vw,260px)}
+.mode-see .panel.practice-panel{min-height:80vh;display:flex;flex-direction:column;justify-content:center}
+
+.mode-hear #prompt{font-size:clamp(36px,6vw,56px);margin-top:4vh;margin-bottom:2vh;text-align:center}
+.mode-hear .choice{padding:18px;font-size:min(6vw,30px)}
+.mode-hear .choice.glyph{font-size:clamp(64px,12vw,100px)}
+body.big.mode-hear .btn{padding:16px 22px;font-size:20px}
+.mode-hear .toolbar.bottom{padding:16px 12px}
+.mode-hear #mic{display:none}
+.mode-hear .app{max-width:min(1200px,92vw);padding:24px 24px 120px}
+.mode-hear .panel.practice-panel{min-height:70vh;display:flex;flex-direction:column;justify-content:center}
+/* 聽→找：一排四個 */
+.mode-hear .choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:stretch;justify-items:stretch}
+/* 聽→找：字卡樣式 */
+.mode-hear .choice{background:#ffffff;border:2px solid #e5e7eb;color:#0b0f14;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.25);padding:16px}
+.mode-hear .choice.glyph{font-size:clamp(56px,10vw,96px);font-weight:900}
+.mode-hear .choice:hover{outline:2px solid rgba(48,209,88,.5)}
+
+/* 管理頁面 */
+#bank-screen h2{margin:4px 0 8px;font-size:18px}
+#bank-screen p{margin:4px 0 12px;font-size:14px;color:var(--muted)}
+.bank-form-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.bank-form-row label{display:flex;flex-direction:column;font-size:12px;color:var(--muted);min-width:0;flex:1}
+.bank-form-row input,
+.bank-form-row select{margin-top:4px;border-radius:8px;border:1px solid #2a323c;padding:8px 10px;background:#05070b;color:var(--fg);font-size:14px}
+#bank-list table{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px}
+#bank-list th,#bank-list td{border-bottom:1px solid #2a323c;padding:6px 4px;text-align:left}
+#bank-list th{color:var(--muted);font-weight:600;font-size:12px}
+.bank-empty{font-size:14px;color:var(--muted);margin-top:12px}
+
+/* D：整體按鍵略縮小（已覆寫） */
+body.big.mode-hear .btn{padding:16px 22px;font-size:20px}
+.toolbar.bottom .btn{padding:16px 22px;font-size:20px}
+</style>
+</head>
+<body class="big">
+<div class="app" role="application" aria-label="部件快反練習">
+  <header>
+    <div class="h1">部件快反練習 · MVP（Canvas 預覽）</div>
+    <div class="toolbar">
+      <button id="nav-practice" class="btn ghost btn.tab-active">練習</button>
+      <button id="nav-bank" class="btn ghost">題庫管理</button>
+    </div>
+  </header>
+
+  <!-- 練習畫面 -->
+  <section id="practice-screen" class="panel practice-panel" aria-live="polite" aria-atomic="true">
+    <div id="prompt">—</div>
+    <div id="choices" class="choices"></div>
+    <div id="hint" class="hint"></div>
+    <hr>
+    <div id="stats" class="stats"></div>
+  </section>
+
+  <!-- 題庫管理畫面 -->
+  <section id="bank-screen" class="panel" style="display:none">
+    <h2>題庫管理</h2>
+    <p>在這裡新增／編輯要練習的部件和讀音。儲存後，練習畫面會使用你自訂的題庫。</p>
+
+    <form id="bank-form" autocomplete="off">
+      <div class="bank-form-row">
+        <label>
+          字／部件
+          <input id="bank-glyph" required maxlength="2" placeholder="例如：氵">
+        </label>
+        <label>
+          讀音／名稱
+          <input id="bank-name" required placeholder="例如：水部">
+        </label>
+        <label>
+          分類 group
+          <select id="bank-group" required></select>
+        </label>
+      </div>
+      <div class="bank-form-row" style="align-items:flex-end">
+        <div style="flex:1;font-size:12px;color:var(--muted)" id="bank-edit-status">
+          新增模式：輸入上面三欄按下儲存即可加入題庫。
+        </div>
+        <button type="submit" class="btn">儲存到題庫</button>
+      </div>
+    </form>
+
+    <div id="bank-list"></div>
+  </section>
+
+  <div class="toolbar bottom">
+    <button id="mode" class="btn">模式：看→說</button>
+    <button id="replay" class="btn ghost" style="display:none">🔊 再唸一次</button>
+    <button id="mic" class="btn ghost">🎙 語音作答</button>
+    <button id="next" class="btn ghost">下一題 ➜</button>
+  </div>
+</div>
+
+<script>
+// ===== data.js =====
+const DEFAULT_RADICALS = [
+  { glyph: "氵", name: "水部",   group: "water" },
+  { glyph: "扌", name: "手部",   group: "hand" },
+  { glyph: "艹", name: "草部",   group: "grass" },
+  { glyph: "亻", name: "人部",   group: "person" },
+  { glyph: "口", name: "口部",   group: "mouth" },
+  { glyph: "木", name: "木部",   group: "wood" },
+  { glyph: "忄", name: "心部",   group: "heart" },
+  { glyph: "辶", name: "辵部",   group: "walk" },
+  { glyph: "刂", name: "刀部",   group: "knife" },
+  { glyph: "灬", name: "火部",   group: "fire" },
+  { glyph: "糹", name: "糸部",   group: "silk" },
+];
+window.GROUPS = {
+  water: ["忄","扌","氵","灬"],
+  hand: ["扌","氵","刂","亻"],
+  grass: ["艹","竹(⺮)","廾","卄"],
+  person: ["亻","入","丿","人"],
+  mouth: ["口","囗","日","田"],
+  wood: ["木","本","未","十"],
+  heart: ["忄","氵","小","丬"],
+  walk: ["辶","廴","冖","⻌"],
+  knife: ["刂","刀","丨","丿"],
+  fire: ["灬","点","丶","小"],
+  silk: ["糹","纟","幺","糸"],
+};
+
+// 實際使用中的題庫陣列（可被管理頁修改）
+const BANK = [];
+const GROUPS = window.GROUPS;
+
+function loadBank(){
+  let stored = null;
+  try{
+    stored = JSON.parse(localStorage.getItem('radicals_bank') || '[]');
+  }catch(e){
+    stored = null;
+  }
+  if(!Array.isArray(stored) || !stored.length){
+    stored = DEFAULT_RADICALS;
+  }
+  BANK.length = 0;
+  stored.forEach(x => BANK.push(x));
+}
+
+function saveBank(){
+  localStorage.setItem('radicals_bank', JSON.stringify(BANK));
+}
+</script>
+
+<script>
+// ===== app.js =====
+const $ = (s) => document.querySelector(s);
+const btnNext = $("#next");
+const btnToggleMode = $("#mode");
+const btnMic = $("#mic");
+const btnReplay = $("#replay");
+const areaPrompt = $("#prompt");
+const areaChoices = $("#choices");
+const areaHint = $("#hint");
+const areaStats = $("#stats");
+
+const screenPractice = $("#practice-screen");
+const screenBank = $("#bank-screen");
+const navPractice = $("#nav-practice");
+const navBank = $("#nav-bank");
+
+const bankForm = $("#bank-form");
+const inputGlyph = $("#bank-glyph");
+const inputName = $("#bank-name");
+const selectGroup = $("#bank-group");
+const bankList = $("#bank-list");
+const bankEditStatus = $("#bank-edit-status");
+
+const MODE = { SEE_SAY: "see_say", HEAR_PICK: "hear_pick" };
+let mode = MODE.SEE_SAY;
+let weights = {};
+let current = null;
+let total = 0, correct = 0;
+let SR = null; let rec = null; let voiceEnabled = false;
+let editingIndex = null; // 題庫管理：目前編輯哪一筆（null = 新增）
+
+// ---- 小工具 ----
+const rng = (n) => Math.floor(Math.random() * n);
+const speak = (text) => { try { const u = new SpeechSynthesisUtterance(text); u.lang = "zh-TW"; speechSynthesis.cancel(); speechSynthesis.speak(u);} catch (_) {} };
+// Web Audio SFX（零音檔）
+let _actx; function _ensureCtx(){ try{ _actx=_actx||new (window.AudioContext||window.webkitAudioContext)(); }catch(_){ _actx=null; } return _actx; }
+function beep(freq=880, dur=0.12, type='sine', gain=0.05){ const c=_ensureCtx(); if(!c) return; const o=c.createOscillator(), g=c.createGain(); o.type=type; o.frequency.value=freq; g.gain.value=gain; o.connect(g); g.connect(c.destination); o.start(); setTimeout(()=>o.stop(), dur*1000); }
+function sfxCorrect(){ beep(880,0.1,'sine'); setTimeout(()=>beep(1320,0.1,'sine'), 120); }
+function sfxWrong(){ const c=_ensureCtx(); if(!c) return; const o1=c.createOscillator(), o2=c.createOscillator(), g=c.createGain(); o1.type='square'; o2.type='square'; o1.frequency.value=220; o2.frequency.value=160; g.gain.value=0.03; o1.connect(g); o2.connect(g); g.connect(c.destination); o1.start(); o2.start(); setTimeout(()=>{ o1.stop(); o2.stop(); }, 160); }
+
+// 記錄（本機）
+function saveWeights(){ localStorage.setItem('weights', JSON.stringify(weights)); }
+function normalizeWeights(){
+  const set = new Set(BANK.map(x=>x.glyph));
+  // 移除已經不在題庫裡的權重
+  Object.keys(weights).forEach(g => { if(!set.has(g)) delete weights[g]; });
+  // 補上新加入的字
+  BANK.forEach(x => { if(!(x.glyph in weights)) weights[x.glyph] = 1; });
+  saveWeights();
+}
+function loadWeights(){
+  try{ weights = JSON.parse(localStorage.getItem('weights')||'{}'); }catch{ weights = {}; }
+  normalizeWeights();
+}
+
+// 出題
+function pickWeighted(){
+  if(!BANK.length) return null;
+  const arr=BANK.map(x=>({item:x,w:Math.max(1,Number(weights[x.glyph]||1))}));
+  const sum=arr.reduce((s,a)=>s+a.w,0);
+  let t=Math.random()*sum;
+  for(const a of arr){ if((t-=a.w)<=0) return a.item; }
+  return arr[arr.length-1].item;
+}
+function genChoices(answer){
+  const group=GROUPS[answer.group]||[];
+  const wrongs=[];
+  const pool=[
+    ...BANK.filter(x=>x.glyph!==answer.glyph && group.includes(x.glyph)).map(x=>x.glyph),
+    ...BANK.filter(x=>x.glyph!==answer.glyph && !group.includes(x.glyph)).map(x=>x.glyph)
+  ];
+  while(wrongs.length<3 && pool.length){
+    const g=pool.splice(rng(pool.length),1)[0];
+    if(!wrongs.includes(g)) wrongs.push(g);
+  }
+  return [answer.glyph, ...wrongs].sort(()=>0.5-Math.random());
+}
+
+// 根據模式切換版面響應（看→說放大、聽→找縮小＆隱藏麥克風）
+function syncModeUI(){
+  const isSee = mode===MODE.SEE_SAY;
+  document.body.classList.toggle('mode-see', isSee);
+  document.body.classList.toggle('mode-hear', !isSee);
+  // 題型：聽→找時顯示重播按鈕；看→說時隱藏
+  btnReplay.style.display = isSee ? 'none' : '';
+}
+
+// 題型：看→說（顯示部件，答案是念名稱）
+function renderSeeSay(q){
+  // 純語音作答：不顯示選項，需語音支援
+  if(!SR){
+    // 不支援語音時自動切到「聽→找」
+    mode = MODE.HEAR_PICK;
+    btnToggleMode.textContent = '模式：聽→找';
+    return renderHearPick(q);
+  }
+  areaPrompt.textContent = q.glyph;
+  areaChoices.innerHTML = '';
+  areaHint.innerHTML = '<span class="mic-icon">🎙</span> 正在聽你說...請念出部首（例如：水部）';
+
+  // 若語音啟用，開始辨識；否則提示開啟麥克風
+  if(voiceEnabled){
+    if(!rec){
+      rec = new SR();
+      rec.lang = 'zh-TW';
+      rec.interimResults = false;
+      rec.maxAlternatives = 1;
+      rec.onend = ()=>{ if(voiceEnabled) { try{ rec.start(); }catch(_){} } };
+    }
+    rec.onresult = (e)=>{
+      const said = (e.results[0][0].transcript||'').trim();
+      const ok = said.includes(q.name);
+      onAnswer(ok, q);
+    };
+    try{ rec.start(); }catch(_){ }
+    btnMic.classList.add('on');
+  } else {
+    btnMic.classList.remove('on');
+  }
+}
+
+// 題型：聽→找（先唸名稱，四選一找部件）
+function renderHearPick(q){
+  speak(q.name);
+  // 聽找模式：不顯示文字題目，只播放語音。若需要可按「再唸一次」。
+  areaPrompt.textContent = '';
+  areaChoices.innerHTML = '';
+  for(const g of genChoices(q)){
+    const b=document.createElement('button');
+    b.className='choice glyph';
+    b.textContent=g;
+    b.onclick=()=>onAnswer(g===q.glyph, q);
+    areaChoices.appendChild(b);
+  }
+}
+
+function nextQuestion(){
+  if(!BANK.length){
+    areaPrompt.textContent = '—';
+    areaChoices.innerHTML = '';
+    areaHint.textContent = '題庫目前是空的，請先到「題庫管理」新增要練習的部件。';
+    return;
+  }
+  current = pickWeighted();
+  areaHint.textContent = '';
+  if(mode===MODE.SEE_SAY) renderSeeSay(current); else renderHearPick(current);
+}
+
+function onAnswer(ok, q){
+  total += 1; if(ok) correct += 1;
+  weights[q.glyph] = Math.max(1, (weights[q.glyph]||1) + (ok?-1:+1));
+  saveWeights();
+  if(ok) sfxCorrect(); else sfxWrong();
+  speak(q.name);
+  areaHint.textContent = (ok?'✅ 正確！':'❌ 再試試') + '　' + q.name;
+  updateStats();
+}
+
+function updateStats(){
+  const rate = total? Math.round(100*correct/total):0;
+  areaStats.textContent = `本次：${correct}/${total}（${rate}%）`;
+}
+
+// ===== 題庫管理 UI =====
+function initGroupSelect(){
+  selectGroup.innerHTML = '';
+  Object.keys(GROUPS).forEach(key=>{
+    const opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = key;
+    selectGroup.appendChild(opt);
+  });
+}
+
+function renderBankList(){
+  bankList.innerHTML = '';
+  if(!BANK.length){
+    const div = document.createElement('div');
+    div.className = 'bank-empty';
+    div.textContent = '目前題庫是空的，請先新增一些部件。';
+    bankList.appendChild(div);
+    return;
+  }
+  const table = document.createElement('table');
+  const thead = document.createElement('thead');
+  thead.innerHTML = '<tr><th style="width:60px">字</th><th>讀音／名稱</th><th>group</th><th style="width:120px">操作</th></tr>';
+  table.appendChild(thead);
+  const tbody = document.createElement('tbody');
+  BANK.forEach((r,idx)=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${r.glyph}</td><td>${r.name}</td><td>${r.group||''}</td>`;
+    const tdActions = document.createElement('td');
+    const btnE = document.createElement('button');
+    btnE.type = 'button';
+    btnE.className = 'btn sm ghost';
+    btnE.textContent = '編輯';
+    btnE.onclick = ()=>{
+      editingIndex = idx;
+      inputGlyph.value = r.glyph;
+      inputName.value = r.name;
+      selectGroup.value = r.group || Object.keys(GROUPS)[0];
+      bankEditStatus.textContent = `編輯模式：正在編輯第 ${idx+1} 筆，修改後按「儲存到題庫」。`;
+    };
+    const btnD = document.createElement('button');
+    btnD.type = 'button';
+    btnD.className = 'btn sm ghost';
+    btnD.style.marginLeft = '4px';
+    btnD.textContent = '刪除';
+    btnD.onclick = ()=>{
+      if(!confirm(`確定要刪除「${r.glyph}／${r.name}」嗎？`)) return;
+      BANK.splice(idx,1);
+      saveBank();
+      normalizeWeights();
+      renderBankList();
+    };
+    tdActions.appendChild(btnE);
+    tdActions.appendChild(btnD);
+    tr.appendChild(tdActions);
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  bankList.appendChild(table);
+}
+
+bankForm.addEventListener('submit', (e)=>{
+  e.preventDefault();
+  const glyph = inputGlyph.value.trim();
+  const name  = inputName.value.trim();
+  const group = selectGroup.value;
+  if(!glyph || !name || !group) return;
+
+  const payload = { glyph, name, group };
+
+  if(editingIndex!=null){
+    BANK[editingIndex] = payload;
+    bankEditStatus.textContent = '已更新題目。你可以繼續編輯或新增其他部件。';
+  }else{
+    // 若已存在同 glyph，覆寫
+    const idx = BANK.findIndex(x=>x.glyph===glyph);
+    if(idx>=0) BANK[idx] = payload;
+    else BANK.push(payload);
+    bankEditStatus.textContent = '已新增到題庫。';
+  }
+  saveBank();
+  normalizeWeights();
+  renderBankList();
+
+  // 清空表單，回到新增模式
+  editingIndex = null;
+  inputGlyph.value = '';
+  inputName.value = '';
+  selectGroup.value = Object.keys(GROUPS)[0];
+  inputGlyph.focus();
+});
+
+// 畫面切換：練習 / 題庫管理
+function showScreen(which){
+  const isPractice = which === 'practice';
+  screenPractice.style.display = isPractice ? '' : 'none';
+  screenBank.style.display = isPractice ? 'none' : '';
+  navPractice.classList.toggle('btn.tab-active', isPractice);
+  navBank.classList.toggle('btn.tab-active', !isPractice);
+}
+
+navPractice.onclick = ()=>{
+  showScreen('practice');
+};
+navBank.onclick = ()=>{
+  showScreen('bank');
+};
+
+// 重播題目按鈕（僅聽→找時顯示）
+btnReplay.onclick = ()=>{ if(mode===MODE.HEAR_PICK && current){ speak(current.name); } };
+
+// 單鍵語音控制（mic 按鈕：開始作答 ↔ 送出答案）
+(function setupMic(){
+  SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+  btnMic.textContent = '🎙 開始作答';
+  if(!SR){ btnMic.title='此裝置不支援語音辨識'; btnMic.disabled=true; }
+  btnMic.onclick = ()=>{
+    voiceEnabled = !voiceEnabled;
+    if(voiceEnabled && SR){
+      rec = new SR(); rec.lang='zh-TW'; rec.interimResults=false; rec.maxAlternatives=1;
+      rec.onresult = (e)=>{
+        const said=(e.results[0][0].transcript||'').trim();
+        const ok = current && said.includes(current.name);
+        if(current) onAnswer(ok, current);
+      };
+      rec.onend = ()=>{ if(voiceEnabled) try{ rec.start(); }catch(_){ } };
+      try{ rec.start(); }catch(_){}
+      btnMic.classList.add('on');
+      btnMic.textContent = '🎙 送出答案';
+      areaHint.textContent = '🎙 請念出部首名稱，例如：水部';
+    } else {
+      try{ rec && rec.stop(); }catch(_){}
+      btnMic.classList.remove('on');
+      btnMic.textContent = '🎙 開始作答';
+      areaHint.textContent = '';
+    }
+  };
+})();
+
+// 事件綁定
+btnNext.onclick = nextQuestion;
+btnToggleMode.onclick = ()=>{
+  mode = (mode===MODE.SEE_SAY)? MODE.HEAR_PICK : MODE.SEE_SAY;
+  btnToggleMode.textContent = (mode===MODE.SEE_SAY? '模式：看→說' : '模式：聽→找');
+  syncModeUI();
+  nextQuestion();
+};
+
+// ===== 初始化 =====
+loadBank();
+loadWeights();
+initGroupSelect();
+renderBankList();
+syncModeUI();
+updateStats();
+nextQuestion();
+</script>
+</body>
+</html>
+
 .toolbar{display:flex;gap:8px;align-items:center;justify-content:center}
 .toolbar.bottom{position:fixed;bottom:0;left:0;width:100%;background:#0b0f14;padding:16px 12px;border-top:2px solid #2a323c;z-index:10}
 .btn{background:var(--accent);color:#002b11;border:0;border-radius:14px;padding:12px 16px;font-weight:800;cursor:pointer}
