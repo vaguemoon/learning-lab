@@ -1,410 +1,451 @@
-import React, { useState, useEffect, useRef } from "react";
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <title>20以內加法練習 - 小小加法練習器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-// Kids Addition Practice App
-// - Set a sum range (min & max)
-// - Get random addition problems where minSum ≤ a + b ≤ maxSum
-// - Enter your answer with keyboard or on-screen keypad
+    <!-- Tailwind Play CDN（方便用現成的 className） -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-const getRandomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
+    <!-- React 18 + ReactDOM 18 CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 
-const createQuestion = (minSum, maxSum) => {
-  let min = Number.isFinite(minSum) ? minSum : 0;
-  let max = Number.isFinite(maxSum) ? maxSum : 10;
+    <!-- Babel：讓瀏覽器可以直接跑 JSX（開發用） -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body class="m-0 p-0">
+    <div id="root"></div>
 
-  // 安全範圍處理
-  min = Math.max(0, min);
-  max = Math.max(1, max);
+    <script type="text/babel">
+      const { useState, useEffect, useRef } = React;
 
-  if (min > max) {
-    [min, max] = [max, min];
-  }
+      // 工具函式
+      const getRandomInt = (min, max) => {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      };
 
-  const sum = getRandomInt(min, max);
-  const a = getRandomInt(0, sum);
-  const b = sum - a;
+      const createQuestion = (minSum, maxSum) => {
+        let min = Number.isFinite(minSum) ? minSum : 0;
+        let max = Number.isFinite(maxSum) ? maxSum : 10;
 
-  return { a, b };
-};
+        // 安全範圍處理
+        min = Math.max(0, min);
+        max = Math.max(1, max);
 
-export default function KidsAdditionPracticeApp() {
-  const audioCtxRef = useRef(null);
+        if (min > max) {
+          [min, max] = [max, min];
+        }
 
-  const getAudioCtx = () => {
-    if (!audioCtxRef.current) {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) return null;
-      audioCtxRef.current = new AudioContext();
-    }
-    return audioCtxRef.current;
-  };
+        const sum = getRandomInt(min, max);
+        const a = getRandomInt(0, sum);
+        const b = sum - a;
 
-  const playTone = (frequency, durationMs, type = "sine", volume = 0.2) => {
-    const ctx = getAudioCtx();
-    if (!ctx) return;
+        return { a, b };
+      };
 
-    const oscillator = ctx.createOscillator();
-    const gainNode = ctx.createGain();
+      function KidsAdditionPracticeApp() {
+        const audioCtxRef = useRef(null);
 
-    oscillator.type = type;
-    oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
+        const getAudioCtx = () => {
+          if (!audioCtxRef.current) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return null;
+            audioCtxRef.current = new AudioContext();
+          }
+          return audioCtxRef.current;
+        };
 
-    gainNode.gain.setValueAtTime(volume, ctx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + durationMs / 1000);
+        const playTone = (frequency, durationMs, type = "sine", volume = 0.2) => {
+          const ctx = getAudioCtx();
+          if (!ctx) return;
 
-    oscillator.connect(gainNode);
-    gainNode.connect(ctx.destination);
+          const oscillator = ctx.createOscillator();
+          const gainNode = ctx.createGain();
 
-    oscillator.start();
-    oscillator.stop(ctx.currentTime + durationMs / 1000);
-  };
+          oscillator.type = type;
+          oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
 
-  const playCorrectSound = () => {
-    // 小小上升音階：溫柔的「叮叮」
-    playTone(880, 120, "sine", 0.25);
-    setTimeout(() => playTone(1175, 150, "sine", 0.2), 110);
-  };
+          gainNode.gain.setValueAtTime(volume, ctx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(
+            0.001,
+            ctx.currentTime + durationMs / 1000
+          );
 
-  const playIncorrectSound = () => {
-    // 低沉的「嗡嗡」提醒
-    playTone(220, 200, "square", 0.18);
-    setTimeout(() => playTone(180, 220, "square", 0.15), 180);
-  };
+          oscillator.connect(gainNode);
+          gainNode.connect(ctx.destination);
 
-  const [minSum, setMinSum] = useState(0);
-  const [maxSum, setMaxSum] = useState(20);
-  const [question, setQuestion] = useState(() => createQuestion(0, 20));
-  const [answer, setAnswer] = useState("");
-  const [feedback, setFeedback] = useState(null); // "correct" | "incorrect" | null
-  const [stats, setStats] = useState({ total: 0, correct: 0 });
-  const [darkMode, setDarkMode] = useState(false);
+          oscillator.start();
+          oscillator.stop(ctx.currentTime + durationMs / 1000);
+        };
 
-  const newQuestion = (keepStats = true) => {
-    setQuestion(createQuestion(minSum, maxSum));
-    setAnswer("");
-    setFeedback(null);
-    if (!keepStats) {
-      setStats({ total: 0, correct: 0 });
-    }
-  };
+        const playCorrectSound = () => {
+          // 小小上升音階：溫柔的「叮叮」
+          playTone(880, 120, "sine", 0.25);
+          setTimeout(() => playTone(1175, 150, "sine", 0.2), 110);
+        };
 
-  const handleCheck = () => {
-    if (answer.trim() === "") return;
-    const userValue = Number(answer.trim());
-    const isCorrect = userValue === question.a + question.b;
+        const playIncorrectSound = () => {
+          // 低沉的「嗡嗡」提醒
+          playTone(220, 200, "square", 0.18);
+          setTimeout(() => playTone(180, 220, "square", 0.15), 180);
+        };
 
-    setFeedback(isCorrect ? "correct" : "incorrect");
-    setStats((prev) => ({
-      total: prev.total + 1,
-      correct: prev.correct + (isCorrect ? 1 : 0),
-    }));
+        const [minSum, setMinSum] = useState(0);
+        const [maxSum, setMaxSum] = useState(20);
+        const [question, setQuestion] = useState(() => createQuestion(0, 20));
+        const [answer, setAnswer] = useState("");
+        const [feedback, setFeedback] = useState(null); // "correct" | "incorrect" | null
+        const [stats, setStats] = useState({ total: 0, correct: 0 });
+        const [darkMode, setDarkMode] = useState(false);
 
-    if (isCorrect) {
-      playCorrectSound();
-      // 自動進入下一題（保留音效播放的瞬間）
-      setTimeout(() => newQuestion(), 250);
-    } else {
-      playIncorrectSound();
-    }
-  };
+        const newQuestion = (keepStats = true) => {
+          setQuestion(createQuestion(minSum, maxSum));
+          setAnswer("");
+          setFeedback(null);
+          if (!keepStats) {
+            setStats({ total: 0, correct: 0 });
+          }
+        };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") handleCheck();
-  };
+        const handleCheck = () => {
+          if (answer.trim() === "") return;
+          const userValue = Number(answer.trim());
+          const isCorrect = userValue === question.a + question.b;
 
-  const handleMinChange = (e) => {
-    const v = Number(e.target.value);
-    if (Number.isNaN(v)) return;
-    setMinSum((prev) => {
-      const next = Math.max(0, Math.min(v, maxSum));
-      return next;
-    });
-  };
+          setFeedback(isCorrect ? "correct" : "incorrect");
+          setStats((prev) => ({
+            total: prev.total + 1,
+            correct: prev.correct + (isCorrect ? 1 : 0),
+          }));
 
-  const handleMaxChange = (e) => {
-    const v = Number(e.target.value);
-    if (Number.isNaN(v)) return;
-    setMaxSum((prev) => {
-      const next = Math.max(minSum, Math.min(v, 200));
-      return next;
-    });
-  };
+          if (isCorrect) {
+            playCorrectSound();
+            // 自動進入下一題（保留音效播放的瞬間）
+            setTimeout(() => newQuestion(), 250);
+          } else {
+            playIncorrectSound();
+          }
+        };
 
-  useEffect(() => {
-    // 當範圍改變時，重新出題並重置統計
-    setQuestion(createQuestion(minSum, maxSum));
-    setAnswer("");
-    setFeedback(null);
-    setStats({ total: 0, correct: 0 });
-  }, [minSum, maxSum]);
+        const handleKeyDown = (e) => {
+          if (e.key === "Enter") handleCheck();
+        };
 
-  const accuracy = stats.total === 0 ? 0 : Math.round((stats.correct / stats.total) * 100);
+        const handleMinChange = (e) => {
+          const v = Number(e.target.value);
+          if (Number.isNaN(v)) return;
+          setMinSum((prev) => {
+            const next = Math.max(0, Math.min(v, maxSum));
+            return next;
+          });
+        };
 
-  // keypad helpers
-  const handleDigit = (digit) => {
-    setAnswer((prev) => {
-      if (prev.length >= 3) return prev; // sums up to 200
-      return prev + String(digit);
-    });
-  };
+        const handleMaxChange = (e) => {
+          const v = Number(e.target.value);
+          if (Number.isNaN(v)) return;
+          setMaxSum((prev) => {
+            const next = Math.max(minSum, Math.min(v, 200));
+            return next;
+          });
+        };
 
-  const handleDelete = () => {
-    setAnswer((prev) => prev.slice(0, -1));
-  };
+        useEffect(() => {
+          // 當範圍改變時，重新出題並重置統計
+          setQuestion(createQuestion(minSum, maxSum));
+          setAnswer("");
+          setFeedback(null);
+          setStats({ total: 0, correct: 0 });
+        }, [minSum, maxSum]);
 
-  const handleClear = () => {
-    setAnswer("");
-  };
+        const accuracy =
+          stats.total === 0 ? 0 : Math.round((stats.correct / stats.total) * 100);
 
-  const outerBg = darkMode
-    ? "bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900"
-    : "bg-gradient-to-br from-sky-100 via-white to-emerald-100";
+        // keypad helpers
+        const handleDigit = (digit) => {
+          setAnswer((prev) => {
+            if (prev.length >= 3) return prev; // sums up to 200
+            return prev + String(digit);
+          });
+        };
 
-  const cardBg = darkMode
-    ? "bg-slate-900/80 border-slate-700"
-    : "bg-white/80 border-sky-100";
+        const handleDelete = () => {
+          setAnswer((prev) => prev.slice(0, -1));
+        };
 
-  const textPrimary = darkMode ? "text-sky-200" : "text-sky-700";
-  const textBody = darkMode ? "text-slate-200" : "text-slate-600";
-  const textHeading = darkMode ? "text-slate-50" : "text-slate-800";
+        const handleClear = () => {
+          setAnswer("");
+        };
 
-  const inputBg = darkMode ? "bg-slate-800 border-slate-600 text-slate-50" : "bg-sky-50/80 border-sky-200 text-sky-800";
+        const outerBg = darkMode
+          ? "bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900"
+          : "bg-gradient-to-br from-sky-100 via-white to-emerald-100";
 
-  return (
-    <div className={`min-h-screen flex items-center justify-center ${outerBg} p-4`}>
-      <div
-        className={`w-full max-w-xl ${cardBg} backdrop-blur shadow-xl rounded-2xl p-6 md:p-8 border transition-colors`}
-      >
-        <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-          <div>
-            <h1 className={`text-2xl md:text-3xl font-bold tracking-tight ${textPrimary}`}>
-              小小加法練習器
-            </h1>
-            <p className={`text-sm md:text-base mt-1 ${textBody}`}>
-              設定一個「總和範圍」，讓小朋友練習兩個數的加法。
-            </p>
-          </div>
+        const cardBg = darkMode
+          ? "bg-slate-900/80 border-slate-700"
+          : "bg-white/80 border-sky-100";
 
-          {/* Dark mode toggle */}
-          <button
-            type="button"
-            onClick={() => setDarkMode((prev) => !prev)}
-            className="self-start md:self-center inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-400/60 bg-slate-900/10 hover:bg-slate-900/20 text-xs md:text-sm text-slate-100/90 transition-colors"
-          >
-            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-800/80">
-              {darkMode ? "🌙" : "☀️"}
-            </span>
-            <span>{darkMode ? "暗色模式" : "亮色模式"}</span>
-          </button>
-        </header>
+        const textPrimary = darkMode ? "text-sky-200" : "text-sky-700";
+        const textBody = darkMode ? "text-slate-200" : "text-slate-600";
+        const textHeading = darkMode ? "text-slate-50" : "text-slate-800";
 
-        {/* Settings */}
-        <section className="mb-6">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-sky-700 text-sm font-semibold">
-              1
-            </span>
-            <h2 className={`text-lg font-semibold ${textHeading}`}>設定總和範圍</h2>
-          </div>
-          <p className={`text-sm mb-2 ${textBody}`}>
-            題目會滿足 <span className="font-mono">最小值 ≤ a + b ≤ 最大值</span>。
-          </p>
-          <div className="flex flex-col gap-3 md:flex-row md:items-center">
-            <div className="flex items-center gap-2">
-              <label className={`text-sm whitespace-nowrap ${textHeading}`}>
-                最小總和：
-              </label>
-              <input
-                type="number"
-                min={0}
-                max={200}
-                value={minSum}
-                onChange={handleMinChange}
-                className={`w-28 rounded-lg px-3 py-2 text-center text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 ${inputBg}`}
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <label className={`text-sm whitespace-nowrap ${textHeading}`}>
-                最大總和：
-              </label>
-              <input
-                type="number"
-                min={0}
-                max={200}
-                value={maxSum}
-                onChange={handleMaxChange}
-                className={`w-28 rounded-lg px-3 py-2 text-center text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 ${inputBg}`}
-              />
-            </div>
-            <button
-              type="button"
-              onClick={() => newQuestion(false)}
-              className="md:ml-auto text-xs md:text-sm px-3 py-2 rounded-full border border-slate-300/70 hover:border-sky-300 hover:bg-sky-50/80 transition text-slate-200"
-            >
-              重新開始練習
-            </button>
-          </div>
-        </section>
+        const inputBg = darkMode
+          ? "bg-slate-800 border-slate-600 text-slate-50"
+          : "bg-sky-50/80 border-sky-200 text-sky-800";
 
-        {/* Question Area */}
-        <section className="mb-6">
-          <div className="flex items-center gap-3 mb-3">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 text-sm font-semibold">
-              2
-            </span>
-            <h2 className={`text-lg font-semibold ${textHeading}`}>作答區</h2>
-          </div>
-
+        return (
           <div
-            className={`rounded-2xl border p-6 flex flex-col items-center gap-4 ${
-              darkMode
-                ? "bg-slate-800/60 border-slate-700"
-                : "bg-sky-50/80 border-sky-100"
-            }`}
+            className={`min-h-screen flex items-center justify-center ${outerBg} p-4`}
           >
             <div
-              className={`flex items-center justify-center gap-4 text-3xl md:text-4xl font-bold ${
-                darkMode ? "text-sky-100" : "text-sky-800"
-              }`}
+              className={`w-full max-w-xl ${cardBg} backdrop-blur shadow-xl rounded-2xl p-6 md:p-8 border transition-colors`}
             >
-              <span className="min-w-[2ch] text-center font-mono">{question.a}</span>
-              <span>＋</span>
-              <span className="min-w-[2ch] text-center font-mono">{question.b}</span>
-              <span className="mx-2">＝</span>
-              <input
-                type="number"
-                value={answer}
-                onChange={(e) => setAnswer(e.target.value)}
-                onKeyDown={handleKeyDown}
-                className={`w-20 md:w-24 rounded-xl border-2 px-2 py-1 text-center text-3xl md:text-4xl font-bold focus:outline-none focus:ring-2 ${
-                  darkMode
-                    ? "border-emerald-400 bg-slate-900 text-emerald-300 focus:ring-emerald-400"
-                    : "border-sky-300 bg-white text-emerald-700 focus:ring-emerald-400"
-                }`}
-              />
-            </div>
+              <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                <div>
+                  <h1
+                    className={`text-2xl md:text-3xl font-bold tracking-tight ${textPrimary}`}
+                  >
+                    小小加法練習器
+                  </h1>
+                  <p className={`text-sm md:text-base mt-1 ${textBody}`}>
+                    設定一個「總和範圍」，讓小朋友練習兩個數的加法。
+                  </p>
+                </div>
 
-            {/* On-screen keypad */}
-            <div className="w-full mt-4 flex flex-col items-center gap-3">
-              <div className="grid grid-cols-3 gap-3 w-full max-w-xs">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
+                <button
+                  type="button"
+                  onClick={() => setDarkMode((prev) => !prev)}
+                  className="self-start md:self-center inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-400/60 bg-slate-900/10 hover:bg-slate-900/20 text-xs md:text-sm text-slate-100/90 transition-colors"
+                >
+                  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-800/80">
+                    {darkMode ? "🌙" : "☀️"}
+                  </span>
+                  <span>{darkMode ? "暗色模式" : "亮色模式"}</span>
+                </button>
+              </header>
+
+              <section className="mb-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-sky-700 text-sm font-semibold">
+                    1
+                  </span>
+                  <h2 className={`text-lg font-semibold ${textHeading}`}>
+                    設定總和範圍
+                  </h2>
+                </div>
+                <p className={`text-sm mb-2 ${textBody}`}>
+                  題目會滿足{" "}
+                  <span className="font-mono">最小值 ≤ a + b ≤ 最大值</span>。
+                </p>
+                <div className="flex flex-col gap-3 md:flex-row md:items-center">
+                  <div className="flex items-center gap-2">
+                    <label className={`text-sm whitespace-nowrap ${textHeading}`}>
+                      最小總和：
+                    </label>
+                    <input
+                      type="number"
+                      min={0}
+                      max={200}
+                      value={minSum}
+                      onChange={handleMinChange}
+                      className={`w-28 rounded-lg px-3 py-2 text-center text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 ${inputBg}`}
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label className={`text-sm whitespace-nowrap ${textHeading}`}>
+                      最大總和：
+                    </label>
+                    <input
+                      type="number"
+                      min={0}
+                      max={200}
+                      value={maxSum}
+                      onChange={handleMaxChange}
+                      className={`w-28 rounded-lg px-3 py-2 text-center text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 ${inputBg}`}
+                    />
+                  </div>
                   <button
-                    key={n}
                     type="button"
-                    onClick={() => handleDigit(n)}
-                    className={`aspect-[4/3] rounded-2xl text-2xl font-bold shadow-sm active:scale-95 transition flex items-center justify-center ${
-                      darkMode
-                        ? "bg-slate-700 text-slate-50 hover:bg-slate-600"
-                        : "bg-white text-slate-800 border border-slate-200 hover:bg-slate-50"
+                    onClick={() => newQuestion(false)}
+                    className="md:ml-auto text-xs md:text-sm px-3 py-2 rounded-full border border-slate-300/70 hover:border-sky-300 hover:bg-sky-50/80 transition text-slate-200"
+                  >
+                    重新開始練習
+                  </button>
+                </div>
+              </section>
+
+              <section className="mb-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 text-sm font-semibold">
+                    2
+                  </span>
+                <h2 className={`text-lg font-semibold ${textHeading}`}>作答區</h2>
+                </div>
+
+                <div
+                  className={`rounded-2xl border p-6 flex flex-col items-center gap-4 ${
+                    darkMode
+                      ? "bg-slate-800/60 border-slate-700"
+                      : "bg-sky-50/80 border-sky-100"
+                  }`}
+                >
+                  <div
+                    className={`flex items-center justify-center gap-4 text-3xl md:text-4xl font-bold ${
+                      darkMode ? "text-sky-100" : "text-sky-800"
                     }`}
                   >
-                    {n}
-                  </button>
-                ))}
-                <button
-                  type="button"
-                  onClick={handleClear}
-                  className={`aspect-[4/3] rounded-2xl text-base font-semibold shadow-sm active:scale-95 transition flex items-center justify-center ${
-                    darkMode
-                      ? "bg-rose-700/80 text-rose-50 hover:bg-rose-600"
-                      : "bg-rose-100 text-rose-700 border border-rose-200 hover:bg-rose-200"
-                  }`}
-                >
-                  清除
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDigit(0)}
-                  className={`aspect-[4/3] rounded-2xl text-2xl font-bold shadow-sm active:scale-95 transition flex items-center justify-center ${
-                    darkMode
-                      ? "bg-slate-700 text-slate-50 hover:bg-slate-600"
-                      : "bg-white text-slate-800 border border-slate-200 hover:bg-slate-50"
-                  }`}
-                >
-                  0
-                </button>
-                <button
-                  type="button"
-                  onClick={handleDelete}
-                  className={`aspect-[4/3] rounded-2xl text-base font-semibold shadow-sm active:scale-95 transition flex items-center justify-center ${
-                    darkMode
-                      ? "bg-amber-600/80 text-amber-50 hover:bg-amber-500"
-                      : "bg-amber-100 text-amber-700 border border-amber-200 hover:bg-amber-200"
-                  }`}
-                >
-                  刪除
-                </button>
-              </div>
-
-              <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
-                <button
-                  type="button"
-                  onClick={handleCheck}
-                  className="px-5 py-2.5 rounded-full text-sm md:text-base font-semibold bg-emerald-500 text-white shadow-sm hover:bg-emerald-600 active:scale-95 transition"
-                >
-                  確認答案
-                </button>
-                <button
-                  type="button"
-                  onClick={() => newQuestion()}
-                  className={`px-4 py-2 rounded-full text-xs md:text-sm font-medium border active:scale-95 transition ${
-                    darkMode
-                      ? "bg-slate-800 text-slate-100 border-slate-600 hover:bg-slate-700"
-                      : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
-                  }`}
-                >
-                  下一題
-                </button>
-              </div>
-
-              {feedback && (
-                <div className="mt-2 text-sm md:text-base font-semibold">
-                  {feedback === "correct" ? (
-                    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-700">
-                      ✅ 答對了！再接再厲～
+                    <span className="min-w-[2ch] text-center font-mono">
+                      {question.a}
                     </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-100 text-rose-700">
-                      ❌ 再想想看，答案應該是 {question.a + question.b}
+                    <span>＋</span>
+                    <span className="min-w-[2ch] text-center font-mono">
+                      {question.b}
                     </span>
-                  )}
+                    <span className="mx-2">＝</span>
+                    <input
+                      type="number"
+                      value={answer}
+                      onChange={(e) => setAnswer(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      className={`w-20 md:w-24 rounded-xl border-2 px-2 py-1 text-center text-3xl md:text-4xl font-bold focus:outline-none focus:ring-2 ${
+                        darkMode
+                          ? "border-emerald-400 bg-slate-900 text-emerald-300 focus:ring-emerald-400"
+                          : "border-sky-300 bg-white text-emerald-700 focus:ring-emerald-400"
+                      }`}
+                    />
+                  </div>
+
+                  <div className="w-full mt-4 flex flex-col items-center gap-3">
+                    <div className="grid grid-cols-3 gap-3 w-full max-w-xs">
+                      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
+                        <button
+                          key={n}
+                          type="button"
+                          onClick={() => handleDigit(n)}
+                          className={`aspect-[4/3] rounded-2xl text-2xl font-bold shadow-sm active:scale-95 transition flex items-center justify-center ${
+                            darkMode
+                              ? "bg-slate-700 text-slate-50 hover:bg-slate-600"
+                              : "bg-white text-slate-800 border border-slate-200 hover:bg-slate-50"
+                          }`}
+                        >
+                          {n}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={handleClear}
+                        className={`aspect-[4/3] rounded-2xl text-base font-semibold shadow-sm active:scale-95 transition flex items-center justify-center ${
+                          darkMode
+                            ? "bg-rose-700/80 text-rose-50 hover:bg-rose-600"
+                            : "bg-rose-100 text-rose-700 border border-rose-200 hover:bg-rose-200"
+                        }`}
+                      >
+                        清除
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDigit(0)}
+                        className={`aspect-[4/3] rounded-2xl text-2xl font-bold shadow-sm active:scale-95 transition flex items-center justify-center ${
+                          darkMode
+                            ? "bg-slate-700 text-slate-50 hover:bg-slate-600"
+                            : "bg-white text-slate-800 border border-slate-200 hover:bg-slate-50"
+                        }`}
+                      >
+                        0
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleDelete}
+                        className={`aspect-[4/3] rounded-2xl text-base font-semibold shadow-sm active:scale-95 transition flex items-center justify-center ${
+                          darkMode
+                            ? "bg-amber-600/80 text-amber-50 hover:bg-amber-500"
+                            : "bg-amber-100 text-amber-700 border border-amber-200 hover:bg-amber-200"
+                        }`}
+                      >
+                        刪除
+                      </button>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
+                      <button
+                        type="button"
+                        onClick={handleCheck}
+                        className="px-5 py-2.5 rounded-full text-sm md:text-base font-semibold bg-emerald-500 text-white shadow-sm hover:bg-emerald-600 active:scale-95 transition"
+                      >
+                        確認答案
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => newQuestion()}
+                        className={`px-4 py-2 rounded-full text-xs md:text-sm font-medium border active:scale-95 transition ${
+                          darkMode
+                            ? "bg-slate-800 text-slate-100 border-slate-600 hover:bg-slate-700"
+                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                        }`}
+                      >
+                        下一題
+                      </button>
+                    </div>
+
+                    {feedback && (
+                      <div className="mt-2 text-sm md:text-base font-semibold">
+                        {feedback === "correct" ? (
+                          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-700">
+                            ✅ 答對了！再接再厲～
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-100 text-rose-700">
+                            ❌ 再想想看，答案應該是 {question.a + question.b}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )}
-            </div>
-          </div>
-        </section>
+              </section>
 
-        {/* Stats */}
-        <section className="mt-4 border-t border-slate-100 pt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm">
-          <div className="flex items-center gap-3">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-700 text-sm font-semibold">
-              3
-            </span>
-            <div>
-              <h3 className={`font-semibold ${textHeading}`}>練習統計</h3>
-              <p className={`text-xs md:text-sm ${textBody}`}>
-                觀看小朋友的答題狀況，調整適合的總和範圍。
-              </p>
-            </div>
-          </div>
+              <section className="mt-4 border-t border-slate-100 pt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm">
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-700 text-sm font-semibold">
+                    3
+                  </span>
+                  <div>
+                    <h3 className={`font-semibold ${textHeading}`}>練習統計</h3>
+                    <p className={`text-xs md:text-sm ${textBody}`}>
+                      觀看小朋友的答題狀況，調整適合的總和範圍。
+                    </p>
+                  </div>
+                </div>
 
-          <div className="flex flex-wrap items-center gap-3 md:justify-end">
-            <div className="px-3 py-2 rounded-xl bg-slate-50/80 border border-slate-100 flex flex-col items-center min-w-[90px]">
-              <span className="text-xs text-slate-500">答題數</span>
-              <span className="text-lg font-bold text-slate-800">{stats.total}</span>
-            </div>
-            <div className="px-3 py-2 rounded-xl bg-slate-50/80 border border-slate-100 flex flex-col items-center min-w-[90px]">
-              <span className="text-xs text-slate-500">答對題數</span>
-              <span className="text-lg font-bold text-emerald-600">{stats.correct}</span>
-            </div>
-            <div className="px-3 py-2 rounded-xl bg-slate-50/80 border border-slate-100 flex flex-col items-center min-w-[90px]">
-              <span className="text-xs text-slate-500">正確率</span>
-              <span className="text-lg font-bold text-sky-600">{accuracy}%</span>
+                <div className="flex flex-wrap items-center gap-3 md:justify-end">
+                  <div className="px-3 py-2 rounded-xl bg-slate-50/80 border border-slate-100 flex flex-col items-center min-w-[90px]">
+                    <span className="text-xs text-slate-500">答題數</span>
+                    <span className="text-lg font-bold text-slate-800">
+                      {stats.total}
+                    </span>
+                  </div>
+                  <div className="px-3 py-2 rounded-xl bg-slate-50/80 border border-slate-100 flex flex-col items-center min-w-[90px]">
+                    <span className="text-xs text-slate-500">答對題數</span>
+                    <span className="text-lg font-bold text-emerald-600">
+                      {stats.correct}
+                    </span>
+                  </div>
+                  <div className="px-3 py-2 rounded-xl bg-slate-50/80 border border-slate-100 flex flex-col items-center min-w-[90px]">
+                    <span className="text-xs text-slate-500">正確率</span>
+                    <span className="text-lg font-bold text-sky-600">
+                      {accuracy}%
+                    </span>
+                  </div>
+                </div>
+              </section>
             </div>
           </div>
-        </section>
-      </div>
-    </div>
-  );
-}
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<KidsAdditionPracticeApp />);
+    </script>
+  </body>
+</html>
