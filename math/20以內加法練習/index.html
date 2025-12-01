@@ -5,14 +5,14 @@
     <title>20以內加法練習 - 小小加法練習器</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Tailwind Play CDN（方便用現成的 className） -->
+    <!-- Tailwind Play CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- React 18 + ReactDOM 18 CDN -->
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 
-    <!-- Babel：讓瀏覽器可以直接跑 JSX（開發用） -->
+    <!-- Babel：讓瀏覽器可以直接跑 JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
   <body class="m-0 p-0">
@@ -21,7 +21,6 @@
     <script type="text/babel">
       const { useState, useEffect, useRef } = React;
 
-      // 工具函式
       const getRandomInt = (min, max) => {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       };
@@ -30,7 +29,6 @@
         let min = Number.isFinite(minSum) ? minSum : 0;
         let max = Number.isFinite(maxSum) ? maxSum : 10;
 
-        // 安全範圍處理
         min = Math.max(0, min);
         max = Math.max(1, max);
 
@@ -81,13 +79,11 @@
         };
 
         const playCorrectSound = () => {
-          // 小小上升音階：溫柔的「叮叮」
           playTone(880, 120, "sine", 0.25);
           setTimeout(() => playTone(1175, 150, "sine", 0.2), 110);
         };
 
         const playIncorrectSound = () => {
-          // 低沉的「嗡嗡」提醒
           playTone(220, 200, "square", 0.18);
           setTimeout(() => playTone(180, 220, "square", 0.15), 180);
         };
@@ -96,7 +92,7 @@
         const [maxSum, setMaxSum] = useState(20);
         const [question, setQuestion] = useState(() => createQuestion(0, 20));
         const [answer, setAnswer] = useState("");
-        const [feedback, setFeedback] = useState(null); // "correct" | "incorrect" | null
+        const [feedback, setFeedback] = useState(null);
         const [stats, setStats] = useState({ total: 0, correct: 0 });
         const [darkMode, setDarkMode] = useState(false);
 
@@ -122,7 +118,6 @@
 
           if (isCorrect) {
             playCorrectSound();
-            // 自動進入下一題（保留音效播放的瞬間）
             setTimeout(() => newQuestion(), 250);
           } else {
             playIncorrectSound();
@@ -152,7 +147,6 @@
         };
 
         useEffect(() => {
-          // 當範圍改變時，重新出題並重置統計
           setQuestion(createQuestion(minSum, maxSum));
           setAnswer("");
           setFeedback(null);
@@ -162,10 +156,9 @@
         const accuracy =
           stats.total === 0 ? 0 : Math.round((stats.correct / stats.total) * 100);
 
-        // keypad helpers
         const handleDigit = (digit) => {
           setAnswer((prev) => {
-            if (prev.length >= 3) return prev; // sums up to 200
+            if (prev.length >= 3) return prev;
             return prev + String(digit);
           });
         };
@@ -280,7 +273,7 @@
                   <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 text-sm font-semibold">
                     2
                   </span>
-                <h2 className={`text-lg font-semibold ${textHeading}`}>作答區</h2>
+                  <h2 className={`text-lg font-semibold ${textHeading}`}>作答區</h2>
                 </div>
 
                 <div
