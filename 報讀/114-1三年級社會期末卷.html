@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>114-1-2三年級社會測驗題目卷</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --line-bg: transparent;
+  --line-hover: #f1f5ff;
+  --line-reading-bg: #fff4cc;
+  --line-reading-border: #ffb300;
+  --toolbar-bg: #f4f4f4;
+  --toolbar-text: #000000;
+  --meta-text: #666666;
+  --border-color: #dddddd;
+  --button-bg: #f7f7f7;
+  --button-text: #000000;
+  --alt-bg: #f2f2f2;
+}
+
+body.dark {
+  --bg: #0f0f0f;
+  --text: #f0f0f0;
+  --line-bg: transparent;
+  --line-hover: #1f2937;
+  --line-reading-bg: #3a2f05;
+  --line-reading-border: #ffcc00;
+  --toolbar-bg: #1a1a1a;
+  --toolbar-text: #f0f0f0;
+  --meta-text: #aaaaaa;
+  --border-color: #333333;
+  --button-bg: #222222;
+  --button-text: #f0f0f0;
+  --alt-bg: #1b1b1b;
+}
+
+/* 全域 */
+body {
+  font-family: Microsoft JhengHei, 'PingFang TC', 'Noto Sans TC', sans-serif;
+  font-size: 18px;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  padding: 14px 16px 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+h1 {
+  font-size: 1.2em;
+  margin: 0 0 6px 0;
+}
+
+.meta {
+  font-size: 0.9em;
+  color: var(--meta-text);
+}
+
+/* 工具列 */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--toolbar-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.toolbar label {
+  font-size: 0.9em;
+  color: var(--toolbar-text);
+}
+
+.toolbar select, .toolbar input[type="range"] {
+  vertical-align: middle;
+}
+
+.toolbar button {
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+}
+
+.toolbar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toolbar .spacer {
+  flex: 1;
+}
+
+/* 內容 */
+#content {
+  padding: 14px 16px 40px;
+  max-width: none;
+  margin: 0;
+}
+
+.line {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: var(--line-bg);
+  margin: 2px 0;
+  cursor: pointer;
+  user-select: text;
+}
+
+.lineImage {
+  max-width: 160px;
+  max-height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-right: 8px;
+}
+
+.line:hover {
+  background: var(--line-hover);
+}
+
+.lineText { flex: 1; }
+
+
+.line.plain.even {
+  background: var(--alt-bg);
+}
+
+.line.reading {
+  background: var(--line-reading-bg);
+  outline: 2px solid var(--line-reading-border);
+}
+
+.gap {
+  height: 6px;
+}
+
+/* 大標題（[H] 行） */
+.title-main {
+  margin: 12px 0 4px;
+  padding: 4px 6px;
+  font-size: 1.25em;
+  font-weight: 700;
+  color: #2C7BE5;
+  background: transparent;
+}
+
+/* 小標題（[S] 行） */
+.title-sub {
+  margin: 8px 0 2px;
+  padding: 3px 6px;
+  font-size: 1.05em;
+  font-weight: 600;
+  color: #444444;
+  background: transparent;
+}
+
+body.dark .title-sub {
+  color: #dddddd;
+}
+
+
+</style>
+</head>
+<body>
+<header>
+  <h1>114-1-2三年級社會測驗題目卷</h1>
+</header>
+
+<div class="toolbar">
+  <label>聲音：
+    <select id="voiceSelect"></select>
+  </label>
+
+  <label>語速：
+    <input id="rate" type="range" min="0.3" max="1.2" step="0.05" value="1.0" />
+    <span id="rateVal">1.0</span>
+  </label>
+
+  <label>字體大小：
+    <input id="fontSize" type="range" min="12" max="40" step="1" value="18" />
+    <span id="fontSizeVal">18</span>
+  </label>
+
+  <div class="spacer"></div>
+
+  <button id="playAllBtn">▶ 逐行連播</button>
+  <button id="pauseBtn">⏸ 暫停</button>
+  <button id="resumeBtn">⏯ 繼續</button>
+  <button id="stopBtn">⏹ 停止</button>
+  <button id="themeToggle">🌙/☀ 切換深淺色</button>
+</div>
+
+<div id="content">
+<div class="line title-main">一、是非題：每格 1 分、共 10 分</div>
+<div class="line plain"><span class="lineText">不小心犯下的錯誤，就不用向對方道歉。</span></div>
+<div class="line plain even"><span class="lineText">有人不同意表決結果，就可以再重新表決一次</span></div>
+<div class="line plain"><span class="lineText">可以嘲笑身材矮胖的同學。</span></div>
+<div class="line plain even"><span class="lineText">我們要欣賞別人的專長，進而向他學習。</span></div>
+<div class="line plain"><span class="lineText">為了不加深別人對我的誤會，我應該把自己的想法隱藏起來。</span></div>
+<div class="line plain even"><span class="lineText">每個人都是特別的，所以我們要學習欣賞他人</span></div>
+<div class="line plain"><span class="lineText">身體不舒服時，除了就醫外，還可以在家休息，避免傳染。</span></div>
+<div class="line plain even"><span class="lineText">班會討論事項會以多數人的意見做決定。</span></div>
+<div class="line plain"><span class="lineText">發生誤會時，最好是什麼都不要說明，以免情況變得更糟。</span></div>
+<div class="line plain even"><span class="lineText">面對自己造成的錯誤，「認錯」是一種負責任的表現。</span></div>
+<div class="line title-main">二、選擇題：每格 1 分、共 10 分</div>
+<div class="line plain"><span class="lineText">哪一個和同學相處的做法不適當？　①聆聽同學的想法　②主動和同學打招呼　③用生氣的態度跟同學道歉　④站在對方的角度思考</span></div>
+<div class="line plain even"><span class="lineText">怎樣的行為，容易造成危險？　①在廁所奔跑　②在教室裡寫作業　③在走廊上慢慢走　④不在水池旁玩耍</span></div>
+<div class="line plain"><span class="lineText">當對方誠心向我們道歉時，我們可以怎麼做？　①原諒他　②責罵他　③無視他　④霸凌他</span></div>
+<div class="line plain even"><span class="lineText">在班會中臨時提出的討論事項，會在下列哪一個程序進行？　①班級幹部報告　②主席報告　③提案討論　④臨時動議</span></div>
+<div class="line plain"><span class="lineText">哪一項不是尊重別人的做法？　①體會同學的心情　②取笑同學的長相　③欣賞同學的特點　④安撫同學的情緒</span></div>
+<div class="line plain even"><span class="lineText">下列哪一種行為比較適 當？　①玩滑梯時插隊　②在電腦教室裡嬉鬧奔跑　③在廁所玩水　④在圖書館安靜的閱讀</span></div>
+<div class="line plain"><span class="lineText">下列關於開班會的敘述哪個錯誤？　①解決個人問題　②討論班級事務　③以多數人意見決定　④全班都要參加</span></div>
+<div class="line plain even"><span class="lineText">下列哪一種溝通方式不適當？　①勇敢說出想法　②溫和的語氣　③生氣的大吼　④理解雙方的不同</span></div>
+<div class="line plain"><span class="lineText">下列哪一個做法較不適當？　①同學需要幫忙時伸出援手　②對同學的想法使用批評的口氣　③撞到同學時，說對不起　④安慰遇到挫折的同學</span></div>
+<div class="line plain even"><span class="lineText">跟不要好的同學同一組時，可以怎麼做？　①用言語攻擊他　②拒絕跟他合作　③主動表達善意　④向老師抗議</span></div>
+<div class="line title-main">三、連連看：每線 1 分、共 4 分</div>
+<div class="line plain"><span class="lineText">請為班會角色做配對：</span></div>
+<div class="line title-main">四、圖表題：每格 1 分、共 18 分</div>
+<div class="line plain even"><span class="lineText">哪些行為容易造成意外？是的在□中打ˇ，不是的畫╳：</span></div>
+<div class="line plain"><span class="lineText">請依正確的順序，在□中填入1～3</span></div>
+<div class="line plain even"><span class="lineText">甲、道歉時，可以怎麼做？</span></div>
+<div class="line plain"><span class="lineText">乙、原諒時，可以怎麼做？</span></div>
+<div class="line plain even"><span class="lineText">下列相處行為，比較適當的在□中打ˇ，不適當的打╳：</span></div>
+<div class="line plain"><span class="lineText">下列哪些是尊重別人的行為是的在□中打ˇ，不是的打╳</span></div>
+<div class="line title-main">五、勾選題：對的打ˇ，每格 1 分、共 16 分</div>
+<div class="line plain even"><span class="lineText">美華和君雅吵架，美華應該如何處理比較恰當？</span></div>
+<div class="line plain"><span class="lineText">    (　 )①找人毆打君雅。</span></div>
+<div class="line plain even"><span class="lineText">    ( 　)②耐心聽君雅把話說完。</span></div>
+<div class="line plain"><span class="lineText">    (　 )③請老師協助處理。</span></div>
+<div class="line plain even"><span class="lineText">    ( 　)④不斷對君雅做鬼臉。</span></div>
+<div class="line plain"><span class="lineText">哪些事情適合在班會中討論</span></div>
+<div class="line plain even"><span class="lineText">(　)①大隊接力的棒次安排。</span></div>
+<div class="line plain"><span class="lineText">(　)②學校上學、放學的時間</span></div>
+<div class="line plain even"><span class="lineText">(　)③班級慶生會的表演節目</span></div>
+<div class="line plain"><span class="lineText">(　)④校慶的舉辦日期。</span></div>
+<div class="line plain even"><span class="lineText">下列哪些屬於霸凌行為？</span></div>
+<div class="line plain"><span class="lineText">(　)①將同學反鎖在地下室。</span></div>
+<div class="line plain even"><span class="lineText">(　)②威脅同學給零用錢。</span></div>
+<div class="line plain"><span class="lineText">(　)③安慰成績不好的同學。</span></div>
+<div class="line plain even"><span class="lineText">(　)④聯合同學排擠轉學生。</span></div>
+<div class="line plain"><span class="lineText">與同學發生爭吵時，應該怎麼做較適當？</span></div>
+<div class="line plain even"><span class="lineText">(　)①大聲怒罵同學。</span></div>
+<div class="line plain"><span class="lineText">(　)②冷靜說出自己的看法。</span></div>
+<div class="line plain even"><span class="lineText">(　)③耐心傾聽對方的意見。</span></div>
+<div class="line plain"><span class="lineText">(　)④要求同學下跪道歉。</span></div>
+<div class="line title-main">六、對的打ˇ．不對打╳：每格 1 分、共 19 分</div>
+<div class="line plain even"><span class="lineText">如何正確開班會？</span></div>
+<div class="line plain"><span class="lineText">   (　　)(１)幹部報告時，不認真聆聽。</span></div>
+<div class="line plain even"><span class="lineText">     (　　)(２)表達意見時先舉手。</span></div>
+<div class="line plain"><span class="lineText">     (　　)(３)批評別人的想法。</span></div>
+<div class="line plain even"><span class="lineText">     (　　)(４)少數服從多數。</span></div>
+<div class="line plain"><span class="lineText">     (　　)(５)預計討論的班級事務要在開會前提出。</span></div>
+<div class="line plain even"><span class="lineText">     (　　)(６)利用開班會，討論班級同樂會活動細節。</span></div>
+<div class="line plain"><span class="lineText">什麼是和別人和諧的互動？</span></div>
+<div class="line plain even"><span class="lineText">     (　　)(１)嘲笑害怕昆蟲的同學</span></div>
+<div class="line plain"><span class="lineText">     (　　)(２)為心情不好的同學著想。</span></div>
+<div class="line plain even"><span class="lineText">     (　　)(３)不敢拒絕別人不合理的要求。</span></div>
+<div class="line plain"><span class="lineText">     (　　)(４)在團體中願意與人相互合作。</span></div>
+<div class="line plain even"><span class="lineText">     (　　)(５)態度柔和的和同學溝通誤會。</span></div>
+<div class="line plain"><span class="lineText">下列哪些是霸凌行為？</span></div>
+<div class="line plain even"><span class="lineText">   (　　)(１)提醒感冒的同學戴上口罩，避免傳染。</span></div>
+<div class="line plain"><span class="lineText">      (　　)(２)故意在黑板上畫圖嘲笑某位同學。</span></div>
+<div class="line plain even"><span class="lineText">      (　　)(３)長期用肢體動作傷害別人。</span></div>
+<div class="line plain"><span class="lineText">      (　　)(４)同學在惡作劇時，出聲制止。</span></div>
+<div class="line plain even"><span class="lineText">如何原諒與道歉？</span></div>
+<div class="line plain"><span class="lineText">   (　　)(１)先深呼吸平復心情， 再聽對方解釋。</span></div>
+<div class="line plain even"><span class="lineText">      (　　)(２)確認對方是否接受自己的道歉。</span></div>
+<div class="line plain"><span class="lineText">      (　　)(３)道歉時，用生氣的態度表達。</span></div>
+<div class="line plain even"><span class="lineText">      (　　)(４)透過原諒與道歉，重新建立關係。</span></div>
+<div class="line title-main">七、閱讀理解題：每格 1 分、共 15 分</div>
+<div class="line plain"><span class="lineText">1.依題意選出正確答案，在（　）裡打ˇ：</span></div>
+<div class="line plain even"><span class="lineText">(１)哪一個是反霸凌專線？</span></div>
+<div class="line plain"><span class="lineText">(　　)ㄅ.1953。   (　　)ㄆ.1853。</span></div>
+<div class="line plain even"><span class="lineText">(２)下列有哪些是關於校園安</span></div>
+<div class="line plain"><span class="lineText">    全的內容？（複選）</span></div>
+<div class="line plain even"><span class="lineText">(　　)ㄅ.廁所不玩水。</span></div>
+<div class="line plain"><span class="lineText">(　　)ㄆ.走廊不奔跑。</span></div>
+<div class="line plain even"><span class="lineText">(　　)ㄇ.上學不遲到。</span></div>
+<div class="line plain"><span class="lineText">(　　)ㄈ.協助做家事。</span></div>
+<div class="line plain even"><span class="lineText">(３)遇到哪些狀況，要利用反霸凌的宣導內容反應？（複選）</span></div>
+<div class="line plain"><span class="lineText">(　　)ㄅ.被同學用肢體攻擊。</span></div>
+<div class="line plain even"><span class="lineText">(　　)ㄆ.大家聯合排擠某位同學</span></div>
+<div class="line plain"><span class="lineText">(　　)ㄇ.受到某人言語的欺負</span></div>
+<div class="line plain even"><span class="lineText">(　　)ㄈ.校園遊樂器材損壞了</span></div>
+<div class="line plain"><span class="lineText">2.看圖文回答問題，正確請在(　)裡打ˇ：</span></div>
+<div class="line plain even"><span class="lineText">　　小飛跟婷婷是好朋友，兩人經常一起讀書、打球，分享許多心事。</span></div>
+<div class="line plain"><span class="lineText">　　某天，小飛因為手指被美工刀割傷，所以請婷婷幫他打開水壺，婷婷開玩笑的說：「你是男生，力氣怎麼這麼小，哈哈哈！」小飛聽了心裡很不舒服，中午吃完午餐後，小飛就趁著婷婷要坐下時把椅子拉開……。</span></div>
+<div class="line plain even"><span class="lineText">(　)(１)小飛跟婷婷可以把對方分享的心事，直接告訴班上其他同學。</span></div>
+<div class="line plain"><span class="lineText">(　)(２)小飛手指被美工刀割傷，是在學校跟家庭都有可能遇到的意外</span></div>
+<div class="line plain even"><span class="lineText">(　)(３)婷婷認為小飛是男生就應該力氣大，這是一種偏見。</span></div>
+<div class="line plain"><span class="lineText">(　)(４)小飛把椅子拉開的行為，不但可能導致婷婷受傷，也有可能違反校規。</span></div>
+<div class="line plain even"><span class="lineText">(　)(５)小飛跟婷婷是好朋友所以婷婷嘲笑小飛、小飛拉婷婷的椅子惡作劇，都是可以允許的行為。</span></div>
+<div class="line title-main">八、題組題：正確請在(　)裡打ˇ</div>
+<div class="line plain"><span class="lineText">甲.班上很多同學的媽媽都是新住民，小朋應該如何與他們相處？</span></div>
+<div class="line plain even"><span class="lineText">（　）①嘲笑他們的長相和</span></div>
+<div class="line plain"><span class="lineText">（　）②尊重他們飲食習慣</span></div>
+<div class="line plain even"><span class="lineText">（　）③故意捉弄他們。</span></div>
+<div class="line plain"><span class="lineText">（　）④請教他們外國文化</span></div>
+<div class="line plain even"><span class="lineText">乙.下圖是小朋的繪畫作品，請判斷他較有可能想藉此傳達什麼意涵？（複選）</span></div>
+<div class="line plain"><span class="lineText">（　）①共同防治傳染病。</span></div>
+<div class="line plain even"><span class="lineText">（　）②學習欣賞其他國家的特色。</span></div>
+<div class="line plain"><span class="lineText">（　）③聯合對抗外來族群</span></div>
+<div class="line plain even"><span class="lineText">（　）④接納與尊重彼此的差異。</span></div>
+</div>
+
+<script>
+(function(){
+  const synth = window.speechSynthesis;
+  const voiceSelect = document.getElementById('voiceSelect');
+  const rate = document.getElementById('rate');
+  const pitch = document.getElementById('pitch');
+  const rateVal = document.getElementById('rateVal');
+  const pitchVal = document.getElementById('pitchVal');
+  const fontSize = document.getElementById('fontSize');
+  const fontSizeVal = document.getElementById('fontSizeVal');
+  const themeBtn = document.getElementById('themeToggle');
+
+  let voices = [];
+  let isPlayingAll = false;
+  let playAllIndex = 0;
+  let currentNode = null;
+
+  function getLineText(node){
+    const t = node && node.querySelector ? node.querySelector('.lineText') : null;
+    return (t ? t.textContent : (node ? node.textContent : '')).trim();
+  }
+
+  function populateVoices() {
+    voices = synth.getVoices();
+    voiceSelect.innerHTML = "";
+    voices.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${v.name} (${v.lang})`;
+      voiceSelect.appendChild(opt);
+    });
+    const zhIdx = voices.findIndex(v => /zh/i.test(v.lang));
+    if (zhIdx >= 0) voiceSelect.value = zhIdx;
+  }
+
+  populateVoices();
+  if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = populateVoices;
+  }
+
+  function stopSpeak() {
+    if (synth.speaking || synth.pending) synth.cancel();
+    document.querySelectorAll('.line.reading').forEach(el => el.classList.remove('reading'));
+    currentNode = null;
+    isPlayingAll = false;
+    playAllIndex = 0;
+  }
+
+  function speak(text, node=null, onend=null) {
+    stopSpeak();
+    if (text === null || text === undefined) return;
+    text = String(text).trim();
+    if (!text) return;
+
+    const u = new SpeechSynthesisUtterance(text);
+
+    // 安全取得 voice / rate / pitch（避免缺少控制元件時整段 JS 中斷）
+    const voiceIdx = (voiceSelect && voiceSelect.value !== undefined && voiceSelect.value !== '') ? Number(voiceSelect.value) : 0;
+    const v = (voices && voices.length && Number.isFinite(voiceIdx)) ? voices[voiceIdx] : null;
+    if (v) u.voice = v;
+
+    const rateNum = (rate && rate.value !== undefined && rate.value !== '') ? Number(rate.value) : 1;
+    const pitchNum = (pitch && pitch.value !== undefined && pitch.value !== '') ? Number(pitch.value) : 1;
+    u.rate = (Number.isFinite(rateNum) && rateNum > 0) ? rateNum : 1;
+    u.pitch = (Number.isFinite(pitchNum) && pitchNum >= 0) ? pitchNum : 1;
+
+    u.onend = () => {
+      if (node) node.classList.remove('reading');
+      currentNode = null;
+      if (onend) onend();
+    };
+    u.onerror = () => {
+      if (node) node.classList.remove('reading');
+      currentNode = null;
+      if (onend) onend();
+    };
+    if (node) node.classList.add('reading');
+    currentNode = node;
+    synth.speak(u);
+  }
+
+  // 點行朗讀（只對一般行；標題不朗讀；錄音按鈕不觸發）
+  document.getElementById('content').addEventListener('click', (e) => {
+    const node = e.target.closest('.line');
+    if (!node) return;
+    if (e.target.closest('button')) return;
+    if (node.classList.contains('title-main') || node.classList.contains('title-sub')) return;
+    speak(getLineText(node), node);
+  });
+
+  // 朗讀選取文字
+  document.getElementById('content').addEventListener('mouseup', () => {
+    const sel = window.getSelection();
+    const text = sel ? sel.toString().trim() : "";
+    if (text) speak(text);
+  });
+
+  // 逐行連播
+  function playAll() {
+    const lines = Array.from(document.querySelectorAll('.line')).filter(el =>
+      !el.classList.contains('title-main') && !el.classList.contains('title-sub')
+    );
+    if (!lines.length) return;
+
+    isPlayingAll = true;
+    const curIdx = lines.findIndex(el => el.classList.contains('reading'));
+    playAllIndex = curIdx >= 0 ? curIdx : 0;
+
+    const step = () => {
+      if (!isPlayingAll) return;
+      if (playAllIndex >= lines.length) {
+        isPlayingAll = false;
+        return;
+      }
+      const el = lines[playAllIndex++];
+      const text = getLineText(el);
+      if (!text) { step(); return; }
+      speak(text, el, step);
+    };
+    step();
+  }
+
+  if (rate && rateVal) {
+    rate.addEventListener('input', () => rateVal.textContent = rate.value);
+  }
+  if (pitch && pitchVal) {
+    pitch.addEventListener('input', () => pitchVal.textContent = pitch.value);
+  }
+  if (fontSize && fontSizeVal) {
+    // initialize content font size (avoid changing toolbar layout to keep slider stable)
+    fontSizeVal.textContent = fontSize.value;
+    const contentEl = document.getElementById('content');
+    if (contentEl) contentEl.style.fontSize = fontSize.value + 'px';
+    fontSize.addEventListener('input', () => {
+      fontSizeVal.textContent = fontSize.value;
+      if (contentEl) contentEl.style.fontSize = fontSize.value + 'px';
+    });
+  }
+
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+  });
+
+  document.getElementById('playAllBtn').addEventListener('click', playAll);
+  document.getElementById('pauseBtn').addEventListener('click', () => {
+    if (synth.speaking && !synth.paused) synth.pause();
+  });
+  document.getElementById('resumeBtn').addEventListener('click', () => {
+    if (synth.paused) synth.resume();
+  });
+  document.getElementById('stopBtn').addEventListener('click', stopSpeak);
+
+  
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>114學年度上學期五年級自然科學期末定期評量卷</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --line-bg: transparent;
+  --line-hover: #f1f5ff;
+  --line-reading-bg: #fff4cc;
+  --line-reading-border: #ffb300;
+  --toolbar-bg: #f4f4f4;
+  --toolbar-text: #000000;
+  --meta-text: #666666;
+  --border-color: #dddddd;
+  --button-bg: #f7f7f7;
+  --button-text: #000000;
+  --alt-bg: #f2f2f2;
+}
+
+body.dark {
+  --bg: #0f0f0f;
+  --text: #f0f0f0;
+  --line-bg: transparent;
+  --line-hover: #1f2937;
+  --line-reading-bg: #3a2f05;
+  --line-reading-border: #ffcc00;
+  --toolbar-bg: #1a1a1a;
+  --toolbar-text: #f0f0f0;
+  --meta-text: #aaaaaa;
+  --border-color: #333333;
+  --button-bg: #222222;
+  --button-text: #f0f0f0;
+  --alt-bg: #1b1b1b;
+}
+
+/* 全域 */
+body {
+  font-family: Microsoft JhengHei, 'PingFang TC', 'Noto Sans TC', sans-serif;
+  font-size: 18px;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  padding: 14px 16px 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+h1 {
+  font-size: 1.2em;
+  margin: 0 0 6px 0;
+}
+
+.meta {
+  font-size: 0.9em;
+  color: var(--meta-text);
+}
+
+/* 工具列 */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--toolbar-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.toolbar label {
+  font-size: 0.9em;
+  color: var(--toolbar-text);
+}
+
+.toolbar select, .toolbar input[type="range"] {
+  vertical-align: middle;
+}
+
+.toolbar button {
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+}
+
+.toolbar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toolbar .spacer {
+  flex: 1;
+}
+
+/* 內容 */
+#content {
+  padding: 14px 16px 40px;
+  max-width: none;
+  margin: 0;
+}
+
+.line {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: var(--line-bg);
+  margin: 2px 0;
+  cursor: pointer;
+  user-select: text;
+}
+
+.lineImage {
+  max-width: 160px;
+  max-height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-right: 8px;
+}
+
+.line:hover {
+  background: var(--line-hover);
+}
+
+.lineText { flex: 1; }
+
+
+.line.plain.even {
+  background: var(--alt-bg);
+}
+
+.line.reading {
+  background: var(--line-reading-bg);
+  outline: 2px solid var(--line-reading-border);
+}
+
+.gap {
+  height: 6px;
+}
+
+/* 大標題（[H] 行） */
+.title-main {
+  margin: 12px 0 4px;
+  padding: 4px 6px;
+  font-size: 1.25em;
+  font-weight: 700;
+  color: #2C7BE5;
+  background: transparent;
+}
+
+/* 小標題（[S] 行） */
+.title-sub {
+  margin: 8px 0 2px;
+  padding: 3px 6px;
+  font-size: 1.05em;
+  font-weight: 600;
+  color: #444444;
+  background: transparent;
+}
+
+body.dark .title-sub {
+  color: #dddddd;
+}
+
+
+</style>
+</head>
+<body>
+<header>
+  <h1>114學年度上學期五年級自然科學期末定期評量卷</h1>
+</header>
+
+<div class="toolbar">
+  <label>聲音：
+    <select id="voiceSelect"></select>
+  </label>
+
+  <label>語速：
+    <input id="rate" type="range" min="0.3" max="1.2" step="0.05" value="1.0" />
+    <span id="rateVal">1.0</span>
+  </label>
+
+  <label>字體大小：
+    <input id="fontSize" type="range" min="12" max="40" step="1" value="18" />
+    <span id="fontSizeVal">18</span>
+  </label>
+
+  <div class="spacer"></div>
+
+  <button id="playAllBtn">▶ 逐行連播</button>
+  <button id="pauseBtn">⏸ 暫停</button>
+  <button id="resumeBtn">⏯ 繼續</button>
+  <button id="stopBtn">⏹ 停止</button>
+  <button id="themeToggle">🌙/☀ 切換深淺色</button>
+</div>
+
+<div id="content">
+<div class="line title-main">一、是非題：每格 1 分、共 10 分</div>
+<div class="line plain"><span class="lineText">拔河比賽的隊伍分成甲、乙兩隊，如果綁在拔河繩中間的黃布條往乙隊移動，表示乙隊用的力量比較大。</span></div>
+<div class="line plain even"><span class="lineText">在水溶液中，水是「溶劑」，而被溶解的物質則稱為「溶質」。</span></div>
+<div class="line plain"><span class="lineText">穿布鞋走路，如果在一般的路面容易滑倒時，這可能是鞋底的凹凸紋路已經被磨平了。</span></div>
+<div class="line plain even"><span class="lineText">火龍果果皮的汁液含有花青素，可以用來辦識不同酸鹼性質的水溶液。</span></div>
+<div class="line plain"><span class="lineText">當彈簧受到的外力超過彈性限度，就算外力移除了，彈簧也無法恢復原狀。</span></div>
+<div class="line plain even"><span class="lineText">時間固定是一分鐘，如果跑的距離愈遠，表示速度愈快。</span></div>
+<div class="line plain"><span class="lineText">使用電風扇時，電能通常無法完全轉換為讓電風扇轉動的能量，而有部分被轉換為熱能了。</span></div>
+<div class="line plain even"><span class="lineText">中性水溶液都無法導電。</span></div>
+<div class="line plain"><span class="lineText">清洗馬桶時，如果皮膚不小心接觸到強酸浴廁清潔劑，應該馬上用強鹼中和，以降低傷害。</span></div>
+<div class="line plain even"><span class="lineText">由兩種以上的物質所混合而成的物品稱為「混合物」。</span></div>
+<div class="line title-main">二、選擇題：每格 2 分、共 20 分</div>
+<div class="line plain"><span class="lineText">哪一種力是不需要接觸就可以產生作用的？　①推力　②拉力　③踢力　④磁力</span></div>
+<div class="line plain even"><span class="lineText">關於「動能」的敘述，下列哪一項錯誤？①是能量的其中一種形式　②可以和其他形式的能量互相轉換　③速度愈大，動能愈大　④位於地面的物體不會有動能</span></div>
+<div class="line plain"><span class="lineText">當物體受到摩擦力的作用後，常會有什麼改變？①消失不見　②氣味改變③速度減緩④溫度降低</span></div>
+<div class="line plain even"><span class="lineText">日常生活中，哪些例子具有增加摩擦力的設計，因而用起來較費力，不過卻能增加使用時的便利性？　①滑水道上有幫助滑行的水　②推車底部裝有能滾動的輪子　③在門軸上加潤滑油　④瓶蓋上有紋路</span></div>
+<div class="line plain"><span class="lineText">下列關於彈簧秤的使用方法，哪一個是正確的呢？　①測量完的重物繼續掛在上面，不用取下來　②可以無限制的增加重物重量　③可以倒掛使用　④指針歸零時才可以開始測量</span></div>
+<div class="line plain even"><span class="lineText">小圓將食鹽加進水中，攪拌後形成食鹽水溶液。食鹽、水和食鹽水溶液間的重量應該是呈現什麼關係？　①食鹽的重量＝水的重量－食鹽水溶液的重量　②食鹽的重量＝水的重量＋食鹽水溶液的重量　③食鹽的重量＋水的重量＝食鹽水溶液的重量　④食鹽的重量－水的重量＝食鹽水溶液的重量</span></div>
+<div class="line plain"><span class="lineText">佩軒想利用「使食鹽水溶液中的水分蒸發」來取得食鹽。下列哪一種做法最不適當？①利用酒精燈加熱 ②放在陽光下曝晒 ③放在通風處　④往水溶液中加熱水</span></div>
+<div class="line plain even"><span class="lineText">下列關於發光二極體的敘述哪一項錯誤？　①又稱為LED　②體積很大　③省電　④常應用在交通號誌上</span></div>
+<div class="line plain"><span class="lineText">在100公尺比賽中，小青花了14秒，小千花了16秒，小紫花了13秒，請問誰跑的速度最快？　①小青　②小千　③小紫</span></div>
+<div class="line plain even"><span class="lineText">下列哪兩種水溶液混合後，若再滴入紫色高麗菜汁，可能會呈現偏紫色？　①糖水＋醋　②檸檬酸水＋食鹽水　③檸檬酸水＋肥皂水　④肥皂水＋小蘇打水</span></div>
+<div class="line title-main">三、連連看：每格 1 分、共 3 分</div>
+<div class="line plain"><span class="lineText">將兩種不同的水溶液混合後，混合水溶液的酸鹼性可能為何？</span></div>
+<div class="gap"></div>
+<div class="line title-main">四、對的打ˇ．錯誤的打╳：每格 1 分、共 10 分</div>
+<div class="line plain even"><span class="lineText">關於彈簧秤的敘述哪些正確？</span></div>
+<div class="line plain"><span class="lineText">(　)(１)使用彈簧秤前要先歸零。</span></div>
+<div class="line plain even"><span class="lineText">(　)(２)將彈簧秤倒掛使用，不會影響測量結果。</span></div>
+<div class="line plain"><span class="lineText">(　)(３)學校使用的彈簧秤精準耐用，即使隨意拉扯也不會損壞。</span></div>
+<div class="line plain even"><span class="lineText">(　)(４)使用時，眼睛要和指針同在一水平面上，這樣看到的讀數才會正確。</span></div>
+<div class="line plain"><span class="lineText">(　)( ５)彈簧伸長量具有規律性。</span></div>
+<div class="line plain even"><span class="lineText">(　)(  6 )彈簧受力時，形狀不變。</span></div>
+<div class="line plain"><span class="lineText">關於能量間的互相轉換，下列哪些敘述正確？</span></div>
+<div class="line plain even"><span class="lineText">(　)(１)除了電能以外，其他能量不能互相轉換。</span></div>
+<div class="line plain"><span class="lineText">(　)(２)「電暖器」是一種可以讓電能轉換為熱能的器具。</span></div>
+<div class="line plain even"><span class="lineText">(　)(３)使用「手電筒」的目的是讓光能轉換為電能。</span></div>
+<div class="line plain"><span class="lineText">(　)(４)能量間轉換的情形不常發生，不是生活中常發生的情況。</span></div>
+<div class="line title-main">五、看圖回答問題：每格 1 分、共 2 分</div>
+<div class="line plain even"><span class="lineText">下圖是溜滑梯的景象，請依據題意回答問題：</span></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText">(１)在哪一個位置的速度比較快？</span></div>
+<div class="line plain even"><span class="lineText">（選填ㄅ或ㄆ）</span></div>
+<div class="line plain"><span class="lineText">答：（　　　　　　　　　　）。</span></div>
+<div class="line plain even"><span class="lineText">(２) 在位置ㄆ時的動能變化?</span></div>
+<div class="line plain"><span class="lineText">(選填變大或變小)</span></div>
+<div class="line plain even"><span class="lineText">答：（　　　　　　　　　　）。</span></div>
+<div class="line title-main">六、勾選題(正確的，請在□中打ˇ)：每格 1 分、共 11 分</div>
+<div class="line plain"><span class="lineText">哪些是利用彈簧當作「測量工具」的呢？</span></div>
+<div class="line plain even"><span class="lineText">自己和同學利用彈簧秤進行拔河比賽，並把比賽結果記錄下來。</span></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText">下列哪些例子和「使酸性和鹼性水溶液互相作用，藉以降低物質的酸鹼性或使其變為中性」有關？</span></div>
+<div class="line title-main">七、配合題：每格 1 分、共 12 分</div>
+<div class="line plain even"><span class="lineText">下列各種現象主要和哪一種力有關？請將符合的代號填入□中：</span></div>
+<div class="line plain"><span class="lineText">哪些是增加和減少摩擦力的例子呢？請將適當的代號填入□中。</span></div>
+<div class="line plain even"><span class="lineText">甲.增加摩擦力乙.減少摩擦力</span></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="line title-main">八、非選題：每格 1 分、共 20 分</div>
+<div class="line plain"><span class="lineText">不同水溶液會產生什麼變化？請在空格中打ˇ：</span></div>
+<div class="line title-main">九、科學閱讀：每格 2分、共 12 分</div>
+<div class="line plain even"><span class="lineText">橘子打掃廁所時，她聽說鹽酸可以將馬桶洗得亮晶晶，沒有看使用說明也沒有詢問父母使用方法，她隨意將鹽酸大量倒入馬桶，結果鹽酸濺到手，讓橘子痛的不得了，此時大家對她說：</span></div>
+<div class="line plain"><span class="lineText">柚子：「姐，用強鹼做酸鹼中和!」</span></div>
+<div class="line plain even"><span class="lineText">花媽：「要趕快用清水大量沖洗啊!」</span></div>
+<div class="line plain"><span class="lineText">花爸：「我帶你去醫院!」</span></div>
+<div class="line plain even"><span class="lineText">橘子從醫院回來後，花爸的朋友也來到家裡，橘子看見客人手中的水果醋禮盒，就嚇得躲進房間裡了。</span></div>
+<div class="line plain"><span class="lineText">(　　)(１)下列哪一個不是橘子使用鹽酸而受傷的原因？　①沒有仔細看使用說明　②沒有在家長的指導下使用　③沒有做保護措施　④沒有將鹽酸先搖一搖再使用</span></div>
+<div class="line plain even"><span class="lineText">(　　)(２)橘子受傷後，哪位家人說的解決方法錯誤？　①柚子　②花媽　③花爸　④以上說法都錯誤</span></div>
+<div class="line plain"><span class="lineText">(　　)(３)橘子看見客人手上的水果醋與鹽酸同為什麼性質的水溶液，因此嚇到躲進房間？　①中性　②酸性　③鹼性　④導電性</span></div>
+<div class="gap"></div>
+<div class="line plain even"><span class="lineText">「二輪滑板」它和普通四輪滑板不一樣，普通的四輪滑板車是直線前進的，主要靠人腿後蹬提供能量。二輪滑板是蛇行的（運動路線是S形），是靠人的腰、臀、雙腳扭動或雙手擺動提供能量。但兩者都是靠地面摩擦力作為前進的驅動力。二輪滑板是間接通過後輪的摩擦力推動前進。這是利用了滑板車前輪的歸正性來運行。人的身體扭動而產生扭矩玩者只利用腰部、臀部和雙腳的扭動，以及手的擺動就可以驅動二輪滑板前進。S線行進還有保持平衡的作用，可以把人的扭動能量的一部分轉化為動能，使二輪滑板車前進。因其運動起來像蛇一樣扭動，又有「蛇板」等稱呼。</span></div>
+<div class="line plain"><span class="lineText">(　　)(１)下面哪一個不是二輪滑板車前進的方式？　①人腿後蹬　②臀部扭動　③腰部扭動</span></div>
+<div class="line plain even"><span class="lineText">(　　)(２)滑板車前進的驅動力時什麼？　①人體的重力　②電力　③與地面的摩擦力</span></div>
+<div class="line plain"><span class="lineText">(　　)(３)下面哪一個不是在敘述二輪滑板車？　①運動路線是直線　②運動路線是S形　③又稱為蛇板</span></div>
+</div>
+
+<script>
+(function(){
+  const synth = window.speechSynthesis;
+  const voiceSelect = document.getElementById('voiceSelect');
+  const rate = document.getElementById('rate');
+  const pitch = document.getElementById('pitch');
+  const rateVal = document.getElementById('rateVal');
+  const pitchVal = document.getElementById('pitchVal');
+  const fontSize = document.getElementById('fontSize');
+  const fontSizeVal = document.getElementById('fontSizeVal');
+  const themeBtn = document.getElementById('themeToggle');
+
+  let voices = [];
+  let isPlayingAll = false;
+  let playAllIndex = 0;
+  let currentNode = null;
+
+  function getLineText(node){
+    const t = node && node.querySelector ? node.querySelector('.lineText') : null;
+    return (t ? t.textContent : (node ? node.textContent : '')).trim();
+  }
+
+  function populateVoices() {
+    voices = synth.getVoices();
+    voiceSelect.innerHTML = "";
+    voices.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${v.name} (${v.lang})`;
+      voiceSelect.appendChild(opt);
+    });
+    const zhIdx = voices.findIndex(v => /zh/i.test(v.lang));
+    if (zhIdx >= 0) voiceSelect.value = zhIdx;
+  }
+
+  populateVoices();
+  if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = populateVoices;
+  }
+
+  function stopSpeak() {
+    if (synth.speaking || synth.pending) synth.cancel();
+    document.querySelectorAll('.line.reading').forEach(el => el.classList.remove('reading'));
+    currentNode = null;
+    isPlayingAll = false;
+    playAllIndex = 0;
+  }
+
+  function speak(text, node=null, onend=null) {
+    stopSpeak();
+    if (text === null || text === undefined) return;
+    text = String(text).trim();
+    if (!text) return;
+
+    const u = new SpeechSynthesisUtterance(text);
+
+    // 安全取得 voice / rate / pitch（避免缺少控制元件時整段 JS 中斷）
+    const voiceIdx = (voiceSelect && voiceSelect.value !== undefined && voiceSelect.value !== '') ? Number(voiceSelect.value) : 0;
+    const v = (voices && voices.length && Number.isFinite(voiceIdx)) ? voices[voiceIdx] : null;
+    if (v) u.voice = v;
+
+    const rateNum = (rate && rate.value !== undefined && rate.value !== '') ? Number(rate.value) : 1;
+    const pitchNum = (pitch && pitch.value !== undefined && pitch.value !== '') ? Number(pitch.value) : 1;
+    u.rate = (Number.isFinite(rateNum) && rateNum > 0) ? rateNum : 1;
+    u.pitch = (Number.isFinite(pitchNum) && pitchNum >= 0) ? pitchNum : 1;
+
+    u.onend = () => {
+      if (node) node.classList.remove('reading');
+      currentNode = null;
+      if (onend) onend();
+    };
+    u.onerror = () => {
+      if (node) node.classList.remove('reading');
+      currentNode = null;
+      if (onend) onend();
+    };
+    if (node) node.classList.add('reading');
+    currentNode = node;
+    synth.speak(u);
+  }
+
+  // 點行朗讀（只對一般行；標題不朗讀；錄音按鈕不觸發）
+  document.getElementById('content').addEventListener('click', (e) => {
+    const node = e.target.closest('.line');
+    if (!node) return;
+    if (e.target.closest('button')) return;
+    if (node.classList.contains('title-main') || node.classList.contains('title-sub')) return;
+    speak(getLineText(node), node);
+  });
+
+  // 朗讀選取文字
+  document.getElementById('content').addEventListener('mouseup', () => {
+    const sel = window.getSelection();
+    const text = sel ? sel.toString().trim() : "";
+    if (text) speak(text);
+  });
+
+  // 逐行連播
+  function playAll() {
+    const lines = Array.from(document.querySelectorAll('.line')).filter(el =>
+      !el.classList.contains('title-main') && !el.classList.contains('title-sub')
+    );
+    if (!lines.length) return;
+
+    isPlayingAll = true;
+    const curIdx = lines.findIndex(el => el.classList.contains('reading'));
+    playAllIndex = curIdx >= 0 ? curIdx : 0;
+
+    const step = () => {
+      if (!isPlayingAll) return;
+      if (playAllIndex >= lines.length) {
+        isPlayingAll = false;
+        return;
+      }
+      const el = lines[playAllIndex++];
+      const text = getLineText(el);
+      if (!text) { step(); return; }
+      speak(text, el, step);
+    };
+    step();
+  }
+
+  if (rate && rateVal) {
+    rate.addEventListener('input', () => rateVal.textContent = rate.value);
+  }
+  if (pitch && pitchVal) {
+    pitch.addEventListener('input', () => pitchVal.textContent = pitch.value);
+  }
+  if (fontSize && fontSizeVal) {
+    // initialize content font size (avoid changing toolbar layout to keep slider stable)
+    fontSizeVal.textContent = fontSize.value;
+    const contentEl = document.getElementById('content');
+    if (contentEl) contentEl.style.fontSize = fontSize.value + 'px';
+    fontSize.addEventListener('input', () => {
+      fontSizeVal.textContent = fontSize.value;
+      if (contentEl) contentEl.style.fontSize = fontSize.value + 'px';
+    });
+  }
+
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+  });
+
+  document.getElementById('playAllBtn').addEventListener('click', playAll);
+  document.getElementById('pauseBtn').addEventListener('click', () => {
+    if (synth.speaking && !synth.paused) synth.pause();
+  });
+  document.getElementById('resumeBtn').addEventListener('click', () => {
+    if (synth.paused) synth.resume();
+  });
+  document.getElementById('stopBtn').addEventListener('click', stopSpeak);
+
+  
+})();
+</script>
+</body>
+</html>

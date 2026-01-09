@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>114學年度上學期五年級自然科學期末定期評量卷</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --line-bg: transparent;
+  --line-hover: #f1f5ff;
+  --line-reading-bg: #fff4cc;
+  --line-reading-border: #ffb300;
+  --toolbar-bg: #f4f4f4;
+  --toolbar-text: #000000;
+  --meta-text: #666666;
+  --border-color: #dddddd;
+  --button-bg: #f7f7f7;
+  --button-text: #000000;
+  --alt-bg: #f2f2f2;
+}
+
+body.dark {
+  --bg: #0f0f0f;
+  --text: #f0f0f0;
+  --line-bg: transparent;
+  --line-hover: #1f2937;
+  --line-reading-bg: #3a2f05;
+  --line-reading-border: #ffcc00;
+  --toolbar-bg: #1a1a1a;
+  --toolbar-text: #f0f0f0;
+  --meta-text: #aaaaaa;
+  --border-color: #333333;
+  --button-bg: #222222;
+  --button-text: #f0f0f0;
+  --alt-bg: #1b1b1b;
+}
+
+/* 全域 */
+body {
+  font-family: Microsoft JhengHei, 'PingFang TC', 'Noto Sans TC', sans-serif;
+  font-size: 18px;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  padding: 14px 16px 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+h1 {
+  font-size: 1.2em;
+  margin: 0 0 6px 0;
+}
+
+.meta {
+  font-size: 0.9em;
+  color: var(--meta-text);
+}
+
+/* 工具列 */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--toolbar-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.toolbar label {
+  font-size: 0.9em;
+  color: var(--toolbar-text);
+}
+
+.toolbar select, .toolbar input[type="range"] {
+  vertical-align: middle;
+}
+
+.toolbar button {
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+}
+
+.toolbar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toolbar .spacer {
+  flex: 1;
+}
+
+/* 內容 */
+#content {
+  padding: 14px 16px 40px;
+  max-width: none;
+  margin: 0;
+}
+
+.line {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: var(--line-bg);
+  margin: 2px 0;
+  cursor: pointer;
+  user-select: text;
+}
+
+.lineImage {
+  max-width: 160px;
+  max-height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-right: 8px;
+}
+
+.line:hover {
+  background: var(--line-hover);
+}
+
+.lineText { flex: 1; }
+
+
+.line.plain.even {
+  background: var(--alt-bg);
+}
+
+.line.reading {
+  background: var(--line-reading-bg);
+  outline: 2px solid var(--line-reading-border);
+}
+
+.gap {
+  height: 6px;
+}
+
+/* 大標題（[H] 行） */
+.title-main {
+  margin: 12px 0 4px;
+  padding: 4px 6px;
+  font-size: 1.25em;
+  font-weight: 700;
+  color: #2C7BE5;
+  background: transparent;
+}
+
+/* 小標題（[S] 行） */
+.title-sub {
+  margin: 8px 0 2px;
+  padding: 3px 6px;
+  font-size: 1.05em;
+  font-weight: 600;
+  color: #444444;
+  background: transparent;
+}
+
+body.dark .title-sub {
+  color: #dddddd;
+}
+
+
+</style>
+</head>
+<body>
+<header>
+  <h1>114學年度上學期五年級自然科學期末定期評量卷</h1>
+</header>
+
+<div class="toolbar">
+  <label>聲音：
+    <select id="voiceSelect"></select>
+  </label>
+
+  <label>語速：
+    <input id="rate" type="range" min="0.3" max="1.2" step="0.05" value="1.0" />
+    <span id="rateVal">1.0</span>
+  </label>
+
+  <label>字體大小：
+    <input id="fontSize" type="range" min="12" max="40" step="1" value="18" />
+    <span id="fontSizeVal">18</span>
+  </label>
+
+  <div class="spacer"></div>
+
+  <button id="playAllBtn">▶ 逐行連播</button>
+  <button id="pauseBtn">⏸ 暫停</button>
+  <button id="resumeBtn">⏯ 繼續</button>
+  <button id="stopBtn">⏹ 停止</button>
+  <button id="themeToggle">🌙/☀ 切換深淺色</button>
+</div>
+
+<div id="content">
+<div class="line title-main">一、選擇題：每格 2 分、共 20 分</div>
+<div class="line plain"><span class="lineText">下列關於魚的敘述哪一項錯誤？　①沒有腳　②常用翅膀在空中飛行　③有魚鰭　④通常有鱗片</span></div>
+<div class="line plain even"><span class="lineText">魚和鳥都有的身體部位是什麼﹖　①鰭　②腳　③翅膀　④軀幹</span></div>
+<div class="line plain"><span class="lineText">麻雀可以穩穩的站在樹枝上，是因為牠有什麼特徵？　①腳上有爪可以抓住樹枝　②有一對翅膀　③有許多羽毛　④身體非常的輕</span></div>
+<div class="line plain even"><span class="lineText">小亞想把「企鵝」和「五色鳥」分成兩類，他可以選用哪種分類標準？　①有軀幹、沒有軀幹　②有翅膀、沒有翅膀　③能長距離飛行、不能長距離飛行　④是兩隻腳、不是兩隻腳</span></div>
+<div class="line plain"><span class="lineText">小巧用磁鐵吸引不同物品時，發現磁鐵不能吸引錢幣，這表示什麼？　①錢幣不是鐵做的　②錢幣不是金屬做的　③錢幣是塑膠做的　④磁鐵壞了</span></div>
+<div class="line plain even"><span class="lineText">英娟拿一個長條形磁鐵放入迴紋針堆中，請問磁鐵哪個部位能吸起的迴紋針數量比較少？　①中間　②兩端　③N極　④S極</span></div>
+<div class="line plain"><span class="lineText">磁鐵的磁極具有什麼特性？　①只會互相吸引　②只會互相排斥　③同極性會互相排斥，異極性會互相吸引　④同極性會互相吸引，異極性會互相排斥</span></div>
+<div class="line plain even"><span class="lineText">班上四位同學提出關於磁鐵的敘述，哪一位錯誤？　①伯彥：同磁極互相排斥　②育帆：不同磁極互相吸引　③凱琳：磁力有強弱　④仲豪：磁力沒有方向性</span></div>
+<div class="line plain"><span class="lineText">青蛙的腳上有蹼，可以幫助牠們做什麼？　①飛翔　②奔跑　③抓取食物　④游泳</span></div>
+<div class="line plain even"><span class="lineText">在公園常常可以看見松鼠在樹林間跑來跑去，下列哪一項行為不合適？　①靜靜的觀察　②維護動物的原棲息環境　③不刻意餵食　④追逐松鼠</span></div>
+<div class="line title-main">二、是非題：每格 1 分、共 11 分</div>
+<div class="line plain"><span class="lineText">房門下方有塊鐵可以被吸在牆上的磁鐵上，這樣房門才能固定不會突然關上。</span></div>
+<div class="line plain even"><span class="lineText">臺北樹蛙有一雙翅膀，常看見牠在空中飛行。</span></div>
+<div class="line plain"><span class="lineText">魚和狗雖然都有尾部，但是外形長得不大一樣。</span></div>
+<div class="line plain even"><span class="lineText">啄木鳥的鳥嘴尖尖的，可以啄開樹皮，尋找躲在樹幹裡的蟲。</span></div>
+<div class="line plain"><span class="lineText">潛水穿的蛙鞋是模仿蛙類後腳的蹼所設計的。</span></div>
+<div class="line plain even"><span class="lineText">在長條形磁鐵的兩端塗上顏色，是為了增強磁力。</span></div>
+<div class="line plain"><span class="lineText">磁鐵的磁極具有同極性互相排斥，異極性互相吸引的特性。</span></div>
+<div class="line plain even"><span class="lineText">如果磁鐵上沒有標示磁極的話，就沒有辦法知道它的N極和S極在哪裡了。</span></div>
+<div class="line plain"><span class="lineText">狗擅長奔跑是因為牠的四肢差不多長。</span></div>
+<div class="line plain even"><span class="lineText">磁鐵置物盒後方的磁鐵上加裝鐵片，是為了增加可以承載的重量。</span></div>
+<div class="line plain"><span class="lineText">雷達是一種模仿蝙蝠回聲定位機制的發明。</span></div>
+<div class="line title-main">三、勾選題：每格 1 分、共 12 分</div>
+<div class="line plain even"><span class="lineText">狗和魚都具有哪些部位或構造？請在（　）裡打ˇ：</span></div>
+<div class="line plain"><span class="lineText">(　　)(１)翅膀</span></div>
+<div class="line plain even"><span class="lineText">(　　)(２)頭</span></div>
+<div class="line plain"><span class="lineText">(　　)(３)軀幹</span></div>
+<div class="line plain even"><span class="lineText">(　　)(４)腳</span></div>
+<div class="line plain"><span class="lineText">(　　)(５)尾部</span></div>
+<div class="line plain even"><span class="lineText">(　　)(６)鰭</span></div>
+<div class="line plain"><span class="lineText">生活中，下列哪些用品可以被磁鐵吸住？請在□中打ˇ：</span></div>
+<div class="line title-main">四、連連看：每格 1 分、共 13 分</div>
+<div class="line plain even"><span class="lineText">利用不同磁鐵吸引相同的迴紋針，可以得知磁鐵的磁力嗎？請將各磁鐵所對應的磁力畫線連起來：</span></div>
+<div class="line plain"><span class="lineText">海鷗屬於鳥類，圖中箭頭所指的部位分別是哪個部位呢？請將部位和符合的名稱畫線連起來：</span></div>
+<div class="line plain even"><span class="lineText">日常生活中，哪些物品可以被磁鐵吸住？符合敘述的，請畫線連起來：</span></div>
+<div class="gap"></div>
+<div class="line title-main">五、是的打ˇ不是的打╳：</div>
+<div class="line plain"><span class="lineText">不同的動物有不同的外形特徵，下方四種動物哪些是有翅膀的？請在□中打ˇ，沒有翅膀的打╳：</span></div>
+<div class="line plain even"><span class="lineText">生活中的物品，哪些可以被磁鐵吸住？請在□中打ˇ，不可以的打☓：</span></div>
+<div class="line plain"><span class="lineText">下列日常生活用品中，哪些運用到磁鐵的特性？請在□中打ˇ，沒有的打☓：</span></div>
+<div class="line title-main">六、配合題：每格 1 分、共 7 分</div>
+<div class="line plain even"><span class="lineText">魚的身體部位分別稱為什麼？請把適當的代號填在□中：</span></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText">下列例子主要和哪種磁鐵的特性有關？請把適當的代號填在（　）裡：</span></div>
+<div class="gap"></div>
+<div class="line plain even"><span class="lineText">(　　)(１)置物盒的磁鐵兩側加了鐵片。</span></div>
+<div class="line plain"><span class="lineText">(　　)(２)磁鐵書籤隔著紙張，仍可以固定在頁面上。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(３)兩個磁鐵的N極接近時會互相推開。</span></div>
+<div class="line title-main">七、畫畫看：每格 1 分、共 3 分</div>
+<div class="line plain"><span class="lineText">下列磁鐵互相靠近後，磁鐵會如何移動？請在空格畫出磁鐵移動方向：</span></div>
+<div class="line plain even"><span class="lineText">選一種你喜歡的動物，並把牠的外形畫下來：</span></div>
+<div class="line title-main">八、圈圈看：每格 1 分、共 8 分</div>
+<div class="line plain"><span class="lineText">各種磁鐵的排列方式，哪些會互相吸引？請把它圈出來：</span></div>
+<div class="line plain even"><span class="lineText">可能會在陸地上發現哪些動物用腳行走？請把牠們圈起來：</span></div>
+<div class="gap"></div>
+<div class="line title-main">九、科學閱讀：</div>
+<div class="line plain"><span class="lineText">臺灣地形多樣，適合許多生物生存，但是你知道臺灣的本土貓科動物目前僅存一種，且族群數量稀少嗎？那就是可愛的石虎，牠的體型與家貓相似，主要特徵是眼睛的內側有兩條白色線條，耳背有明顯的白色斑塊。目前石虎的生存空間因人為開發而被破壞，汽車、農藥與捕獸夾成為他們的奪命兇手，被人類棄養或放養的貓狗是牠們生存的競爭對象。石虎的族群數量驟降，而在西元2008年被列為第一級的瀕臨絕種保育類動物。西元2018年3月，政府積極進行石虎保育措施，預計實施自治條例與繁殖計畫，建立生態廊道以連接破碎的棲息地，期望石虎可以與人們永續共存。請根據文章回答問題：</span></div>
+<div class="line plain even"><span class="lineText">(１)石虎的體型與家貓相似，請問石虎身上會有哪些部位？在（　）裡打ˇ，不會的打╳：</span></div>
+<div class="line plain"><span class="lineText">(　　)①鰭</span></div>
+<div class="line plain even"><span class="lineText">(　　)②尾部</span></div>
+<div class="line plain"><span class="lineText">(　　)③翅膀</span></div>
+<div class="line plain even"><span class="lineText">(　　)④頭</span></div>
+<div class="line plain"><span class="lineText">(　　)⑤腳</span></div>
+<div class="line plain even"><span class="lineText">(　　)⑥蹼</span></div>
+<div class="line plain"><span class="lineText">(２)愛護動物是每個人的責任，下列哪些是「尊重動物生命」的具體做法？請在（　）裡打ˇ，不是的打╳：</span></div>
+<div class="line plain even"><span class="lineText">(　　)①不吃保育類動物。</span></div>
+<div class="line plain"><span class="lineText">(　　)②隨意放生動物。</span></div>
+<div class="line plain even"><span class="lineText">(　　)③主動做環保，給動物乾淨的家園。</span></div>
+<div class="line plain"><span class="lineText">(　　)④隨意開墾動物的棲息地。</span></div>
+<div class="line plain even"><span class="lineText">(　　)⑤購買寵物，不想養就遺棄。</span></div>
+<div class="line plain"><span class="lineText">(　　)⑥不虐待動物。</span></div>
+</div>
+
+<script>
+(function(){
+  const synth = window.speechSynthesis;
+  const voiceSelect = document.getElementById('voiceSelect');
+  const rate = document.getElementById('rate');
+  const pitch = document.getElementById('pitch');
+  const rateVal = document.getElementById('rateVal');
+  const pitchVal = document.getElementById('pitchVal');
+  const fontSize = document.getElementById('fontSize');
+  const fontSizeVal = document.getElementById('fontSizeVal');
+  const themeBtn = document.getElementById('themeToggle');
+
+  let voices = [];
+  let isPlayingAll = false;
+  let playAllIndex = 0;
+  let currentNode = null;
+
+  function getLineText(node){
+    const t = node && node.querySelector ? node.querySelector('.lineText') : null;
+    return (t ? t.textContent : (node ? node.textContent : '')).trim();
+  }
+
+  function populateVoices() {
+    voices = synth.getVoices();
+    voiceSelect.innerHTML = "";
+    voices.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${v.name} (${v.lang})`;
+      voiceSelect.appendChild(opt);
+    });
+    const zhIdx = voices.findIndex(v => /zh/i.test(v.lang));
+    if (zhIdx >= 0) voiceSelect.value = zhIdx;
+  }
+
+  populateVoices();
+  if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = populateVoices;
+  }
+
+  function stopSpeak() {
+    if (synth.speaking || synth.pending) synth.cancel();
+    document.querySelectorAll('.line.reading').forEach(el => el.classList.remove('reading'));
+    currentNode = null;
+    isPlayingAll = false;
+    playAllIndex = 0;
+  }
+
+  function speak(text, node=null, onend=null) {
+    stopSpeak();
+    if (text === null || text === undefined) return;
+    text = String(text).trim();
+    if (!text) return;
+
+    const u = new SpeechSynthesisUtterance(text);
+
+    // 安全取得 voice / rate / pitch（避免缺少控制元件時整段 JS 中斷）
+    const voiceIdx = (voiceSelect && voiceSelect.value !== undefined && voiceSelect.value !== '') ? Number(voiceSelect.value) : 0;
+    const v = (voices && voices.length && Number.isFinite(voiceIdx)) ? voices[voiceIdx] : null;
+    if (v) u.voice = v;
+
+    const rateNum = (rate && rate.value !== undefined && rate.value !== '') ? Number(rate.value) : 1;
+    const pitchNum = (pitch && pitch.value !== undefined && pitch.value !== '') ? Number(pitch.value) : 1;
+    u.rate = (Number.isFinite(rateNum) && rateNum > 0) ? rateNum : 1;
+    u.pitch = (Number.isFinite(pitchNum) && pitchNum >= 0) ? pitchNum : 1;
+
+    u.onend = () => {
+      if (node) node.classList.remove('reading');
+      currentNode = null;
+      if (onend) onend();
+    };
+    u.onerror = () => {
+      if (node) node.classList.remove('reading');
+      currentNode = null;
+      if (onend) onend();
+    };
+    if (node) node.classList.add('reading');
+    currentNode = node;
+    synth.speak(u);
+  }
+
+  // 點行朗讀（只對一般行；標題不朗讀；錄音按鈕不觸發）
+  document.getElementById('content').addEventListener('click', (e) => {
+    const node = e.target.closest('.line');
+    if (!node) return;
+    if (e.target.closest('button')) return;
+    if (node.classList.contains('title-main') || node.classList.contains('title-sub')) return;
+    speak(getLineText(node), node);
+  });
+
+  // 朗讀選取文字
+  document.getElementById('content').addEventListener('mouseup', () => {
+    const sel = window.getSelection();
+    const text = sel ? sel.toString().trim() : "";
+    if (text) speak(text);
+  });
+
+  // 逐行連播
+  function playAll() {
+    const lines = Array.from(document.querySelectorAll('.line')).filter(el =>
+      !el.classList.contains('title-main') && !el.classList.contains('title-sub')
+    );
+    if (!lines.length) return;
+
+    isPlayingAll = true;
+    const curIdx = lines.findIndex(el => el.classList.contains('reading'));
+    playAllIndex = curIdx >= 0 ? curIdx : 0;
+
+    const step = () => {
+      if (!isPlayingAll) return;
+      if (playAllIndex >= lines.length) {
+        isPlayingAll = false;
+        return;
+      }
+      const el = lines[playAllIndex++];
+      const text = getLineText(el);
+      if (!text) { step(); return; }
+      speak(text, el, step);
+    };
+    step();
+  }
+
+  if (rate && rateVal) {
+    rate.addEventListener('input', () => rateVal.textContent = rate.value);
+  }
+  if (pitch && pitchVal) {
+    pitch.addEventListener('input', () => pitchVal.textContent = pitch.value);
+  }
+  if (fontSize && fontSizeVal) {
+    // initialize content font size (avoid changing toolbar layout to keep slider stable)
+    fontSizeVal.textContent = fontSize.value;
+    const contentEl = document.getElementById('content');
+    if (contentEl) contentEl.style.fontSize = fontSize.value + 'px';
+    fontSize.addEventListener('input', () => {
+      fontSizeVal.textContent = fontSize.value;
+      if (contentEl) contentEl.style.fontSize = fontSize.value + 'px';
+    });
+  }
+
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+  });
+
+  document.getElementById('playAllBtn').addEventListener('click', playAll);
+  document.getElementById('pauseBtn').addEventListener('click', () => {
+    if (synth.speaking && !synth.paused) synth.pause();
+  });
+  document.getElementById('resumeBtn').addEventListener('click', () => {
+    if (synth.paused) synth.resume();
+  });
+  document.getElementById('stopBtn').addEventListener('click', stopSpeak);
+
+  
+})();
+</script>
+</body>
+</html>

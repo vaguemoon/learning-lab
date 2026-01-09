@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>114-1五年級社會期末定期評量卷.docx資</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --line-bg: transparent;
+  --line-hover: #f1f5ff;
+  --line-reading-bg: #fff4cc;
+  --line-reading-border: #ffb300;
+  --toolbar-bg: #f4f4f4;
+  --toolbar-text: #000000;
+  --meta-text: #666666;
+  --border-color: #dddddd;
+  --button-bg: #f7f7f7;
+  --button-text: #000000;
+  --alt-bg: #f2f2f2;
+}
+
+body.dark {
+  --bg: #0f0f0f;
+  --text: #f0f0f0;
+  --line-bg: transparent;
+  --line-hover: #1f2937;
+  --line-reading-bg: #3a2f05;
+  --line-reading-border: #ffcc00;
+  --toolbar-bg: #1a1a1a;
+  --toolbar-text: #f0f0f0;
+  --meta-text: #aaaaaa;
+  --border-color: #333333;
+  --button-bg: #222222;
+  --button-text: #f0f0f0;
+  --alt-bg: #1b1b1b;
+}
+
+/* 全域 */
+body {
+  font-family: Microsoft JhengHei, 'PingFang TC', 'Noto Sans TC', sans-serif;
+  font-size: 18px;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  padding: 14px 16px 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+h1 {
+  font-size: 1.2em;
+  margin: 0 0 6px 0;
+}
+
+.meta {
+  font-size: 0.9em;
+  color: var(--meta-text);
+}
+
+/* 工具列 */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--toolbar-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.toolbar label {
+  font-size: 0.9em;
+  color: var(--toolbar-text);
+}
+
+.toolbar select, .toolbar input[type="range"] {
+  vertical-align: middle;
+}
+
+.toolbar button {
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+}
+
+.toolbar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toolbar .spacer {
+  flex: 1;
+}
+
+/* 內容 */
+#content {
+  padding: 14px 16px 40px;
+  max-width: none;
+  margin: 0;
+}
+
+.line {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: var(--line-bg);
+  margin: 2px 0;
+  cursor: pointer;
+  user-select: text;
+}
+
+.lineImage {
+  max-width: 160px;
+  max-height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-right: 8px;
+}
+
+.line:hover {
+  background: var(--line-hover);
+}
+
+.lineText { flex: 1; }
+
+
+.line.plain.even {
+  background: var(--alt-bg);
+}
+
+.line.reading {
+  background: var(--line-reading-bg);
+  outline: 2px solid var(--line-reading-border);
+}
+
+.gap {
+  height: 6px;
+}
+
+/* 大標題（[H] 行） */
+.title-main {
+  margin: 12px 0 4px;
+  padding: 4px 6px;
+  font-size: 1.25em;
+  font-weight: 700;
+  color: #2C7BE5;
+  background: transparent;
+}
+
+/* 小標題（[S] 行） */
+.title-sub {
+  margin: 8px 0 2px;
+  padding: 3px 6px;
+  font-size: 1.05em;
+  font-weight: 600;
+  color: #444444;
+  background: transparent;
+}
+
+body.dark .title-sub {
+  color: #dddddd;
+}
+
+
+</style>
+</head>
+<body>
+<header>
+  <h1>114-1五年級社會期末定期評量卷.docx資</h1>
+</header>
+
+<div class="toolbar">
+  <label>聲音：
+    <select id="voiceSelect"></select>
+  </label>
+
+  <label>語速：
+    <input id="rate" type="range" min="0.3" max="1.2" step="0.05" value="1.0" />
+    <span id="rateVal">1.0</span>
+  </label>
+
+  <label>字體大小：
+    <input id="fontSize" type="range" min="12" max="40" step="1" value="18" />
+    <span id="fontSizeVal">18</span>
+  </label>
+
+  <div class="spacer"></div>
+
+  <button id="playAllBtn">▶ 逐行連播</button>
+  <button id="pauseBtn">⏸ 暫停</button>
+  <button id="resumeBtn">⏯ 繼續</button>
+  <button id="stopBtn">⏹ 停止</button>
+  <button id="themeToggle">🌙/☀ 切換深淺色</button>
+</div>
+
+<div id="content">
+<div class="line title-main">一、是非題 （每題1分，共8分）</div>
+<div class="line plain"><span class="lineText">(   ) 身為漢人的小妡若要從中國渡海來臺灣需要穿越臺灣海峽。</span></div>
+<div class="line plain even"><span class="lineText">(   ) 因為臺灣位處的板塊至今仍持續擠壓，造成許多山脈不斷隆起。</span></div>
+<div class="line plain"><span class="lineText">(   ) 小俐到恆春旅遊時，導遊告訴他恆春城城牆設計成凹凸狀，除了提供掩護還能方便射擊槍砲，增強防禦效果。</span></div>
+<div class="line plain even"><span class="lineText">(   ) 為了阻止漢人偷渡來臺，清帝國政府下令禁止中國與臺灣之間的貿易。</span></div>
+<div class="line plain"><span class="lineText">(   ) 臺灣建省後的首任巡撫是沈葆楨。</span></div>
+<div class="line plain even"><span class="lineText">(   ) 桃園因工商業發展的需求，有些埤塘被填平，設置為工業園區或住宅，有些則被保留成為生態公園。</span></div>
+<div class="line plain"><span class="lineText">(   ) 暑假時，小安和爸爸一起挑戰騎單車環臺，途中拍到一張形勢雄偉壯闊的斷崖海岸照片，如下圖，照片中左邊的海洋，應該是太平洋。</span></div>
+<div class="gap"></div>
+<div class="line plain even"><span class="lineText">(   ) 近年政府常在沿海地區設置自然保護區，目的是為了減少土石流發生。</span></div>
+<div class="line title-main">二、選擇題 （每題2分，共20分）</div>
+<div class="line plain"><span class="lineText">(   ) 「一府二鹿三艋舺」代表臺灣過去的三大貿易港口，請問根據這個排列順序，這三個港口的地理位置方向為何？　從北到南　從南到北　從東到西　從西到東。</span></div>
+<div class="line plain even"><span class="lineText">(   ) 下列清帝國在臺灣推動的建設中，何者可以加快訊息的傳遞速度？　鐵路　砲臺　新式輪船　電報系統。</span></div>
+<div class="line plain"><span class="lineText">(   ) 南投縣　廬山溫泉區的水質良好，因此當地塔羅灣溪兩側的溫泉飯店林立，觀光業發達。後於民國　97　年受到哪一種災害影響，重創了當地的觀光業？　地震破壞道路與建築物　颱風使溪水暴漲、兩岸飯店倒塌　久旱不雨使當地無水可用　森林大火而延燒多棟建築。</span></div>
+<div class="line plain even"><span class="lineText">(   ) 為了獲取平原的土地，清帝國時期的漢人較常與哪個族群發生衝突？　平埔族群　同鄉居民　荷蘭人　西班牙人。</span></div>
+<div class="line plain"><span class="lineText">(   ) 臺灣早期原住民族是以何種生活原則生存於自然環境中？　適者生存、不適者淘汰　唯我獨尊　與環境共生　人定勝天。</span></div>
+<div class="line plain even"><span class="lineText">( )在花蓮有座「會長高的橋」，每年會長高約　2～3　公分，它就是玉里大橋，而且從遠處看欄杆，會發現不等高的變形。它也是世界唯二會長高的橋梁，另一座則在瑞典。請推測橋梁為什麼會長高呢？　人為堆高，以增加景觀變化　河流的堆積作用使橋墩隨之提高　板塊擠壓運動使地面隆起　是不同角度造成的視覺落差。</span></div>
+<div class="line plain"><span class="lineText">(   ) 臺灣的地理位置位於哪個航運道路上？　東亞　西亞　南亞　北亞。.</span></div>
+<div class="line plain even"><span class="lineText">(   ) 關於新竹縣　北埔的描述，請判斷下列哪些敘述正確？</span></div>
+<div class="line plain"><span class="lineText">A　以階梯形狀的茶園聞名。</span></div>
+<div class="line plain even"><span class="lineText">B　今日轉型發展休閒農業、觀光體驗等多元的經濟活動。</span></div>
+<div class="line plain"><span class="lineText">C　屬於台地地形。</span></div>
+<div class="line plain even"><span class="lineText">D　利用排水良好的竹東丘陵種植茶樹。</span></div>
+<div class="line plain"><span class="lineText">E　當地多種植蓮霧等熱帶水果。</span></div>
+<div class="line plain even"><span class="lineText">　ABD　　ACD　　ABCD　　CDE。</span></div>
+<div class="line plain"><span class="lineText">(   ) 五年體班的同學們正在製作一本主題小書，他們討論如何設計問題來引導內容。老師提醒大家，提問時要用能清楚表達疑問的語詞，幫助大家找出正確的答案。下列哪一組語詞是在製作小書中「提問」時的正確用語？　為什麼、為何、哪些　快點、馬上、請作答　如果、如何、請問　可能、可以、推測。</span></div>
+<div class="line plain even"><span class="lineText">(   ) 小祖在圖書館找資料時，看到一張臺灣某地區海岸地形的圖（如下），請問這種海岸地形具有什麼特色呢？</span></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText">適合珊瑚生長　容易形成沙灘、沙洲　可以躲避風雨，利於發展成港口　可以開墾梯田。</span></div>
+<div class="gap"></div>
+<div class="line title-main">三、填代號 （每格1分，共7分）</div>
+<div class="line plain even"><span class="lineText"> 請根據下文填入正確的代號。</span></div>
+<div class="line plain"><span class="lineText">A.蓮霧 B.茶葉 C.寒冷 D.炎熱 E.甘蔗</span></div>
+<div class="line plain even"><span class="lineText">　　爺爺和奶奶上週去屏東舉辦的熱帶農業博覽會參觀，他們發現這裡因為氣候（　），適合種植（　）等熱帶水果，經過導覽解說後，他們知道這裡早期盛產（　）和稻米，當時還有很多的製糖廠。</span></div>
+<div class="line plain"><span class="lineText"> 清帝國統治臺灣時期，有很長一段時間民變與械鬥事件頻傳，下列敘述分別和哪一種有關？在（　）中填入正確代號。</span></div>
+<div class="line plain even"><span class="lineText">A.民變 B.械鬥</span></div>
+<div class="line plain"><span class="lineText">（　）(１)人民不滿官員貪汙而群起反抗。</span></div>
+<div class="line plain even"><span class="lineText">（　）(２)不同族群因爭奪土地而打鬥。</span></div>
+<div class="line plain"><span class="lineText">（　）(３)不同族群因搶水源而發生衝突。</span></div>
+<div class="line plain even"><span class="lineText">（　）(４)因官府管理失當引發人民反叛。</span></div>
+<div class="line title-main">四、改錯題 （每答1分，共3分）</div>
+<div class="line plain"><span class="lineText">下列短文中有三個錯誤的地方，請改正。</span></div>
+<div class="line plain even"><span class="lineText">　　清帝國統治前期，當時的官員面對不斷增加的人口，不但無法有效維持社會秩序，更發生貪汙與不當管理等問題，導致群眾集體反抗政府的械鬥事件頻傳，其中規模較大的有朱一貴事件、林爽文事件、郭懷一事件。而同鄉的移民聚居在一起，常因爭奪土地、水源與利益，而與其他群體發生集體衝突的民變事件。</span></div>
+<div class="line plain"><span class="lineText">答：</span></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="line title-main">五、勾選題 （每格1分，共18分）</div>
+<div class="line plain even"><span class="lineText"> 清帝國時期，官府開放中國居民申請到臺灣開墾，以下哪兩個地區較多人提出申請？請打ˇ。</span></div>
+<div class="line plain"><span class="lineText">（　）(１)廣東。</span></div>
+<div class="line plain even"><span class="lineText">（　）(２)廣西。</span></div>
+<div class="line plain"><span class="lineText">（　）(３)福建。</span></div>
+<div class="line plain even"><span class="lineText">（　）(４)浙江。</span></div>
+<div class="line plain"><span class="lineText">（　）(５)深圳。</span></div>
+<div class="line plain even"><span class="lineText"> 請將下列符合土地永續發展的開發方式打ˇ。</span></div>
+<div class="line plain"><span class="lineText">（　）(１)農業部分採取有機耕作方式，不使用農藥。</span></div>
+<div class="line plain even"><span class="lineText">（　）(２)將重汙染工業遷移至離島地區。</span></div>
+<div class="line plain"><span class="lineText">（　）(３)在市區大量興建住宅，不留公園綠地。</span></div>
+<div class="line plain even"><span class="lineText">（　）(４)將有候鳥棲息的溼地設置為自然保留區。</span></div>
+<div class="line plain"><span class="lineText"> 清帝國時期，住在中國的小禎發現市場上部分商品是從臺灣生產運送到中國的，這些商品主要有哪些？請打ˇ</span></div>
+<div class="line plain even"><span class="lineText">（　）(１)蔗糖。</span></div>
+<div class="line plain"><span class="lineText">（　）(２)蘋果。</span></div>
+<div class="line plain even"><span class="lineText">（　）(３)布料。</span></div>
+<div class="line plain"><span class="lineText">（　）(４)稻米。</span></div>
+<div class="line plain even"><span class="lineText">（　）(５)可可。</span></div>
+<div class="line plain"><span class="lineText"> 下列這些古蹟最早是在清帝國時期完成的請打ˇ。</span></div>
+<div class="line plain even"><span class="lineText">（　）(１)熱蘭遮城（安平古堡）。</span></div>
+<div class="line plain"><span class="lineText">（　）(２)恆春城。</span></div>
+<div class="line plain even"><span class="lineText">（　）(３)臺南市　中西區　孔廟。</span></div>
+<div class="line plain"><span class="lineText">（　）(４)二鯤鯓砲臺。</span></div>
+<div class="line title-main">六、連連看 （每格1分，共5分，未用尺扣1分）</div>
+<div class="line plain even"><span class="lineText">下列事蹟分別跟哪個人有關？請配對連連看。</span></div>
+<div class="gap"></div>
+<div class="line title-main">七、圖表題 （每格1分，共13分）</div>
+<div class="line plain"><span class="lineText">從衛星空照圖中可以看到，四面環海的臺灣擁有各種不同的海岸地形，有的形勢雄偉，有的美麗珍貴。請將臺灣各處海岸的特色代號填入圖上的□中。</span></div>
+<div class="line plain even"><span class="lineText">屬熱帶氣候區，溫暖乾淨的海水適合珊瑚生長。</span></div>
+<div class="line plain"><span class="lineText">多斷崖地形，海岸線陡峭。</span></div>
+<div class="line plain even"><span class="lineText">曲折的海岸線上，有岬角及海灣地形。</span></div>
+<div class="line plain"><span class="lineText">河川在出海口的堆積作用，形成沙灘、沙洲等地形。</span></div>
+<div class="line plain even"><span class="lineText"> 下圖是清帝國時期，臺灣港口貿易的示意圖，請根據箭頭方向將貨物代號填入（　）中。(複選)</span></div>
+<div class="line plain"><span class="lineText">A　藥材　B　蔗糖　C　稻米　D　布匹</span></div>
+<div class="line plain even"><span class="lineText"> 臺灣島位處於甲板塊和乙板塊的交界處，因這兩個板塊的長期擠壓，使得臺灣島漸漸浮出海面。請問：</span></div>
+<div class="line plain"><span class="lineText">(１)甲是（　　　　）板塊。</span></div>
+<div class="line plain even"><span class="lineText">(２)乙是（　　　　）板塊。</span></div>
+<div class="line plain"><span class="lineText"> 小昕發現過去清帝國時期建造的水圳雖然至今已沒有再使用，但仍是著名的景點，根據下圖所標示，依序填入八堡圳、曹公圳以及瑠公圳。</span></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="line title-main">八、題組 （每格1分，共4分）</div>
+<div class="line plain even"><span class="lineText">小晶前往高雄市旅遊時，看見內門區　興安宮旁豎立著朱一貴紀念碑。查詢資料後，發現朱一貴事件與後來的林爽文事件有著相似之處。請你閱讀以下資料，回答下列問題。</span></div>
+<div class="line plain"><span class="lineText">（　）(１)下列哪一項敘述可能是朱一貴起義的原因？　有外國人來搶奪土地　受到地方官員處處壓迫　政府禁止人們耕種土地。</span></div>
+<div class="line plain even"><span class="lineText">（　）(２)關於林爽文事件對臺灣的影響，下列何者正確？</span></div>
+<div class="line plain"><span class="lineText">甲.　林爽文事件是臺灣最早的民變。</span></div>
+<div class="line plain even"><span class="lineText">乙.　嘉義是因為林爽文事件而改名的。</span></div>
+<div class="line plain"><span class="lineText">丙.　林爽文事件反映了當時人民對官員欺壓的不滿。</span></div>
+<div class="line plain even"><span class="lineText">甲乙　乙丙　甲丙。</span></div>
+<div class="line plain"><span class="lineText">臺灣受到地形與氣候的限制，雖然每年的降雨量不少，但每人可使用的水資源卻不到世界平均值的五分之一，因此常在冬末春初時，看到政府宣導節約用水的廣告。而為了讓民眾有足夠的水可用，政府在各大河流上游建設水庫儲水備用，但近年因為過度開發，水庫面臨泥沙淤積嚴重的問題，加上氣候變遷使得降雨季節更不穩定，各種因素讓民眾的生活用水問題日益嚴重。請問：</span></div>
+<div class="line plain even"><span class="lineText">（　）(１)近年造成水庫泥沙淤積嚴重的主要原因是什麼？　臺灣年降雨量過少　野生動物的破壞　水庫上游山坡地過度開發　板塊擠壓、碰撞劇烈。</span></div>
+<div class="line plain"><span class="lineText">（　）(２)為使臺灣有足夠的水資源可以使用，應該避免下列哪項行為？　做好水庫上游水土保持　恢復水庫集水區原始森林樣貌　養成平常節水的好習慣　大量砍伐森林，在山坡地興建飯店。</span></div>
+<div class="line title-main">九、閱讀理解題（每題2分，共12分）</div>
+<div class="line plain even"><span class="lineText">仔細閱讀以下文章，並回答問題。</span></div>
+<div class="line plain"><span class="lineText">　　來到高雄，想要一覽西子灣的美景，前往附近一座小山丘上的打狗英國領事館官邸的觀景平臺便能辦到。清帝國統治後期，政府被迫開放臺灣數個港口對外通商，打狗便是其中之一，英國在此設立領事館及領事官邸，領事館是英國官員的辦公場所，領事官邸則是官員居住及接待賓客之用。</span></div>
+<div class="line plain even"><span class="lineText">　　現在的打狗英國領事館文化園區分為兩個建築物，山下為領事館，山上則為領事官邸，兩者之間有登山古道連結。開港通商後，哨船頭附近逐漸熱鬧起來，船隻停泊卸貨後，船員會在此休息，當地人則趁機兜售商品。現在的領事館入口以蠟像模擬當時的街景，讓遊客稍稍領略當時的氛圍。</span></div>
+<div class="line plain"><span class="lineText">　　當臺灣因馬關條約而割讓給日本後，此處便成為日本人管轄地，西元　1925　年時，英國將領事館售予日本人，打狗英國領事館的歷史便結束了。如同其他古蹟一樣，打狗英國領事館歷經幾次用途轉換後被閒置，還歷經多次颱風無情的摧殘，處處破損。直到高雄市政府將這裡公告為古蹟，和民間合作，修復整理並設為文化園區，讓人們可以透過建築物、舊照片及書籍史料，了解過往開港通商後，貿易繁榮的歷史。</span></div>
+<div class="line plain even"><span class="lineText">（　）(１)打狗英國領事館位在下列哪一個城市？　高雄市　臺南市　臺中市　臺北市。</span></div>
+<div class="line plain"><span class="lineText">2. 請閱讀以下文章，並回答問題。</span></div>
+<div class="line plain even"><span class="lineText">　　莊子的逍遙遊中寫到：「北冥有魚，其名為鯤。鯤之大，不知其幾千里也。」意思是說：北海裡有一種魚，它的名字叫鯤。鯤非常巨大，不知道有幾千里。</span></div>
+<div class="line plain"><span class="lineText">　　而在臺灣西南部有種名為「鯤鯓」的地形，從字義可知「鯤」的體型很大可能綿延數里，「鯓」則是身體的意思，從陸地上看過去，鯤鯓就像是一條露出背部的大魚。地方上傳說鯤鯓是天上的大鯉魚因為誤吃仙桃而被貶落凡間，牠的體型大到改變了河道走向，有的河道被擋住圍成一圈，形成平靜的內海，漲潮時才與外海連通。而據說漲潮之時，鯤鯓會上岸進行破壞，鯤鯓的體型巨大，可以從村口到村尾，看到的人無不膽顫心驚，畏懼不已。這樣的傳說一直在安平流傳著，人們便興建「鯤鯓廟」加以祭祀。我們知道臺灣沿海的特性，造就了這樣的文化信仰風俗，而鯤鯓也成了涵養當地居民經濟的寶地。</span></div>
+<div class="line plain even"><span class="lineText">（　）(１)請你從文章中判斷，鯤鯓可能是什麼地形？　珊瑚礁　懸崖　岬角　沙洲。</span></div>
+<div class="line plain"><span class="lineText">（　）(２)文章中說到鯤鯓改變河道走向，事實上可能的原因是什麼？　地震改變地形　板塊擠壓　泥沙堆積導致　火山爆發堵住河口。</span></div>
+<div class="line plain even"><span class="lineText">（　）(３)文章中提到鯤鯓是當地居民經濟寶地，請你推測當地居民傳統上以什麼維生？　成立科學園區　發展觀光　進出口貿易　養殖漁業。</span></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText">3.請閱讀以下文章，並回答問題。</span></div>
+<div class="line plain even"><span class="lineText">　　斯文豪（Robert Swinhoe，西元1836～1877年）這位英國人，是英國派駐臺灣的第一位副領事及領事，除了外交方面的事務，喜歡自然的他，還是一位對臺灣物種研究具有重大影響力的博物學家。</span></div>
+<div class="line plain"><span class="lineText">　　真正算起來，他實際住在臺灣的時間不到4年，但他利用公務之餘，四處採集和觀察臺灣的生物，並將蒐集到的標本寄回英國，尋求專家的鑑定，之後發表了許多有關臺灣生物的文章，其中福爾摩沙鳥類誌記錄了臺灣兩百多種鳥類，對臺灣鳥類的研究，有極大的貢獻。</span></div>
+<div class="line plain even"><span class="lineText">　　除了鳥類，斯文豪記錄、發表的物種還包括魚類、昆蟲、哺乳動物、陸生蝸牛、淡水貝類等，總共一千多種。為了紀念他的貢獻，許多物種以他的姓氏命名，像是斯文豪氏赤蛙、斯文豪氏攀蜥、斯文豪氏大蝸牛等，而臺灣獼猴，也是因為斯文豪的研究才讓國際確認是臺灣的特有種。斯文豪的貢獻為臺灣的自然資料庫，留下了不少資料及紀錄。</span></div>
+<div class="line plain"><span class="lineText">（　）(１)英國在臺的首位領事是下列何人？　巴克禮　馬偕　馬雅各　斯文豪。</span></div>
+<div class="line plain even"><span class="lineText">（　）(２)下列有關斯文豪的敘述，哪一項正確？一直到過世都住在臺灣，約20年　最初是以生物學家身分來臺　發表了福爾摩沙鳥類誌　設立理學堂大書院。</span></div>
+<div class="line title-main">十、問答題 （每答2分，共10分）</div>
+<div class="line plain"><span class="lineText"> 清帝國時期，臺灣各地積極興建水圳，主要的目的是什麼？[建造房屋、灌溉農地]</span></div>
+<div class="line plain even"><span class="lineText"> 答：</span></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText"> 請寫出淡水女學堂的創辦人。[馬偕、馬雅各、巴克禮、斯文豪]</span></div>
+<div class="line plain even"><span class="lineText">答：</span></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText"> 人們沿著河川善用不同的地形開墾，並發展出適合的生活空間，請寫出兩條臺灣主要的河川。[濁水溪、大肚溪、秀姑巒溪、淡水河]</span></div>
+<div class="line plain even"><span class="lineText">答：</span></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText"> 清帝國治理臺灣期間，曾發生哪兩個國家出兵臺灣的事件，使得清帝國對臺灣治理的態度轉為積極？[日本、法國、英國、中國]</span></div>
+<div class="line plain even"><span class="lineText">答：</span></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText">臺灣擁有多元豐富的地形，請寫出西部較常出現的地形。[盆地、山地、平原、丘陵、台地]</span></div>
+<div class="line plain even"><span class="lineText">答：</span></div>
+</div>
+
+<script>
+(function(){
+  const synth = window.speechSynthesis;
+  const voiceSelect = document.getElementById('voiceSelect');
+  const rate = document.getElementById('rate');
+  const pitch = document.getElementById('pitch');
+  const rateVal = document.getElementById('rateVal');
+  const pitchVal = document.getElementById('pitchVal');
+  const fontSize = document.getElementById('fontSize');
+  const fontSizeVal = document.getElementById('fontSizeVal');
+  const themeBtn = document.getElementById('themeToggle');
+
+  let voices = [];
+  let isPlayingAll = false;
+  let playAllIndex = 0;
+  let currentNode = null;
+
+  function getLineText(node){
+    const t = node && node.querySelector ? node.querySelector('.lineText') : null;
+    return (t ? t.textContent : (node ? node.textContent : '')).trim();
+  }
+
+  function populateVoices() {
+    voices = synth.getVoices();
+    voiceSelect.innerHTML = "";
+    voices.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${v.name} (${v.lang})`;
+      voiceSelect.appendChild(opt);
+    });
+    const zhIdx = voices.findIndex(v => /zh/i.test(v.lang));
+    if (zhIdx >= 0) voiceSelect.value = zhIdx;
+  }
+
+  populateVoices();
+  if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = populateVoices;
+  }
+
+  function stopSpeak() {
+    if (synth.speaking || synth.pending) synth.cancel();
+    document.querySelectorAll('.line.reading').forEach(el => el.classList.remove('reading'));
+    currentNode = null;
+    isPlayingAll = false;
+    playAllIndex = 0;
+  }
+
+  function speak(text, node=null, onend=null) {
+    stopSpeak();
+    if (text === null || text === undefined) return;
+    text = String(text).trim();
+    if (!text) return;
+
+    const u = new SpeechSynthesisUtterance(text);
+
+    // 安全取得 voice / rate / pitch（避免缺少控制元件時整段 JS 中斷）
+    const voiceIdx = (voiceSelect && voiceSelect.value !== undefined && voiceSelect.value !== '') ? Number(voiceSelect.value) : 0;
+    const v = (voices && voices.length && Number.isFinite(voiceIdx)) ? voices[voiceIdx] : null;
+    if (v) u.voice = v;
+
+    const rateNum = (rate && rate.value !== undefined && rate.value !== '') ? Number(rate.value) : 1;
+    const pitchNum = (pitch && pitch.value !== undefined && pitch.value !== '') ? Number(pitch.value) : 1;
+    u.rate = (Number.isFinite(rateNum) && rateNum > 0) ? rateNum : 1;
+    u.pitch = (Number.isFinite(pitchNum) && pitchNum >= 0) ? pitchNum : 1;
+
+    u.onend = () => {
+      if (node) node.classList.remove('reading');
+      currentNode = null;
+      if (onend) onend();
+    };
+    u.onerror = () => {
+      if (node) node.classList.remove('reading');
+      currentNode = null;
+      if (onend) onend();
+    };
+    if (node) node.classList.add('reading');
+    currentNode = node;
+    synth.speak(u);
+  }
+
+  // 點行朗讀（只對一般行；標題不朗讀；錄音按鈕不觸發）
+  document.getElementById('content').addEventListener('click', (e) => {
+    const node = e.target.closest('.line');
+    if (!node) return;
+    if (e.target.closest('button')) return;
+    if (node.classList.contains('title-main') || node.classList.contains('title-sub')) return;
+    speak(getLineText(node), node);
+  });
+
+  // 朗讀選取文字
+  document.getElementById('content').addEventListener('mouseup', () => {
+    const sel = window.getSelection();
+    const text = sel ? sel.toString().trim() : "";
+    if (text) speak(text);
+  });
+
+  // 逐行連播
+  function playAll() {
+    const lines = Array.from(document.querySelectorAll('.line')).filter(el =>
+      !el.classList.contains('title-main') && !el.classList.contains('title-sub')
+    );
+    if (!lines.length) return;
+
+    isPlayingAll = true;
+    const curIdx = lines.findIndex(el => el.classList.contains('reading'));
+    playAllIndex = curIdx >= 0 ? curIdx : 0;
+
+    const step = () => {
+      if (!isPlayingAll) return;
+      if (playAllIndex >= lines.length) {
+        isPlayingAll = false;
+        return;
+      }
+      const el = lines[playAllIndex++];
+      const text = getLineText(el);
+      if (!text) { step(); return; }
+      speak(text, el, step);
+    };
+    step();
+  }
+
+  if (rate && rateVal) {
+    rate.addEventListener('input', () => rateVal.textContent = rate.value);
+  }
+  if (pitch && pitchVal) {
+    pitch.addEventListener('input', () => pitchVal.textContent = pitch.value);
+  }
+  if (fontSize && fontSizeVal) {
+    // initialize content font size (avoid changing toolbar layout to keep slider stable)
+    fontSizeVal.textContent = fontSize.value;
+    const contentEl = document.getElementById('content');
+    if (contentEl) contentEl.style.fontSize = fontSize.value + 'px';
+    fontSize.addEventListener('input', () => {
+      fontSizeVal.textContent = fontSize.value;
+      if (contentEl) contentEl.style.fontSize = fontSize.value + 'px';
+    });
+  }
+
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+  });
+
+  document.getElementById('playAllBtn').addEventListener('click', playAll);
+  document.getElementById('pauseBtn').addEventListener('click', () => {
+    if (synth.speaking && !synth.paused) synth.pause();
+  });
+  document.getElementById('resumeBtn').addEventListener('click', () => {
+    if (synth.paused) synth.resume();
+  });
+  document.getElementById('stopBtn').addEventListener('click', stopSpeak);
+
+  
+})();
+</script>
+</body>
+</html>
