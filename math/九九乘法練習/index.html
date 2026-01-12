@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>乘法練習 12×12（觸控版）</title>
-  <meta name="description" content="單檔離線乘法練習與測驗，觸控數字鍵盤、1–12 範圍、放大回饋與音效、右側白底 Sidebar 乘法表（可縮放/高亮/切換 9×9）。">
+  <title>乘法練習 10×10（觸控版）</title>
+  <meta name="description" content="單檔離線乘法練習與測驗，觸控數字鍵盤、0–10 範圍、放大回饋與音效、右側白底 Sidebar 乘法表（可縮放/高亮/切換 9×9）。">
   <style>
     :root{
       --bg:#0f172a; --panel:#111827; --muted:#94a3b8; --text:#e5e7eb;
       --accent:#22c55e; --accent2:#06b6d4; --warn:#f59e0b; --danger:#ef4444;
       --shadow:0 10px 30px rgba(0,0,0,.35); --radius:18px;
-      --sb-max:640px;          /* Sidebar 最大寬 */
-      --sb-width:45vw;         /* Sidebar 預設寬度 */
-      --cell-font:16px;        /* 乘法表字型大小（縮放用）*/
-      --cell-pad:10px;         /* 乘法表內距（縮放用）*/
+      --sb-max:640px;
+      --sb-width:45vw;
+      --cell-font:16px;
+      --cell-pad:10px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -52,7 +52,6 @@
 
     .hint{margin-top:12px; font-size:16px; color:var(--muted)}
 
-    /* BIG FEEDBACK */
     .feedback{min-height:44px; font-size:34px; font-weight:900; text-align:center; margin-top:14px}
     .ok{color:#34d399}
     .ng{color:#fb7185}
@@ -61,7 +60,6 @@
     @keyframes pop{ 0%{transform:scale(.7); opacity:.4} 60%{transform:scale(1.2); opacity:1} 100%{transform:scale(1)} }
     @keyframes shake{ 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
 
-    /* celebration overlay */
     .overlay{position:fixed; inset:0; display:none; align-items:center; justify-content:center; pointer-events:none}
     .overlay.show{display:flex}
     .overlay .msg{font-size: clamp(48px, 10vw, 100px); font-weight:900; padding:18px 26px; border-radius:20px; background:rgba(15,23,42,.65); backdrop-filter: blur(4px)}
@@ -81,13 +79,12 @@
 
     .kbd{display:inline-block; padding:2px 6px; border:1px solid rgba(255,255,255,.25); border-bottom-width:2px; border-radius:6px; font-size:12px; color:var(--muted)}
 
-    /* 觸控數字鍵盤 */
     .numpad{display:grid; grid-template-columns: repeat(3, minmax(92px,1fr)); gap:12px; max-width: 460px; margin:12px auto 0}
     .numpad button{min-height:80px; font-size:30px; padding:18px 0; border-radius:16px; border:1px solid rgba(255,255,255,.18); background:#0b1220; color:var(--text); box-shadow: var(--shadow)}
     .numpad button:active{transform: translateY(1px)}
     .numpad button.action{font-size:22px; background:linear-gradient(120deg, var(--warn), var(--accent2)); color:#0b1220}
 
-    /* === Sidebar 乘法表（白底亮色，可縮放/高亮） === */
+    /* Sidebar 乘法表（白底亮色，可縮放/高亮） */
     #sidebar{position:fixed; top:0; right:0; height:100vh; width:min(var(--sb-width), var(--sb-max)); background:#ffffff; color:#111827; box-shadow: -8px 0 24px rgba(0,0,0,.25); transform: translateX(100%); transition: transform .3s ease; display:flex; flex-direction:column; z-index:50}
     #sidebar.show{transform: translateX(0)}
     #sidebar header{padding:12px 14px; border-bottom:1px solid #e5e7eb; background:#f8fafc; color:#111827; margin:0}
@@ -99,11 +96,13 @@
     #sidebar .grid{display:grid; grid-template-columns: repeat(12, minmax(52px,1fr)); gap:6px}
     #sidebar .cell{padding:var(--cell-pad); border:1px solid #e5e7eb; border-radius:10px; text-align:center; background:#ffffff; font-weight:800; font-size:var(--cell-font)}
     #sidebar .muted{color:#64748b}
-    /* 高亮樣式 */
     #sidebar .cell.hl-strong{background:#fef3c7; border-color:#f59e0b}
     #sidebar .cell.hl-soft{background:#e0f2fe; border-color:#38bdf8}
 
-    @media (max-width: 860px){ :root{ --sb-width: 80vw } #sidebar .grid{grid-template-columns: repeat(6, 1fr)} }
+    @media (max-width: 860px){
+      :root{ --sb-width: 80vw }
+      #sidebar .grid{grid-template-columns: repeat(6, 1fr)}
+    }
   </style>
 </head>
 <body>
@@ -179,14 +178,26 @@
           <div class="settings">
             <div>
               <label for="rangeA">被乘數範圍（a）</label>
-              <div class="range"><span>1</span><input id="rangeA" type="range" min="1" max="12" value="12" /><span>12</span></div>
-              <div class="pill">目前：<strong id="showA">1–12</strong></div>
+              <div class="range"><span>0</span><input id="rangeA" type="range" min="0" max="10" value="10" /><span>10</span></div>
+              <div class="pill">目前：<strong id="showA">0–10</strong></div>
             </div>
+
             <div>
               <label for="rangeB">乘數範圍（b）</label>
-              <div class="range"><span>1</span><input id="rangeB" type="range" min="1" max="12" value="12" /><span>12</span></div>
-              <div class="pill">目前：<strong id="showB">1–12</strong></div>
+              <div class="range"><span>0</span><input id="rangeB" type="range" min="0" max="10" value="10" /><span>10</span></div>
+              <div class="pill">目前：<strong id="showB">0–10</strong></div>
             </div>
+
+            <div>
+              <label for="fixedA">只練特定被乘數（a）</label>
+              <select id="fixedA">
+                <option value="-1">不限（依範圍出題）</option>
+                <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                <option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option>
+                <option value="8">8</option><option value="9">9</option><option value="10">10</option>
+              </select>
+            </div>
+
             <div>
               <label for="count">測驗題數</label>
               <select id="count">
@@ -195,6 +206,7 @@
                 <option value="30">30 題</option>
               </select>
             </div>
+
             <div>
               <label for="limitTime">倒數秒數（測驗）</label>
               <select id="limitTime">
@@ -204,10 +216,12 @@
                 <option value="180">180 秒</option>
               </select>
             </div>
+
             <div>
               <label for="avoidDup">避免重複題</label>
               <input id="avoidDup" type="checkbox" checked />
             </div>
+
             <div>
               <label for="order">題目順序</label>
               <select id="order">
@@ -216,6 +230,7 @@
                 <option value="descending">大到小</option>
               </select>
             </div>
+
             <div>
               <label for="sound">音效</label>
               <input id="sound" type="checkbox" checked />
@@ -285,6 +300,7 @@
       progress: $('#progress'), timer: $('#timer'), streak: $('#streak'),
       feedback: $('#feedback'), overlay: $('#overlay'),
       rangeA: $('#rangeA'), rangeB: $('#rangeB'), showA: $('#showA'), showB: $('#showB'),
+      fixedA: $('#fixedA'),
       count: $('#count'), limitTime: $('#limitTime'), avoidDup: $('#avoidDup'), order: $('#order'), sound: $('#sound'),
       tableBtn: $('#btnTable'),
       reset: $('#btnReset'), exportBtn: $('#exportBtn'), recordsBody: $('#recordsBody'),
@@ -297,12 +313,15 @@
     const nowStr = () => new Date().toLocaleString()
 
     const state = {
-      mode: 'practice', aMax: 12, bMax: 12, aMin: 1, bMin: 1,
+      mode: 'practice',
+      aMax: 10, bMax: 10, aMin: 0, bMin: 0,
+      fixedA: -1,                 // -1: 不限；0~10: 只出該 a
       count: 10, limit: 0, avoidDup: true, order: 'random', sound: true,
       quiz: { total: 0, done: 0, correct: 0, startAt: 0, timeUsed: 0, timer: null },
       pool: [], used: new Set(), cur: {a: 0, b: 0}, streak: 0,
       tableSize: 12, zoom: 1, highlightN: 0,
-      audioCtx: null
+      audioCtx: null,
+      sidebarWide: false
     }
 
     /* ===== 乘法表 ===== */
@@ -346,26 +365,48 @@
     }
 
     /* ===== 題庫與出題 ===== */
+    function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]] } return a }
+
     function buildPool(){
       const arr = []
-      for(let a = state.aMin; a <= state.aMax; a++){
-        for(let b = state.bMin; b <= state.bMax; b++) arr.push([a,b])
+      const fixed = state.fixedA
+
+      if (fixed >= 0) {
+        // 只練特定被乘數 a=fixed（b 依範圍）
+        for(let b = state.bMin; b <= state.bMax; b++) arr.push([fixed, b])
+      } else {
+        for(let a = state.aMin; a <= state.aMax; a++){
+          for(let b = state.bMin; b <= state.bMax; b++) arr.push([a,b])
+        }
       }
+
       if(state.order === 'ascending') arr.sort((x,y)=> (x[0]*x[1]) - (y[0]*y[1]))
       else if(state.order === 'descending') arr.sort((x,y)=> (y[0]*y[1]) - (x[0]*x[1]))
       else shuffle(arr)
-      state.pool = arr; state.used.clear()
+
+      state.pool = arr
+      state.used.clear()
     }
-    function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]] } return a }
 
     function pick(){
+      if(state.pool.length === 0) return [0,0]
+
       if(state.avoidDup && state.used.size >= state.pool.length) state.used.clear()
+
       let pair
       if(state.order === 'random'){
         let tries = 0
-        do{ pair = state.pool[Math.floor(Math.random()*state.pool.length)]; tries++ }while(state.avoidDup && state.used.has(pair.toString()) && tries < 200)
-      }else{ const idx = state.used.size % state.pool.length; pair = state.pool[idx] }
-      state.used.add(pair.toString()); return pair
+        do{
+          pair = state.pool[Math.floor(Math.random()*state.pool.length)]
+          tries++
+        } while(state.avoidDup && state.used.has(pair.toString()) && tries < 200)
+        if(state.avoidDup) state.used.add(pair.toString())
+      }else{
+        const idx = (state.avoidDup ? state.used.size : 0) % state.pool.length
+        pair = state.pool[idx]
+        if(state.avoidDup) state.used.add(pair.toString())
+      }
+      return pair
     }
 
     function renderQuestion(){
@@ -374,48 +415,234 @@
       els.ans.value=''; els.ans.focus(); els.feedback.textContent=''; els.feedback.className='feedback'
     }
 
-    function startPractice(){ state.mode='practice'; els.modeText.textContent='練習模式'; els.dotMode.style.background = 'var(--accent)'; els.progress.textContent='—'; els.timer.textContent='00:00'; state.streak = 0; els.streak.textContent='0'; renderQuestion() }
-    function startQuiz(){ state.mode='quiz'; els.modeText.textContent='測驗模式'; els.dotMode.style.background = 'var(--warn)'; state.quiz = { total: state.count, done: 0, correct: 0, startAt: Date.now(), timeUsed: 0, timer: null }; els.progress.textContent=`0 / ${state.count}`; tickTimer(true); renderQuestion() }
+    function startPractice(){
+      state.mode='practice'
+      els.modeText.textContent='練習模式'
+      els.dotMode.style.background = 'var(--accent)'
+      els.progress.textContent='—'
+      els.timer.textContent='00:00'
+      state.streak = 0
+      els.streak.textContent='0'
+      renderQuestion()
+    }
 
-    function tickTimer(start=false){ if(start && state.quiz.timer) clearInterval(state.quiz.timer); if(state.mode!=='quiz') return; const update=()=>{ const t=Math.floor((Date.now()-state.quiz.startAt)/1000); state.quiz.timeUsed=t; const mm=pad(Math.floor(t/60)), ss=pad(t%60); els.timer.textContent=`${mm}:${ss}`; if(state.limit>0 && t>=state.limit){ finishQuiz('時間到！') } }; update(); state.quiz.timer=setInterval(update,500) }
+    function startQuiz(){
+      state.mode='quiz'
+      els.modeText.textContent='測驗模式'
+      els.dotMode.style.background = 'var(--warn)'
+      state.quiz = { total: state.count, done: 0, correct: 0, startAt: Date.now(), timeUsed: 0, timer: null }
+      els.progress.textContent=`0 / ${state.count}`
+      tickTimer(true)
+      renderQuestion()
+    }
 
-    function splash(ok){ const ov = els.overlay; ov.className = `overlay ${ok?'ok':'ng'} show`; ov.querySelector('.msg').textContent = ok ? '✔ 答對！' : '✘ 再試試！'; setTimeout(()=> ov.classList.remove('show'), 650) }
+    function tickTimer(start=false){
+      if(start && state.quiz.timer) clearInterval(state.quiz.timer)
+      if(state.mode!=='quiz') return
+      const update=()=>{
+        const t=Math.floor((Date.now()-state.quiz.startAt)/1000)
+        state.quiz.timeUsed=t
+        const mm=pad(Math.floor(t/60)), ss=pad(t%60)
+        els.timer.textContent=`${mm}:${ss}`
+        if(state.limit>0 && t>=state.limit){
+          finishQuiz('時間到！')
+        }
+      }
+      update()
+      state.quiz.timer=setInterval(update,500)
+    }
+
+    function splash(ok){
+      const ov = els.overlay
+      ov.className = `overlay ${ok?'ok':'ng'} show`
+      ov.querySelector('.msg').textContent = ok ? '✔ 答對！' : '✘ 再試試！'
+      setTimeout(()=> ov.classList.remove('show'), 650)
+    }
 
     // 音效
     function ensureAudio(){ if(!state.audioCtx) state.audioCtx = new (window.AudioContext||window.webkitAudioContext)() }
-    function beep(freq, dur, type='sine', gain=0.08, when=0){ const ctx=state.audioCtx; const o=ctx.createOscillator(); const g=ctx.createGain(); o.type=type; o.frequency.value=freq; o.connect(g); g.connect(ctx.destination); const t = ctx.currentTime + when; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain, t+0.01); g.gain.exponentialRampToValueAtTime(0.0001, t+dur); o.start(t); o.stop(t+dur) }
-    function playSound(kind){ if(!state.sound) return; ensureAudio(); if(kind==='ok'){ beep(660,0.12,'sine',0.08,0); beep(880,0.12,'sine',0.08,0.12); beep(1320,0.18,'triangle',0.09,0.24) } else { beep(180,0.3,'sawtooth',0.08,0); beep(140,0.25,'sawtooth',0.06,0.1) } }
+    function beep(freq, dur, type='sine', gain=0.08, when=0){
+      const ctx=state.audioCtx
+      const o=ctx.createOscillator()
+      const g=ctx.createGain()
+      o.type=type; o.frequency.value=freq
+      o.connect(g); g.connect(ctx.destination)
+      const t = ctx.currentTime + when
+      g.gain.setValueAtTime(0, t)
+      g.gain.linearRampToValueAtTime(gain, t+0.01)
+      g.gain.exponentialRampToValueAtTime(0.0001, t+dur)
+      o.start(t); o.stop(t+dur)
+    }
+    function playSound(kind){
+      if(!state.sound) return
+      ensureAudio()
+      if(kind==='ok'){
+        beep(660,0.12,'sine',0.08,0)
+        beep(880,0.12,'sine',0.08,0.12)
+        beep(1320,0.18,'triangle',0.09,0.24)
+      } else {
+        beep(180,0.3,'sawtooth',0.08,0)
+        beep(140,0.25,'sawtooth',0.06,0.1)
+      }
+    }
 
-    function submit(){ const val = Number(els.ans.value); const {a,b} = state.cur; const ok = (val === a*b); if(ok){ state.streak++; els.streak.textContent = String(state.streak); els.feedback.textContent = '✔ 答對！'; els.feedback.className='feedback ok pop'; splash(true); playSound('ok') } else { state.streak = 0; els.streak.textContent = '0'; els.feedback.textContent = `✘ 正確是 ${a*b}`; els.feedback.className='feedback ng shake'; splash(false); playSound('ng') } if(state.mode==='practice'){ setTimeout(renderQuestion, ok? 500 : 800) } else { state.quiz.done++; if(ok) state.quiz.correct++; els.progress.textContent = `${state.quiz.done} / ${state.quiz.total}`; if(state.quiz.done >= state.quiz.total){ finishQuiz('測驗完成！') } else setTimeout(renderQuestion, ok? 450 : 800) } }
+    function submit(){
+      const val = Number(els.ans.value)
+      const {a,b} = state.cur
+      const ok = (val === a*b)
 
-    function finishQuiz(msg){ if(state.quiz.timer) clearInterval(state.quiz.timer); const score = Math.round(100 * state.quiz.correct / Math.max(1,state.quiz.total)); els.feedback.textContent = `${msg} 得分 ${score}（${state.quiz.correct}/${state.quiz.total}）`; els.feedback.className = 'feedback ok'; saveRecord({ time: nowStr(), mode: '測驗', score, used: state.quiz.timeUsed, range: `${state.aMin}-${state.aMax}×${state.bMin}-${state.bMax}` }); renderRecords() }
+      if(ok){
+        state.streak++
+        els.streak.textContent = String(state.streak)
+        els.feedback.textContent = '✔ 答對！'
+        els.feedback.className='feedback ok pop'
+        splash(true)
+        playSound('ok')
+      } else {
+        state.streak = 0
+        els.streak.textContent = '0'
+        els.feedback.textContent = `✘ 正確是 ${a*b}`
+        els.feedback.className='feedback ng shake'
+        splash(false)
+        playSound('ng')
+      }
+
+      if(state.mode==='practice'){
+        setTimeout(renderQuestion, ok? 500 : 800)
+      } else {
+        state.quiz.done++
+        if(ok) state.quiz.correct++
+        els.progress.textContent = `${state.quiz.done} / ${state.quiz.total}`
+        if(state.quiz.done >= state.quiz.total){
+          finishQuiz('測驗完成！')
+        } else setTimeout(renderQuestion, ok? 450 : 800)
+      }
+    }
+
+    function finishQuiz(msg){
+      if(state.quiz.timer) clearInterval(state.quiz.timer)
+      const score = Math.round(100 * state.quiz.correct / Math.max(1,state.quiz.total))
+      els.feedback.textContent = `${msg} 得分 ${score}（${state.quiz.correct}/${state.quiz.total}）`
+      els.feedback.className = 'feedback ok'
+      saveRecord({
+        time: nowStr(),
+        mode: '測驗',
+        score,
+        used: state.quiz.timeUsed,
+        range: state.fixedA >= 0
+          ? `a=${state.fixedA}；b=${state.bMin}-${state.bMax}`
+          : `${state.aMin}-${state.aMax}×${state.bMin}-${state.bMax}`
+      })
+      renderRecords()
+    }
 
     /* ===== 成績 ===== */
     const LS_KEY = '乘法成績'
     function readRecords(){ try{ return JSON.parse(localStorage.getItem(LS_KEY) || '[]') }catch(e){ return [] } }
     function saveRecord(rec){ const list = readRecords(); list.unshift(rec); localStorage.setItem(LS_KEY, JSON.stringify(list)) }
-    function renderRecords(){ const list = readRecords(); els.recordsBody.innerHTML = ''; if(list.length===0){ const tr=document.createElement('tr'); tr.innerHTML = `<td class="empty" colspan="5">尚無記錄</td>`; els.recordsBody.appendChild(tr); return } for(const r of list.slice(0,50)){ const tr=document.createElement('tr'); const mm=pad(Math.floor(r.used/60)), ss=pad(r.used%60); tr.innerHTML = `<td>${r.time}</td><td>${r.mode}</td><td>${r.score}</td><td>${mm}:${ss}</td><td>${r.range}</td>`; els.recordsBody.appendChild(tr) } }
+    function renderRecords(){
+      const list = readRecords()
+      els.recordsBody.innerHTML = ''
+      if(list.length===0){
+        const tr=document.createElement('tr')
+        tr.innerHTML = `<td class="empty" colspan="5">尚無記錄</td>`
+        els.recordsBody.appendChild(tr)
+        return
+      }
+      for(const r of list.slice(0,50)){
+        const tr=document.createElement('tr')
+        const mm=pad(Math.floor(r.used/60)), ss=pad(r.used%60)
+        tr.innerHTML = `<td>${r.time}</td><td>${r.mode}</td><td>${r.score}</td><td>${mm}:${ss}</td><td>${r.range}</td>`
+        els.recordsBody.appendChild(tr)
+      }
+    }
 
-    function exportJSON(){ const blob=new Blob([localStorage.getItem(LS_KEY)||'[]'],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`乘法成績-${Date.now()}.json`; a.click(); URL.revokeObjectURL(url) }
+    function exportJSON(){
+      const blob=new Blob([localStorage.getItem(LS_KEY)||'[]'],{type:'application/json'})
+      const url=URL.createObjectURL(blob)
+      const a=document.createElement('a')
+      a.href=url
+      a.download=`乘法成績-${Date.now()}.json`
+      a.click()
+      URL.revokeObjectURL(url)
+    }
 
     /* ===== Sidebar ===== */
-    function openSidebar(){ document.body.classList.add('with-sidebar'); els.sidebar.classList.add('show'); renderTable(); els.tableBtn.textContent='隱藏乘法表' }
-    function closeSidebar(){ document.body.classList.remove('with-sidebar'); els.sidebar.classList.remove('show'); els.tableBtn.textContent='顯示乘法表' }
+    function openSidebar(){
+      document.body.classList.add('with-sidebar')
+      els.sidebar.classList.add('show')
+      renderTable()
+      els.tableBtn.textContent='隱藏乘法表'
+    }
+    function closeSidebar(){
+      document.body.classList.remove('with-sidebar')
+      els.sidebar.classList.remove('show')
+      els.tableBtn.textContent='顯示乘法表'
+    }
+
+    /* ===== 設定同步 ===== */
+    function syncRanges(){
+      state.aMax = Number(els.rangeA.value)
+      state.bMax = Number(els.rangeB.value)
+      state.aMin = 0
+      state.bMin = 0
+      els.showA.textContent = `${state.aMin}–${state.aMax}`
+      els.showB.textContent = `${state.bMin}–${state.bMax}`
+      buildPool()
+    }
 
     /* ===== 事件綁定 ===== */
     els.modePractice.addEventListener('click', startPractice)
     els.modeQuiz.addEventListener('click', startQuiz)
     els.submit.addEventListener('click', submit)
     els.next.addEventListener('click', renderQuestion)
-    els.ans.addEventListener('keydown', (e)=>{ if(e.key==='Enter') submit(); else if(e.key==='Escape'){ els.ans.value=''; els.ans.focus() } else if(e.key==='Tab'){ e.preventDefault(); renderQuestion() } })
+
+    els.ans.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter') submit()
+      else if(e.key==='Escape'){ els.ans.value=''; els.ans.focus() }
+      else if(e.key==='Tab'){ e.preventDefault(); renderQuestion() }
+    })
 
     // numpad
-    $$('.numpad button').forEach(btn=>{ const key = btn.dataset.key; btn.addEventListener('click', ()=>{ if(key==='back'){ els.ans.value = String(els.ans.value).slice(0,-1) } else if(key==='enter'){ submit() } else { els.ans.value = String(els.ans.value || '') + key } els.ans.focus({preventScroll:true}) }) })
+    $$('.numpad button').forEach(btn=>{
+      const key = btn.dataset.key
+      btn.addEventListener('click', ()=>{
+        if(key==='back'){
+          els.ans.value = String(els.ans.value).slice(0,-1)
+        } else if(key==='enter'){
+          submit()
+        } else {
+          els.ans.value = String(els.ans.value || '') + key
+        }
+        els.ans.focus({preventScroll:true})
+      })
+    })
 
-    // 設定同步
-    function syncRanges(){ state.aMax = Number(els.rangeA.value); state.bMax = Number(els.rangeB.value); state.aMin = 1; state.bMin = 1; els.showA.textContent = `1–${state.aMax}`; els.showB.textContent = `1–${state.bMax}`; buildPool() }
-    els.rangeA.addEventListener('input', syncRanges)
-    els.rangeB.addEventListener('input', syncRanges)
+    els.rangeA.addEventListener('input', ()=>{
+      // 固定 a 時，rangeA 對題目不生效，但仍允許調整以備切回不限
+      syncRanges()
+      if(state.mode === 'practice') renderQuestion()
+    })
+    els.rangeB.addEventListener('input', ()=>{
+      syncRanges()
+      if(state.mode === 'practice') renderQuestion()
+    })
+
+    els.fixedA.addEventListener('change', ()=>{
+      state.fixedA = Number(els.fixedA.value)
+      buildPool()
+      if(state.mode === 'practice') renderQuestion()
+
+      // 若乘法表開著，選固定 a 時順便高亮（可選）
+      if(els.sidebar.classList.contains('show')){
+        if(state.fixedA >= 0){
+          els.highlightSelect.value = String(state.fixedA)
+          state.highlightN = state.fixedA
+          applyHighlight(state.highlightN)
+        }
+      }
+    })
+
     els.count.addEventListener('change', ()=> state.count = Number(els.count.value))
     els.limitTime.addEventListener('change', ()=> state.limit = Number(els.limitTime.value))
     els.avoidDup.addEventListener('change', ()=> state.avoidDup = els.avoidDup.checked)
@@ -426,15 +653,19 @@
     els.tableBtn.addEventListener('click', ()=> els.sidebar.classList.contains('show') ? closeSidebar() : openSidebar())
     els.closeSidebar.addEventListener('click', closeSidebar)
     window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && els.sidebar.classList.contains('show')) closeSidebar() })
+
     els.zoomIn.addEventListener('click', ()=>{ state.zoom=Math.min(2.4, state.zoom+0.1); applyZoom() })
     els.zoomOut.addEventListener('click', ()=>{ state.zoom=Math.max(0.6, state.zoom-0.1); applyZoom() })
     els.fitBtn.addEventListener('click', fitToWidth)
+
+    // 加寬/還原：用狀態控制，避免小螢幕 media query 造成反向效果
     els.wideBtn.addEventListener('click', ()=>{
-      const isWide = getComputedStyle(document.documentElement).getPropertyValue('--sb-width').trim()==='50vw'
-      document.documentElement.style.setProperty('--sb-width', isWide? '45vw':'50vw')
-      els.wideBtn.textContent = isWide? '加寬':'還原'
+      state.sidebarWide = !state.sidebarWide
+      document.documentElement.style.setProperty('--sb-width', state.sidebarWide ? '50vw' : '')
+      els.wideBtn.textContent = state.sidebarWide ? '還原' : '加寬'
       fitToWidth()
     })
+
     els.toggleSize.addEventListener('click', ()=>{ state.tableSize = (state.tableSize===12? 9:12); renderTable(); fitToWidth() })
     els.highlightSelect.addEventListener('change', ()=>{ state.highlightN = Number(els.highlightSelect.value)||0; applyHighlight(state.highlightN) })
     els.clearHL.addEventListener('click', ()=>{ els.highlightSelect.value='0'; state.highlightN=0; applyHighlight(0) })
@@ -443,8 +674,10 @@
     els.reset.addEventListener('click', ()=>{ if(confirm('確定要清空所有成績記錄？')){ localStorage.removeItem(LS_KEY); renderRecords() } })
     els.exportBtn.addEventListener('click', exportJSON)
 
-    // 初始化（順序很重要）
-    buildPool(); renderRecords(); startPractice(); syncRanges()
+    // 初始化（先同步範圍→建題庫→再開始）
+    syncRanges()
+    renderRecords()
+    startPractice()
   })()
   </script>
 </body>
