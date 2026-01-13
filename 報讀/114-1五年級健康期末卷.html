@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>114-1五上健康期末評量試卷</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --line-bg: transparent;
+  --line-hover: #f1f5ff;
+  --line-reading-bg: #fff4cc;
+  --line-reading-border: #ffb300;
+  --toolbar-bg: #f4f4f4;
+  --toolbar-text: #000000;
+  --meta-text: #666666;
+  --border-color: #dddddd;
+  --button-bg: #f7f7f7;
+  --button-text: #000000;
+  --alt-bg: #f2f2f2;
+}
+
+body.dark {
+  --bg: #0f0f0f;
+  --text: #f0f0f0;
+  --line-bg: transparent;
+  --line-hover: #1f2937;
+  --line-reading-bg: #3a2f05;
+  --line-reading-border: #ffcc00;
+  --toolbar-bg: #1a1a1a;
+  --toolbar-text: #f0f0f0;
+  --meta-text: #aaaaaa;
+  --border-color: #333333;
+  --button-bg: #222222;
+  --button-text: #f0f0f0;
+  --alt-bg: #1b1b1b;
+}
+
+/* 全域 */
+body {
+  font-family: Microsoft JhengHei, 'PingFang TC', 'Noto Sans TC', sans-serif;
+  font-size: 18px;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  padding: 14px 16px 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+h1 {
+  font-size: 1.2em;
+  margin: 0 0 6px 0;
+}
+
+.meta {
+  font-size: 0.9em;
+  color: var(--meta-text);
+}
+
+/* 工具列 */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--toolbar-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.toolbar label {
+  font-size: 0.9em;
+  color: var(--toolbar-text);
+}
+
+.toolbar select, .toolbar input[type="range"] {
+  vertical-align: middle;
+}
+
+.toolbar button {
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+}
+
+.toolbar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toolbar .spacer {
+  flex: 1;
+}
+
+/* 內容 */
+#content {
+  padding: 14px 16px 40px;
+  max-width: none;
+  margin: 0;
+}
+
+.line {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: var(--line-bg);
+  margin: 2px 0;
+  cursor: pointer;
+  user-select: text;
+}
+
+.lineImage {
+  max-width: 160px;
+  max-height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-right: 8px;
+}
+
+.line:hover {
+  background: var(--line-hover);
+}
+
+.lineText { flex: 1; }
+
+
+.line.plain.even {
+  background: var(--alt-bg);
+}
+
+.line.reading {
+  background: var(--line-reading-bg);
+  outline: 2px solid var(--line-reading-border);
+}
+
+.gap {
+  height: 6px;
+}
+
+/* 大標題（[H] 行） */
+.title-main {
+  margin: 12px 0 4px;
+  padding: 4px 6px;
+  font-size: 1.25em;
+  font-weight: 700;
+  color: #2C7BE5;
+  background: transparent;
+}
+
+/* 小標題（[S] 行） */
+.title-sub {
+  margin: 8px 0 2px;
+  padding: 3px 6px;
+  font-size: 1.05em;
+  font-weight: 600;
+  color: #444444;
+  background: transparent;
+}
+
+body.dark .title-sub {
+  color: #dddddd;
+}
+
+
+</style>
+</head>
+<body>
+<header>
+  <h1>114-1五上健康期末評量試卷</h1>
+</header>
+
+<div class="toolbar">
+  <label>聲音：
+    <select id="voiceSelect"></select>
+  </label>
+
+  <label>語速：
+    <input id="rate" type="range" min="0.3" max="1.2" step="0.05" value="1.0" />
+    <span id="rateVal">1.0</span>
+  </label>
+
+  <label>字體大小：
+    <input id="fontSize" type="range" min="12" max="40" step="1" value="18" />
+    <span id="fontSizeVal">18</span>
+  </label>
+
+  <div class="spacer"></div>
+
+  <button id="playAllBtn">▶ 逐行連播</button>
+  <button id="pauseBtn">⏸ 暫停</button>
+  <button id="resumeBtn">⏯ 繼續</button>
+  <button id="stopBtn">⏹ 停止</button>
+  <button id="themeToggle">🌙/☀ 切換深淺色</button>
+</div>
+
+<div id="content">
+<div class="line title-main">壹、是非題: (每題2分。共20分)：</div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText">(　　)流感、肺結核等疾病最主要的傳染途徑是飛沫傳染。</span></div>
+<div class="line plain even"><span class="lineText">(　　)營養均衡、作息規律、維持運動習慣可以提升人體的抵抗力。</span></div>
+<div class="line plain"><span class="lineText">(　　)結核病患者必須接受每兩週一次的藥物治療，就不會讓病菌產生抗藥性。</span></div>
+<div class="line plain even"><span class="lineText">(　　)號稱能補充維他命的維他命棒是對人體有益的電子煙，所添加的化學物質對人體沒有危害。</span></div>
+<div class="line plain"><span class="lineText">(　　)過度飲酒可能造成肝硬化、心血管疾病，還會提高罹癌風險。</span></div>
+<div class="line plain even"><span class="lineText">(　　)不論是持有毒品、使用毒品、引誘他人使用或運送毒品，都違反《毒品危害防制條例》。</span></div>
+<div class="line plain"><span class="lineText">(　　)心情鬱悶時，可以透過參加學校或社區活動來強健身體，鍛鍊自己的心性。</span></div>
+<div class="line plain even"><span class="lineText">(　　)行動前應仔細思考可能造成的後果，並做出避免自己受傷的決定，避免事故發生。</span></div>
+<div class="line plain"><span class="lineText">(　　)搭乘遊覽車逃生時，若駕駛員無法協助開啟車門，可以敲擊前門、後門的玻璃，再將車門向外推出。</span></div>
+<div class="line plain even"><span class="lineText">(　　)洗牙可以讓牙齒重新排列，使其回復到正確的位置。</span></div>
+<div class="gap"></div>
+<div class="line title-main">貳、選擇題: (每題2分。共20分)：</div>
+<div class="line plain"><span class="lineText">(　　)小靜回想自己得流感的經過，因為最近坐在隔壁的沙沙時常咳嗽、流鼻涕，但是小靜沒有留意，時常與他近距離接觸，兩人還會互相分享點心，導致這幾天小靜也出現咳嗽、發燒等症狀。根據小靜的經驗，下列何者是流感的主要傳染途徑？</span></div>
+<div class="line plain even"><span class="lineText">血液傳染</span></div>
+<div class="line plain"><span class="lineText">食物和水傳染</span></div>
+<div class="line plain even"><span class="lineText">飛沫傳染</span></div>
+<div class="line plain"><span class="lineText">昆蟲或動物傳染。</span></div>
+<div class="line plain even"><span class="lineText">(　　)愛滋病源於英文簡稱AIDS音譯而來，中文為「後天免疫缺乏症候群」，愛滋病病毒進入人體後會破壞人體免疫系統，導致身體抵抗力降低，更容易得到各種疾病，過去因為人們不了解愛滋病的傳染途逕，產生對愛滋病以及感染者有不好的印象，但其實只要能確保傳染途徑的安全，一般的互動都沒問題。下列與愛滋病患者互動的行為，何者可能導致被感染？</span></div>
+<div class="line plain"><span class="lineText">接受患者的輸血</span></div>
+<div class="line plain even"><span class="lineText">與患者共用馬桶</span></div>
+<div class="line plain"><span class="lineText">與患者一起用餐</span></div>
+<div class="line plain even"><span class="lineText">與患者擁抱。</span></div>
+<div class="line plain"><span class="lineText">(　　)下列關於電子煙的敘述何者正確？</span></div>
+<div class="line plain even"><span class="lineText">許多賣家會以「維他命棒」、「能量棒」的名稱來誤導消費者，誘使民眾使用</span></div>
+<div class="line plain"><span class="lineText">電子煙添加的化學物質對人體沒有危害</span></div>
+<div class="line plain even"><span class="lineText">電子煙的包裝很炫，吸電子煙不會像吸菸一樣傷身</span></div>
+<div class="line plain"><span class="lineText">電子煙的煙油裡添加維他命，對身體有益。</span></div>
+<div class="line plain even"><span class="lineText">(　　)下列關於毒品的敘述，誰的說法正確？</span></div>
+<div class="line plain"><span class="lineText">小品：不肖人士會將毒品偽裝成一般常見物品，來降低大家的戒心，引誘民眾使用ˉ</span></div>
+<div class="line plain even"><span class="lineText">阿禾：持有並企圖誘使未成年使用毒品者違反《菸害防制法》</span></div>
+<div class="line plain"><span class="lineText">阿瑜：毒品只使用一次不會上癮</span></div>
+<div class="line plain even"><span class="lineText">卉卉：使用毒品有益身心健康。</span></div>
+<div class="line plain"><span class="lineText">(　　)庭庭放學回家的路上，看到同班同學阿臻被一群上了國中的學長包圍，學長拿出「特別的軟糖」試圖說服阿臻使用。如果你是庭庭，怎麼做比較恰當呢？</span></div>
+<div class="line plain even"><span class="lineText">當作沒看到，馬上離開</span></div>
+<div class="line plain"><span class="lineText">加入他們，一起說服阿臻</span></div>
+<div class="line plain even"><span class="lineText">上前制止學長們的行為</span></div>
+<div class="line plain"><span class="lineText">不敢告知師長，管好自己的事就好。</span></div>
+<div class="line plain even"><span class="lineText">(　　)情緒低落時，下列何者不是正確的處理方式？</span></div>
+<div class="line plain"><span class="lineText">分析產生情緒的原因並面對它</span></div>
+<div class="line plain even"><span class="lineText">選擇健康紓解情緒的方法</span></div>
+<div class="line plain"><span class="lineText">使用成癮物質逃避現實</span></div>
+<div class="line plain even"><span class="lineText">尋求他人的建議與鼓勵。</span></div>
+<div class="line plain"><span class="lineText">(　　)怎樣可以避免校園意外事故發生？</span></div>
+<div class="line plain even"><span class="lineText">態度不輕忽，隨時注意周遭環境ˉ</span></div>
+<div class="line plain"><span class="lineText">使用遊戲器材時，未遵守使用規則ˉ</span></div>
+<div class="line plain even"><span class="lineText">抱持僥倖的心態，以為自己的行為不會發生危險ˉ</span></div>
+<div class="line plain"><span class="lineText">追求刺激，不顧後果的證明自己勇敢。</span></div>
+<div class="line plain even"><span class="lineText">(　　)下列關於騎乘自行車的敘述何者正確？</span></div>
+<div class="line plain"><span class="lineText">過馬路時，可以騎乘自行車穿越斑馬線ˉ</span></div>
+<div class="line plain even"><span class="lineText">騎在「自行車專用道」最安全ˉ</span></div>
+<div class="line plain"><span class="lineText">停等紅綠燈時，停在大客車旁最安全</span></div>
+<div class="line plain even"><span class="lineText">並排、逆向騎自行車不會發生危險。</span></div>
+<div class="line plain"><span class="lineText">(　　)美美目擊一輛汽車與機車擦撞的交通事故，準備撥打119報案，下列何者不是緊急救護報案應說明的必要資訊？ˉ</span></div>
+<div class="line plain even"><span class="lineText">事故地址</span></div>
+<div class="line plain"><span class="lineText">傷病患的症狀</span></div>
+<div class="line plain even"><span class="lineText">傷病患的年齡</span></div>
+<div class="line plain"><span class="lineText">汽、機車車牌。</span></div>
+<div class="line plain even"><span class="lineText">(　　)衛教宣導「一般來說年紀大的人更容易罹患白內障，然而隨著3C產品的種類增加，人們使用眼睛頻率也隨之增加，罹患白內障的年齡不斷下降……」，下列何者是罹患白內障的人看到物品的樣子？</span></div>
+<div class="gap"></div>
+<div class="line title-main">勾選題: (每格1分。共20分)：</div>
+<div class="line plain"><span class="lineText">下列何者是結核病常見的症狀？請打勾。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(1)發燒。</span></div>
+<div class="line plain"><span class="lineText">(　　)(2)咳嗽。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(3)眼睛發炎。</span></div>
+<div class="line plain"><span class="lineText">(　　)(4)食慾不振。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(5)四肢痠痛。</span></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText">如果朋友邀請你吸毒，可以利用「天龍八不」拒絕技巧，拒絕對方。下列何者屬於「天龍八不」的拒絕方法？請打勾。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(1)轉移話題法。</span></div>
+<div class="line plain"><span class="lineText">(　　)(2)友誼勸服法。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(3)堅持拒絕法。</span></div>
+<div class="line plain"><span class="lineText">(　　)(4)假裝答應法。</span></div>
+<div class="gap"></div>
+<div class="line plain even"><span class="lineText">下列關於緊急救護報案時的注意事項何者正確？請打勾。</span></div>
+<div class="line plain"><span class="lineText">(　　)(1)告知是救護事件。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(2)撥打115報案。</span></div>
+<div class="line plain"><span class="lineText">(　　)(3)告知事故地址。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(4)說明傷病患的症狀與年齡。</span></div>
+<div class="line plain"><span class="lineText">(　　)(5)告知車輛的車牌號碼。</span></div>
+<div class="gap"></div>
+<div class="line plain even"><span class="lineText">下列哪些是校園安全須知？請在（　）中打ˇ。</span></div>
+<div class="line plain"><span class="lineText">(　　)(１)使用完的體育器材直接留在場地上。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(２)使用遊戲器材時，遵守排隊秩序。</span></div>
+<div class="line plain"><span class="lineText">(　　)(３)洗手後，把手上的水甩在地板上。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(４)在走廊上嬉戲、奔跑。</span></div>
+<div class="line plain"><span class="lineText">(　　)(５)不單獨前往偏遠角落。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(６)不在停車場嬉戲。</span></div>
+<div class="gap"></div>
+<div class="line title-main">肆、看圖回答問題: (每格4分。共20分)：</div>
+<div class="line plain"><span class="lineText">下圖眼球構造中，哪個位置若長時間、近距離用眼，會過度收縮，導致視力變差？請寫下代號與名稱。</span></div>
+<div class="gap"></div>
+<div class="line plain even"><span class="lineText">答:代號(     ) 名稱 –(         )</span></div>
+<div class="line plain"><span class="lineText">請寫下下圖中遊覽車安全設備的名稱與應設置的數量。</span></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="line plain even"><span class="lineText">答:</span></div>
+<div class="line plain"><span class="lineText">3.請問導致牙周病的順序為何？請依照順序寫下數字代號。</span></div>
+<div class="line plain even"><span class="lineText">     答:(                     )</span></div>
+<div class="gap"></div>
+<div class="line title-main">伍、回答問題: (每題4分。共20分)：</div>
+<div class="line plain"><span class="lineText">請寫出預防新型A型流感的「5要6不」行動「5要」的其中2項。</span></div>
+<div class="line plain even"><span class="lineText">請寫下2種乾眼症常見的症狀。</span></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText">請寫下2種牙周病可能引發其他身體部位的疾病。</span></div>
+<div class="line plain even"><span class="lineText">請寫出下圖中可能造成的事故和預防方法。</span></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText">   答:</span></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="line plain even"><span class="lineText">請說明遊覽車安全設備的名稱與使用方式。</span></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText">    作答完畢，請重新檢查</span></div>
+</div>
+
+<script>
+(function(){
+  const synth = window.speechSynthesis;
+  const voiceSelect = document.getElementById('voiceSelect');
+  const rate = document.getElementById('rate');
+  const pitch = document.getElementById('pitch');
+  const rateVal = document.getElementById('rateVal');
+  const pitchVal = document.getElementById('pitchVal');
+  const fontSize = document.getElementById('fontSize');
+  const fontSizeVal = document.getElementById('fontSizeVal');
+  const themeBtn = document.getElementById('themeToggle');
+
+  let voices = [];
+  let isPlayingAll = false;
+  let playAllIndex = 0;
+  let currentNode = null;
+
+  function getLineText(node){
+    const t = node && node.querySelector ? node.querySelector('.lineText') : null;
+    return (t ? t.textContent : (node ? node.textContent : '')).trim();
+  }
+
+  function populateVoices() {
+    voices = synth.getVoices();
+    voiceSelect.innerHTML = "";
+    voices.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${v.name} (${v.lang})`;
+      voiceSelect.appendChild(opt);
+    });
+    const zhIdx = voices.findIndex(v => /zh/i.test(v.lang));
+    if (zhIdx >= 0) voiceSelect.value = zhIdx;
+  }
+
+  populateVoices();
+  if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = populateVoices;
+  }
+
+  function stopSpeak() {
+    if (synth.speaking || synth.pending) synth.cancel();
+    document.querySelectorAll('.line.reading').forEach(el => el.classList.remove('reading'));
+    currentNode = null;
+    isPlayingAll = false;
+    playAllIndex = 0;
+  }
+
+  function speak(text, node=null, onend=null) {
+    stopSpeak();
+    if (text === null || text === undefined) return;
+    text = String(text).trim();
+    if (!text) return;
+
+    const u = new SpeechSynthesisUtterance(text);
+
+    // 安全取得 voice / rate / pitch（避免缺少控制元件時整段 JS 中斷）
+    const voiceIdx = (voiceSelect && voiceSelect.value !== undefined && voiceSelect.value !== '') ? Number(voiceSelect.value) : 0;
+    const v = (voices && voices.length && Number.isFinite(voiceIdx)) ? voices[voiceIdx] : null;
+    if (v) u.voice = v;
+
+    const rateNum = (rate && rate.value !== undefined && rate.value !== '') ? Number(rate.value) : 1;
+    const pitchNum = (pitch && pitch.value !== undefined && pitch.value !== '') ? Number(pitch.value) : 1;
+    u.rate = (Number.isFinite(rateNum) && rateNum > 0) ? rateNum : 1;
+    u.pitch = (Number.isFinite(pitchNum) && pitchNum >= 0) ? pitchNum : 1;
+
+    u.onend = () => {
+      if (node) node.classList.remove('reading');
+      currentNode = null;
+      if (onend) onend();
+    };
+    u.onerror = () => {
+      if (node) node.classList.remove('reading');
+      currentNode = null;
+      if (onend) onend();
+    };
+    if (node) node.classList.add('reading');
+    currentNode = node;
+    synth.speak(u);
+  }
+
+  // 點行朗讀（只對一般行；標題不朗讀；錄音按鈕不觸發）
+  document.getElementById('content').addEventListener('click', (e) => {
+    const node = e.target.closest('.line');
+    if (!node) return;
+    if (e.target.closest('button')) return;
+    if (node.classList.contains('title-main') || node.classList.contains('title-sub')) return;
+    speak(getLineText(node), node);
+  });
+
+  // 朗讀選取文字
+  document.getElementById('content').addEventListener('mouseup', () => {
+    const sel = window.getSelection();
+    const text = sel ? sel.toString().trim() : "";
+    if (text) speak(text);
+  });
+
+  // 逐行連播
+  function playAll() {
+    const lines = Array.from(document.querySelectorAll('.line')).filter(el =>
+      !el.classList.contains('title-main') && !el.classList.contains('title-sub')
+    );
+    if (!lines.length) return;
+
+    isPlayingAll = true;
+    const curIdx = lines.findIndex(el => el.classList.contains('reading'));
+    playAllIndex = curIdx >= 0 ? curIdx : 0;
+
+    const step = () => {
+      if (!isPlayingAll) return;
+      if (playAllIndex >= lines.length) {
+        isPlayingAll = false;
+        return;
+      }
+      const el = lines[playAllIndex++];
+      const text = getLineText(el);
+      if (!text) { step(); return; }
+      speak(text, el, step);
+    };
+    step();
+  }
+
+  if (rate && rateVal) {
+    rate.addEventListener('input', () => rateVal.textContent = rate.value);
+  }
+  if (pitch && pitchVal) {
+    pitch.addEventListener('input', () => pitchVal.textContent = pitch.value);
+  }
+  if (fontSize && fontSizeVal) {
+    // initialize content font size (avoid changing toolbar layout to keep slider stable)
+    fontSizeVal.textContent = fontSize.value;
+    const contentEl = document.getElementById('content');
+    if (contentEl) contentEl.style.fontSize = fontSize.value + 'px';
+    fontSize.addEventListener('input', () => {
+      fontSizeVal.textContent = fontSize.value;
+      if (contentEl) contentEl.style.fontSize = fontSize.value + 'px';
+    });
+  }
+
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+  });
+
+  document.getElementById('playAllBtn').addEventListener('click', playAll);
+  document.getElementById('pauseBtn').addEventListener('click', () => {
+    if (synth.speaking && !synth.paused) synth.pause();
+  });
+  document.getElementById('resumeBtn').addEventListener('click', () => {
+    if (synth.paused) synth.resume();
+  });
+  document.getElementById('stopBtn').addEventListener('click', stopSpeak);
+
+  
+})();
+</script>
+</body>
+</html>

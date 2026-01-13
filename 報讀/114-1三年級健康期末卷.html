@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>114-1三上健康期末評量試卷</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --line-bg: transparent;
+  --line-hover: #f1f5ff;
+  --line-reading-bg: #fff4cc;
+  --line-reading-border: #ffb300;
+  --toolbar-bg: #f4f4f4;
+  --toolbar-text: #000000;
+  --meta-text: #666666;
+  --border-color: #dddddd;
+  --button-bg: #f7f7f7;
+  --button-text: #000000;
+  --alt-bg: #f2f2f2;
+}
+
+body.dark {
+  --bg: #0f0f0f;
+  --text: #f0f0f0;
+  --line-bg: transparent;
+  --line-hover: #1f2937;
+  --line-reading-bg: #3a2f05;
+  --line-reading-border: #ffcc00;
+  --toolbar-bg: #1a1a1a;
+  --toolbar-text: #f0f0f0;
+  --meta-text: #aaaaaa;
+  --border-color: #333333;
+  --button-bg: #222222;
+  --button-text: #f0f0f0;
+  --alt-bg: #1b1b1b;
+}
+
+/* 全域 */
+body {
+  font-family: Microsoft JhengHei, 'PingFang TC', 'Noto Sans TC', sans-serif;
+  font-size: 18px;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  padding: 14px 16px 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+h1 {
+  font-size: 1.2em;
+  margin: 0 0 6px 0;
+}
+
+.meta {
+  font-size: 0.9em;
+  color: var(--meta-text);
+}
+
+/* 工具列 */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--toolbar-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.toolbar label {
+  font-size: 0.9em;
+  color: var(--toolbar-text);
+}
+
+.toolbar select, .toolbar input[type="range"] {
+  vertical-align: middle;
+}
+
+.toolbar button {
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+}
+
+.toolbar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toolbar .spacer {
+  flex: 1;
+}
+
+/* 內容 */
+#content {
+  padding: 14px 16px 40px;
+  max-width: none;
+  margin: 0;
+}
+
+.line {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: var(--line-bg);
+  margin: 2px 0;
+  cursor: pointer;
+  user-select: text;
+}
+
+.lineImage {
+  max-width: 160px;
+  max-height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-right: 8px;
+}
+
+.line:hover {
+  background: var(--line-hover);
+}
+
+.lineText { flex: 1; }
+
+
+.line.plain.even {
+  background: var(--alt-bg);
+}
+
+.line.reading {
+  background: var(--line-reading-bg);
+  outline: 2px solid var(--line-reading-border);
+}
+
+.gap {
+  height: 6px;
+}
+
+/* 大標題（[H] 行） */
+.title-main {
+  margin: 12px 0 4px;
+  padding: 4px 6px;
+  font-size: 1.25em;
+  font-weight: 700;
+  color: #2C7BE5;
+  background: transparent;
+}
+
+/* 小標題（[S] 行） */
+.title-sub {
+  margin: 8px 0 2px;
+  padding: 3px 6px;
+  font-size: 1.05em;
+  font-weight: 600;
+  color: #444444;
+  background: transparent;
+}
+
+body.dark .title-sub {
+  color: #dddddd;
+}
+
+
+</style>
+</head>
+<body>
+<header>
+  <h1>114-1三上健康期末評量試卷</h1>
+</header>
+
+<div class="toolbar">
+  <label>聲音：
+    <select id="voiceSelect"></select>
+  </label>
+
+  <label>語速：
+    <input id="rate" type="range" min="0.3" max="1.2" step="0.05" value="1.0" />
+    <span id="rateVal">1.0</span>
+  </label>
+
+  <label>字體大小：
+    <input id="fontSize" type="range" min="12" max="40" step="1" value="18" />
+    <span id="fontSizeVal">18</span>
+  </label>
+
+  <div class="spacer"></div>
+
+  <button id="playAllBtn">▶ 逐行連播</button>
+  <button id="pauseBtn">⏸ 暫停</button>
+  <button id="resumeBtn">⏯ 繼續</button>
+  <button id="stopBtn">⏹ 停止</button>
+  <button id="themeToggle">🌙/☀ 切換深淺色</button>
+</div>
+
+<div id="content">
+<div class="line title-main">一、是非題：共24分</div>
+<div class="line plain"><span class="lineText">升上三年級了，在學校上課的作息模式和低年級相比不會有改變。</span></div>
+<div class="line plain even"><span class="lineText">購買當季水果不但新鮮，價格也便宜。</span></div>
+<div class="line plain"><span class="lineText">書包背帶應固定，從一年級到六年級都不用調整。</span></div>
+<div class="line plain even"><span class="lineText">不能一直把負面情緒悶在心裡，所以要對他人發脾氣來發洩。</span></div>
+<div class="line plain"><span class="lineText">「我訊息」是一種能讓他人了解自己感受的溝通方式。</span></div>
+<div class="line plain even"><span class="lineText">當同學的行為讓我感到不舒服，我會溫和且堅定的表達自己的感受，並請他不要再這樣做了。</span></div>
+<div class="line plain"><span class="lineText">感染諾羅病毒的患者，應選擇高油、高糖的飲食，才能讓腸胃休息。</span></div>
+<div class="line plain even"><span class="lineText">處理病患的排泄物或嘔吐物時，一定要戴口罩及手套。</span></div>
+<div class="line plain"><span class="lineText">進口食物可以減少運送時耗費的能源。</span></div>
+<div class="line plain even"><span class="lineText">每一種食物含有不同的營養素，均衡攝取才能維持身體的健康。</span></div>
+<div class="line plain"><span class="lineText">要做出起立、蹲下這兩個動作，只需要用到骨骼。</span></div>
+<div class="line plain even"><span class="lineText">醣類主要來自全穀雜糧類。</span></div>
+<div class="gap"></div>
+<div class="line title-main">二、選擇題：共28分</div>
+<div class="line plain"><span class="lineText">為什麼升上新年級後，衣服變小，書包也變得不好背了？</span></div>
+<div class="line plain even"><span class="lineText">①長高、長壯了</span></div>
+<div class="line plain"><span class="lineText">②衣服遇水縮小</span></div>
+<div class="line plain even"><span class="lineText">③剛放假結束還不習慣</span></div>
+<div class="line plain"><span class="lineText">④喜新厭舊</span></div>
+<div class="line plain even"><span class="lineText">鈣是組成骨骼和牙齒的重要成分，請問鈣是屬於哪種營養素？</span></div>
+<div class="line plain"><span class="lineText">①礦物質　②水　③醣類　④脂肪</span></div>
+<div class="line plain even"><span class="lineText">個性害羞的祐祐上臺說故事時不斷結巴，可能是因為他出現什麼樣的情緒？</span></div>
+<div class="line plain"><span class="lineText">         ①得意　②驕傲　③憤怒     　④緊張</span></div>
+<div class="line plain even"><span class="lineText">三年級的翔翔很瘦小，常被誤認是一年級生，以下何者可能是影響他成長的壞習慣？</span></div>
+<div class="line plain"><span class="lineText">①每天早睡早起</span></div>
+<div class="line plain even"><span class="lineText">②假日和朋友相約打球</span></div>
+<div class="line plain"><span class="lineText">③只吃零食，不吃正餐</span></div>
+<div class="line plain even"><span class="lineText">④喜歡戶外活動</span></div>
+<div class="line plain"><span class="lineText">小羽被歡歡撞倒，小羽怎麼做才能避免更大的衝突發生？</span></div>
+<div class="line plain even"><span class="lineText">①撞回去</span></div>
+<div class="line plain"><span class="lineText">②大聲罵歡歡</span></div>
+<div class="line plain even"><span class="lineText">③大叫大哭</span></div>
+<div class="line plain"><span class="lineText">④冷靜後，接受歡歡的道歉</span></div>
+<div class="line plain even"><span class="lineText">要和別人傳達自己的感受時，可以利用「我訊息」，下列何者是「我訊息」常用的開頭？</span></div>
+<div class="line plain"><span class="lineText">①你不可以　②你應該　③我覺得　④他發現</span></div>
+<div class="line plain even"><span class="lineText">哪一個不是「同理心」的表現？</span></div>
+<div class="line plain"><span class="lineText">①幸災樂禍</span></div>
+<div class="line plain even"><span class="lineText">②站在對方角度思考</span></div>
+<div class="line plain"><span class="lineText">③理解他人</span></div>
+<div class="line plain even"><span class="lineText">④將自己放置於他人的位置</span></div>
+<div class="line plain"><span class="lineText">小瑜到診所就醫，她必須攜帶什麼才能完成掛號程序？</span></div>
+<div class="line plain even"><span class="lineText">        ①戶口名簿　②健保卡  　   ③悠遊卡　④照片</span></div>
+<div class="line plain"><span class="lineText">人體所需的六大類食物不包含下列哪一類？</span></div>
+<div class="line plain even"><span class="lineText">        ①零食飲料類　②豆魚蛋肉類　③全穀雜糧類    　④蔬菜類</span></div>
+<div class="line plain"><span class="lineText">小名感染了腸胃炎，哪個行為最可能是導致他生病的原因？</span></div>
+<div class="line plain even"><span class="lineText">①洗手後再吃營養午餐</span></div>
+<div class="line plain"><span class="lineText">②穿鞋後就直接用手拿食物吃</span></div>
+<div class="line plain even"><span class="lineText">③下課時用水壺補充水分</span></div>
+<div class="line plain"><span class="lineText">④回家後洗澡換上乾淨衣物</span></div>
+<div class="line plain even"><span class="lineText">以下哪一項生活習慣較不健康？</span></div>
+<div class="line plain"><span class="lineText">①定期打掃生活環境</span></div>
+<div class="line plain even"><span class="lineText">②將食物放到過期才吃</span></div>
+<div class="line plain"><span class="lineText">③不吃未煮熟的食物</span></div>
+<div class="line plain even"><span class="lineText">④到公共場合戴口罩</span></div>
+<div class="line plain"><span class="lineText">購買在地蔬果的好處不包含下列何者？</span></div>
+<div class="line plain even"><span class="lineText">①減少運輸過程耗費的能源</span></div>
+<div class="line plain"><span class="lineText">②減少二氧化碳的排放</span></div>
+<div class="line plain even"><span class="lineText">③可使用保鮮防腐的用藥</span></div>
+<div class="line plain"><span class="lineText">④新鮮便宜</span></div>
+<div class="line plain even"><span class="lineText">可以幫助人體消化食物和排泄廢物的是哪一種營養素？</span></div>
+<div class="line plain"><span class="lineText">①脂肪　②礦物質　③水　④醣類</span></div>
+<div class="line plain even"><span class="lineText">以下哪種食物對骨骼生長較沒有幫助？</span></div>
+<div class="line plain"><span class="lineText">        ①鮮乳　②青花菜        ③豆腐湯　④洋芋片</span></div>
+<div class="line title-main">三、連連看：8分</div>
+<div class="line plain even"><span class="lineText">下列圖片是書包太重對身體的影響，請將對應的說明連起來。</span></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText">請將洗手步驟與圖片連連看。</span></div>
+<div class="line title-main">四、配合題：共8分</div>
+<div class="line plain even"><span class="lineText">請將下列的文字敘述跟身體各部位配對，在（　）中填入代號。</span></div>
+<div class="line plain"><span class="lineText">ㄅ.非常堅硬，可以支撐和保護身體。</span></div>
+<div class="line plain even"><span class="lineText">ㄆ.像個保護墊，避免骨頭摩擦造成疼痛。</span></div>
+<div class="line plain"><span class="lineText">ㄇ.在骨頭和骨頭連接的地方，可以讓身體活動自如。</span></div>
+<div class="line plain even"><span class="lineText">ㄈ.附著於骨骼上，幫助身體運動。</span></div>
+<div class="line plain"><span class="lineText">(１)關節（　　　　）</span></div>
+<div class="line plain even"><span class="lineText">(２)骨骼（　　　　）</span></div>
+<div class="line plain"><span class="lineText">(３)肌肉（　　　　）</span></div>
+<div class="line plain even"><span class="lineText">(４)軟骨（　　　　）</span></div>
+<div class="gap"></div>
+<div class="line title-main">五、勾選題：共22分</div>
+<div class="line plain"><span class="lineText">下列哪些是使我們的骨骼、軟骨、肌肉及關節成長的要素？請在（　）中打ˇ。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(１)規律的運動。</span></div>
+<div class="line plain"><span class="lineText">(　　)(２)玩電腦遊戲一整天。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(３)充足的睡眠。</span></div>
+<div class="line plain"><span class="lineText">(　　)(４)足夠的營養。</span></div>
+<div class="line plain even"><span class="lineText">小鈞在運動會時比賽輸了，下列哪些同學的對話有同理心？請在（　）中打ˇ。</span></div>
+<div class="line plain"><span class="lineText">(　　)(１)樂樂：「輸了就輸了，有什麼好難過的？」</span></div>
+<div class="line plain even"><span class="lineText">(　　)(２)玲玲：「沒關係，你已經盡力了。」</span></div>
+<div class="line plain"><span class="lineText">(　　)(３)安安：「都是你，害我們輸給別班。」</span></div>
+<div class="line plain even"><span class="lineText">(　　)(４)雯雯：「我知道你很難過，下次再努力吧！」</span></div>
+<div class="line plain"><span class="lineText">當我們有負面情緒時，哪些處理方式可以避免傷害他人？請在（　）中打ˇ。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(１)喊「暫停」。</span></div>
+<div class="line plain"><span class="lineText">(　　)(２)告訴家人或師長。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(３)深呼吸冷靜。</span></div>
+<div class="line plain"><span class="lineText">(　　)(４)罵同學出氣。</span></div>
+<div class="line plain even"><span class="lineText">透過「健康存摺」，我們可以知道哪些訊息？請在（　）中打ˇ。</span></div>
+<div class="line plain"><span class="lineText">(　　)(１)門診就醫紀錄。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(２)興趣和專長。</span></div>
+<div class="line plain"><span class="lineText">(　　)(３)用藥和過敏紀錄。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(４)預防接種資料。</span></div>
+<div class="line plain"><span class="lineText">關於「我的餐盤」口訣，請找出正確的敘述，並在（　）中打ˇ。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(１)每餐水果拳頭大。</span></div>
+<div class="line plain"><span class="lineText">(　　)(２)飯跟蔬菜一樣多。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(３)每天三餐一杯奶。</span></div>
+<div class="line plain"><span class="lineText">(　　)(４)豆魚蛋肉兩掌心。</span></div>
+<div class="line plain even"><span class="lineText">(　　)(５)菜比水果多一點。</span></div>
+<div class="line plain"><span class="lineText">(　　)(６)堅果種子一茶匙。</span></div>
+<div class="line title-main">六、回答問題：共10分</div>
+<div class="line plain even"><span class="lineText">請寫出兩種導致病毒性腸胃炎的常見病毒。(4分)</span></div>
+<div class="line plain"><span class="lineText">答:</span></div>
+<div class="line plain even"><span class="lineText">(1)</span></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText">(2)</span></div>
+<div class="gap"></div>
+<div class="line plain even"><span class="lineText">請寫出六大營養素。(6分)</span></div>
+<div class="gap"></div>
+<div class="line plain"><span class="lineText">   答:</span></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="gap"></div>
+<div class="line plain even"><span class="lineText">◎恭喜你完成了這份考卷。交卷前，請一定要再重新檢查一遍喔!</span></div>
+</div>
+
+<script>
+(function(){
+  const synth = window.speechSynthesis;
+  const voiceSelect = document.getElementById('voiceSelect');
+  const rate = document.getElementById('rate');
+  const pitch = document.getElementById('pitch');
+  const rateVal = document.getElementById('rateVal');
+  const pitchVal = document.getElementById('pitchVal');
+  const fontSize = document.getElementById('fontSize');
+  const fontSizeVal = document.getElementById('fontSizeVal');
+  const themeBtn = document.getElementById('themeToggle');
+
+  let voices = [];
+  let isPlayingAll = false;
+  let playAllIndex = 0;
+  let currentNode = null;
+
+  function getLineText(node){
+    const t = node && node.querySelector ? node.querySelector('.lineText') : null;
+    return (t ? t.textContent : (node ? node.textContent : '')).trim();
+  }
+
+  function populateVoices() {
+    voices = synth.getVoices();
+    voiceSelect.innerHTML = "";
+    voices.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${v.name} (${v.lang})`;
+      voiceSelect.appendChild(opt);
+    });
+    const zhIdx = voices.findIndex(v => /zh/i.test(v.lang));
+    if (zhIdx >= 0) voiceSelect.value = zhIdx;
+  }
+
+  populateVoices();
+  if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = populateVoices;
+  }
+
+  function stopSpeak() {
+    if (synth.speaking || synth.pending) synth.cancel();
+    document.querySelectorAll('.line.reading').forEach(el => el.classList.remove('reading'));
+    currentNode = null;
+    isPlayingAll = false;
+    playAllIndex = 0;
+  }
+
+  function speak(text, node=null, onend=null) {
+    stopSpeak();
+    if (text === null || text === undefined) return;
+    text = String(text).trim();
+    if (!text) return;
+
+    const u = new SpeechSynthesisUtterance(text);
+
+    // 安全取得 voice / rate / pitch（避免缺少控制元件時整段 JS 中斷）
+    const voiceIdx = (voiceSelect && voiceSelect.value !== undefined && voiceSelect.value !== '') ? Number(voiceSelect.value) : 0;
+    const v = (voices && voices.length && Number.isFinite(voiceIdx)) ? voices[voiceIdx] : null;
+    if (v) u.voice = v;
+
+    const rateNum = (rate && rate.value !== undefined && rate.value !== '') ? Number(rate.value) : 1;
+    const pitchNum = (pitch && pitch.value !== undefined && pitch.value !== '') ? Number(pitch.value) : 1;
+    u.rate = (Number.isFinite(rateNum) && rateNum > 0) ? rateNum : 1;
+    u.pitch = (Number.isFinite(pitchNum) && pitchNum >= 0) ? pitchNum : 1;
+
+    u.onend = () => {
+      if (node) node.classList.remove('reading');
+      currentNode = null;
+      if (onend) onend();
+    };
+    u.onerror = () => {
+      if (node) node.classList.remove('reading');
+      currentNode = null;
+      if (onend) onend();
+    };
+    if (node) node.classList.add('reading');
+    currentNode = node;
+    synth.speak(u);
+  }
+
+  // 點行朗讀（只對一般行；標題不朗讀；錄音按鈕不觸發）
+  document.getElementById('content').addEventListener('click', (e) => {
+    const node = e.target.closest('.line');
+    if (!node) return;
+    if (e.target.closest('button')) return;
+    if (node.classList.contains('title-main') || node.classList.contains('title-sub')) return;
+    speak(getLineText(node), node);
+  });
+
+  // 朗讀選取文字
+  document.getElementById('content').addEventListener('mouseup', () => {
+    const sel = window.getSelection();
+    const text = sel ? sel.toString().trim() : "";
+    if (text) speak(text);
+  });
+
+  // 逐行連播
+  function playAll() {
+    const lines = Array.from(document.querySelectorAll('.line')).filter(el =>
+      !el.classList.contains('title-main') && !el.classList.contains('title-sub')
+    );
+    if (!lines.length) return;
+
+    isPlayingAll = true;
+    const curIdx = lines.findIndex(el => el.classList.contains('reading'));
+    playAllIndex = curIdx >= 0 ? curIdx : 0;
+
+    const step = () => {
+      if (!isPlayingAll) return;
+      if (playAllIndex >= lines.length) {
+        isPlayingAll = false;
+        return;
+      }
+      const el = lines[playAllIndex++];
+      const text = getLineText(el);
+      if (!text) { step(); return; }
+      speak(text, el, step);
+    };
+    step();
+  }
+
+  if (rate && rateVal) {
+    rate.addEventListener('input', () => rateVal.textContent = rate.value);
+  }
+  if (pitch && pitchVal) {
+    pitch.addEventListener('input', () => pitchVal.textContent = pitch.value);
+  }
+  if (fontSize && fontSizeVal) {
+    // initialize content font size (avoid changing toolbar layout to keep slider stable)
+    fontSizeVal.textContent = fontSize.value;
+    const contentEl = document.getElementById('content');
+    if (contentEl) contentEl.style.fontSize = fontSize.value + 'px';
+    fontSize.addEventListener('input', () => {
+      fontSizeVal.textContent = fontSize.value;
+      if (contentEl) contentEl.style.fontSize = fontSize.value + 'px';
+    });
+  }
+
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+  });
+
+  document.getElementById('playAllBtn').addEventListener('click', playAll);
+  document.getElementById('pauseBtn').addEventListener('click', () => {
+    if (synth.speaking && !synth.paused) synth.pause();
+  });
+  document.getElementById('resumeBtn').addEventListener('click', () => {
+    if (synth.paused) synth.resume();
+  });
+  document.getElementById('stopBtn').addEventListener('click', stopSpeak);
+
+  
+})();
+</script>
+</body>
+</html>
